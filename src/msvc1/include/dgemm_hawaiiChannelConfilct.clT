@@ -1,0 +1,160 @@
+static const char * dgemm_NT_ChannelConflict = "\
+\n\
+typedef union GPtr {\n\
+    __global double *d;\n\
+    __global double2 *d2v;\n\
+    __global double4 *d4v;\n\
+    __global double8 *d8v;\n\
+    __global double16 *d16v;\n\
+} GPtr;\n\
+\n\
+\n\
+\n\
+__attribute__((reqd_work_group_size(8, 8, 1)))\n\
+void __kernel\n\
+dgemmBlockTempLocalPrefetch(__global double2 const * restrict A,\n\
+                            __global double2 const * restrict B,\n\
+                            __global double2 * C,\n\
+                            uint const M,\n\
+                            uint const N,\n\
+                            uint const K,\n\
+                            double const alpha,\n\
+                            double const beta,\n\
+                            uint lda,\n\
+                            uint ldb,\n\
+                            uint ldc,\n\
+                            uint offsetA,\n\
+                            uint offsetB,\n\
+                            uint offsetC)\n\
+{\n\
+    double2 a0     ;\n\
+    double b0[8], b1[8];\n\
+    double b0T, b1T;\n\
+    double2 c[8] = {(double2)(0,0)};\n\
+    int4 coord = 0; /* contains coordB, coordA, k */\n\
+\n\
+    lda /= 2;\n\
+    ldb /= 2;\n\
+    \n\
+    int get_group_id_1;\n\
+    int get_global_id_1;\n\
+    A += (int)get_global_id(0);\n\
+    int lidY = get_local_id(1);\n\
+   \n\
+   \n\
+    get_group_id_1 = (get_group_id(0) + get_group_id(1))% get_num_groups(1);\n\
+    get_global_id_1 = get_group_id_1 * get_local_size(1) /*+ get_local_id(1)*/;\n\
+\n\
+    //kif = (N % 256 != 0);\n\
+    //  get_global_id_1 = (kif*(uint)get_global_id(1)) + ((1-kif)*get_global_id_1);\n\
+   \n\
+"
+"\
+  \n\
+   \n\
+    B += get_global_id_1 * 4 ;\n\
+       \n\
+   \n\
+    coord.y = 2 * (int)get_global_id(0);\n\
+    coord.x = 8 * (get_global_id_1+lidY);\n\
+\n\
+    GPtr uB;\n\
+    uB.d2v = B;\n\
+\n\
+    local double blockB [128];\n\
+    \n\
+    int lid = get_local_id(0)+8*lidY; \n\
+\n\
+    \n\
+    blockB[lid] = uB.d[lid];\n\
+    blockB[lid+64] = uB.d[lid+2*ldb];\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+    \n\
+\n\
+    for (int k1 = 0; k1 < K; k1 += 2)\n\
+    {\n\
+        /* -- Tiles multiplier -- */\n\
+\n\
+        ///barrier(CLK_LOCAL_MEM_FENCE);\n\
+        \n\
+        uB.d2v += (ldb << 1);\n\
+        b0T = uB.d[lid];\n\
+        b1T = uB.d[lid+2*ldb];\n\
+        a0 = A[0];\n\
+        for (int i=0; i<8; i++)\n\
+        {\n\
+          b0[i] = blockB[i+8*lidY];\n\
+          b1[i] = blockB[i+64+8*lidY];    \n\
+        }\n\
+\n\
+\n\
+        \n\
+        for (int i=0; i<8;i++)\n\
+          c[i] = mad(a0, b0[i], c[i]);\n\
+\n\
+        a0 = A[lda];\n\
+\n\
+        for (int i=0; i<8;i++)\n\
+          c[i] = mad(a0, b1[i], c[i]);\n\
+\n\
+\n\
+        A += (lda << 1);\n\
+\n\
+"
+"\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+        blockB[lid] = b0T;\n\
+        blockB[lid+64] = b1T;\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+       // uB.d2v += (ldb << 1);\n\
+        /* ---------------------- */\n\
+    }\n\
+\n\
+    GPtr uC;\n\
+\n\
+    uC.d = C + (coord.x * ldc + coord.y)/2;\n\
+\n\
+    __global double2 *pC = uC.d2v;\n\
+\n\
+    double2 tempC0, tempC1, tempC2, tempC3, tempC4, tempC5, tempC6, tempC7;\n\
+\n\
+    tempC0 = pC[0];\n\
+    tempC1 = pC[(ldc >> 1)];\n\
+    tempC2 = pC[ldc];\n\
+    tempC3 = pC[mad24(3u, (ldc >> 1), 0u)];\n\
+    tempC4 = pC[(ldc << 1)];\n\
+    tempC5 = pC[mad24(5u, (ldc >> 1), 0u)];\n\
+    tempC6 = pC[mad24(6u, (ldc >> 1), 0u)];\n\
+    tempC7 = pC[mad24(7u, (ldc >> 1), 0u)];\n\
+    tempC0 = mad(tempC0, beta, 0);\n\
+    tempC1 = mad(tempC1, beta, 0);\n\
+    tempC2 = mad(tempC2, beta, 0);\n\
+    tempC3 = mad(tempC3, beta, 0);\n\
+    tempC4 = mad(tempC4, beta, 0);\n\
+    tempC5 = mad(tempC5, beta, 0);\n\
+    tempC6 = mad(tempC6, beta, 0);\n\
+    tempC7 = mad(tempC7, beta, 0);\n\
+    tempC0 = mad(c[0], alpha, tempC0);\n\
+    tempC1 = mad(c[1], alpha, tempC1);\n\
+    tempC2 = mad(c[2], alpha, tempC2);\n\
+    tempC3 = mad(c[3], alpha, tempC3);\n\
+    tempC4 = mad(c[4], alpha, tempC4);\n\
+    tempC5 = mad(c[5], alpha, tempC5);\n\
+    tempC6 = mad(c[6], alpha, tempC6);\n\
+    tempC7 = mad(c[7], alpha, tempC7);\n\
+    pC[0] = tempC0;\n\
+    pC[(ldc >> 1)] = tempC1;\n\
+    pC[ldc] = tempC2;\n\
+    pC[mad24(3u, (ldc >> 1), 0u)] = tempC3;\n\
+    pC[(ldc << 1)] = tempC4;\n\
+    pC[mad24(5u, (ldc >> 1), 0u)] = tempC5;\n\
+    pC[mad24(6u, (ldc >> 1), 0u)] = tempC6;\n\
+    pC[mad24(7u, (ldc >> 1), 0u)] = tempC7;\n\
+}\n\
+\n\
+"
+"\
+\n\
+";
+
+

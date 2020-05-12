@@ -1,0 +1,970 @@
+/* ************************************************************************
+ * Copyright 2013 Advanced Micro Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ************************************************************************/
+
+
+
+// Column-Major Upper Case
+static const char *trmv_CU_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+\n\
+#ifdef PACKED\n\
+    #define A( row, col) (*( A + ((col*(col+1))/2 + row)))\n\
+#else\n\
+    #define A( row, col) A[ row + col * lda]\n\
+#endif\n\
+\n\
+#define TARGET_ROWS_BY_VEC  ((%TARGET_ROWS)/(%V))\n\
+#define TARGET_WIDTH ((%BLOCKSIZE)/(TARGET_ROWS_BY_VEC))\n\
+\n\
+__kernel void %PREFIXtrmv_CU_kernel( __global %TYPE const* restrict _A, __global %TYPE * _xnew, __global %TYPE const* restrict _x_vector, uint N,\n\
+                                    int incx, int isUnity, uint lda, int doConj, uint offa, uint offx\n\
+#ifdef HEMV_ONLY\n\
+, int incy, uint offy, %TYPE alpha, %TYPE beta\n\
+#endif\n\
+ )\n\
+{\n\
+    __global %TYPE const* x_vector;\n\
+    __global %TYPE* xnew;\n\
+    __global %TYPE const* restrict A;\n\
+\n\
+    A = _A + offa;\n\
+    if ( incx < 0 ) // Goto end of vector\n\
+    {\n\
+        #ifdef HEMV_ONLY\n\
+            x_vector = _x_vector + offx + ( N - 1) * abs(incx);\n\
+        #else\n\
+            x_vector = _x_vector + ( N - 1) * abs(incx);\n\
+            xnew     = _xnew  + (N - 1) * abs(incx) + offx;\n\
+        #endif\n\
+    }\n\
+    else\n\
+    {\n\
+        #ifdef HEMV_ONLY\n\
+            x_vector = _x_vector + offx;\n\
+        #else\n\
+            x_vector = _x_vector;\n\
+            xnew      = _xnew + offx;\n\
+        #endif\n\
+    }\n\
+\n\
+    #ifdef HEMV_ONLY\n\
+"
+"\
+    if(incy < 0)\n\
+        xnew  = _xnew + offy + ( N - 1) * abs(incy);\n\
+    else\n\
+        xnew = _xnew + offy;\n\
+    #endif\n\
+\n\
+\n\
+    __local %TYPE  sXData[ TARGET_WIDTH ]; // Each column is multiplied with a common x_vector element\n\
+\n\
+    const int gIdx = get_global_id(0);\n\
+    const int bIdx = get_group_id(0);\n\
+    const int threadIdx = get_local_id(0);\n\
+    const int TARGET_ROWS  = %TARGET_ROWS;\n\
+\n\
+    // Last block always targets the top rows\n\
+    // which may be less than or equal to 64\n\
+    int nBlocks = (N-1)/ %TARGET_ROWS + 1;\n\
+\n\
+    if( bIdx == (nBlocks-1))\n\
+    {\n\
+        // Variables that don't change while looping\n\
+        int startRow = bIdx * %TARGET_ROWS;\n\
+        int destRow  = (startRow + threadIdx) ;\n\
+        if( destRow >= N)\n\
+        {\n\
+            return;\n\
+        }\n\
+\n\
+        //float acc = 0.0f;\n\
+        %TYPE acc     = %MAKEVEC( 0.0);\n\
+        %TYPE accTemp     = %MAKEVEC( 0.0);\n\
+\n\
+        for ( int j= ( N - 1 ) ; j > destRow ; j--)\n\
+        {\n\
+            //acc += A( destRow, j) * x_vector[ j * incx];\n\
+            accTemp = A( destRow, j);\n\
+            %CONJUGATE(doConj, accTemp);\n\
+            %MAD(acc, accTemp, x_vector[ j * incx]);\n\
+        }\n\
+\n\
+        if ( isUnity )\n\
+        {\n\
+            #ifdef HEMV_ONLY\n\
+                %TYPE acc1, temp;\n\
+                %MUL(acc1, acc, alpha);\n\
+                temp = xnew[ destRow * incy];\n\
+                %ADD(xnew[ destRow * incy], temp, acc1);\n\
+            #else\n\
+                %ADD(xnew[ destRow * incx] , acc, x_vector[ destRow * incx]);\n\
+            #endif\n\
+"
+"\
+        }\n\
+        else\n\
+        {\n\
+            //xnew[ destRow * incx] = acc + A( destRow , destRow) * x_vector[ destRow * incx];\n\
+            accTemp = A( destRow, destRow);\n\
+\n\
+            #ifdef HEMV_ONLY\n\
+                #ifndef SPMV_ONLY\n\
+                    // accTemp.odd = 0.0f;\n\
+                    %CLEAR_IMAGINARY( accTemp );\n\
+                #endif\n\
+            #endif\n\
+\n\
+            %CONJUGATE(doConj, accTemp);\n\
+            %MAD(acc, accTemp, x_vector[ destRow * incx]);\n\
+\n\
+            #ifdef HEMV_ONLY\n\
+                %TYPE temp, acc1;\n\
+                %MUL(temp, xnew[ destRow * incy], beta);\n\
+                %MUL(acc1, acc, alpha);\n\
+                %ADD(xnew[ destRow * incy], temp, acc1);\n\
+            #else\n\
+                xnew[ destRow * incx] = acc;\n\
+            #endif\n\
+        }\n\
+    }\n\
+    else\n\
+    {\n\
+        %TYPE sumTemp= %MAKEVEC( 0.0);\n\
+        %TYPE%V sum = %VMAKEVEC( sumTemp);\n\
+\n\
+        // Variables that don't change while looping\n\
+        int startRow = bIdx * %TARGET_ROWS;\n\
+        //int rowShift = ((threadIdx & ( TARGET_ROWS_BY_VEC -1 )) * %V);\n\
+        int rowShift = ((threadIdx %  (TARGET_ROWS_BY_VEC)) * %V);\n\
+        int colShift = threadIdx / TARGET_ROWS_BY_VEC;\n\
+\n\
+        int row    = startRow + rowShift;\n\
+\n\
+        // gIdx is not destination row.\n\
+\n\
+        // startRow may be less than 4\n\
+        // So nLoops will be negative\n\
+        // and the FOR loop doesn't execute\n\
+        int nLoops = (( N - (startRow + %TARGET_ROWS))/ TARGET_WIDTH) - 1;\n\
+\n\
+        for( int j=0; j <= (nLoops); j++)\n\
+        {\n\
+            int startCol    = N - (j + 1)* TARGET_WIDTH;\n\
+            int col     = startCol + colShift;\n\
+"
+"\
+\n\
+            //\n\
+            // Only TARGET_WIDTH threads points are to be read from X-vector\n\
+            // We don't use VLOAD here because incx could be > 1\n\
+            // Minimal prototyping shows that having separate loading code\n\
+            // for incx value of 1 does not change anything in performance\n\
+            // In fact, the extra IF costs us.\n\
+            //\n\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+            if (threadIdx < TARGET_WIDTH)\n\
+            {\n\
+                sXData[threadIdx] = x_vector[(startCol + threadIdx) * incx];\n\
+            }\n\
+\n\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+            // TARGET_ROWS_BY_VEC way bank-conflict : May broadcast if TARGET_ROWS = BLOCKSIZE, which reduces occupancy\n\
+            // And we loose performance as we don't have enough blocks to hide memory access and compute latenties per MP\n\
+            %TYPE xData =  sXData[colShift];\n\
+\n\
+            //sum += vload4(0, &A( row, col)) * ((float4)( xData, xData, xData, xData));\n\
+            // ((float4)( xData, xData, xData, xData));\n\
+            %TYPE%V loadedA = %VLOAD(0, (&A( row, col)));\n\
+            %CONJUGATE(doConj, loadedA);\n\
+\n\
+            %TYPE%V xDataTemp = %VMAKEVEC(xData);\n\
+            %VMAD( sum, loadedA, xDataTemp);\n\
+        }\n\
+\n\
+\n\
+        volatile __local %TYPE%V sDataTemp[TARGET_ROWS_BY_VEC * TARGET_WIDTH];\n\
+        volatile __local %TYPE* sData = sDataTemp;\n\
+        //sDataTemp[(threadIdx & ( TARGET_ROWS_BY_VEC -1 )) + (colShift * TARGET_ROWS_BY_VEC)] = sum;\n\
+        sDataTemp[(threadIdx % ( TARGET_ROWS_BY_VEC )) + (colShift * TARGET_ROWS_BY_VEC)] = sum;\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+        // Reduce each block by DTARGET_ROWS threads to generate DTARGET_ROWS acc values\n\
+        if ( threadIdx < %TARGET_ROWS)\n\
+        {\n\
+            //float acc = 0.0f;\n\
+            %TYPE acc     = %MAKEVEC( 0.0);\n\
+            %TYPE accTemp     = %MAKEVEC( 0.0);\n\
+            int desRow  = (bIdx * %TARGET_ROWS)+ threadIdx;\n\
+\n\
+            //#pragma unroll TARGET_WIDTH\n\
+            for( int j=0; j < TARGET_WIDTH; j++)\n\
+            {\n\
+                //acc += sData[ threadIdx + j * FTARGET_ROWS];\n\
+                %ADD(acc, acc, sData[ threadIdx + j * TARGET_ROWS]);\n\
+            }\n\
+"
+"\
+\n\
+            for ( int j= (N  - (nLoops+1)* TARGET_WIDTH - 1) ; j > desRow; j--)\n\
+            {\n\
+                //acc += A( desRow, j) * x_vector[ j * incx];\n\
+                accTemp = A( desRow, j);\n\
+                %CONJUGATE(doConj, accTemp);\n\
+                %MAD(acc, accTemp, x_vector[ j * incx]);\n\
+            }\n\
+\n\
+            if ( isUnity )\n\
+            {\n\
+                //%ADD(xnew[ desRow * incx], acc, x_vector[ desRow * incx]);\n\
+                #ifdef HEMV_ONLY\n\
+                    %TYPE acc1, temp;\n\
+                    %MUL(acc1, acc, alpha);\n\
+                    temp = xnew[ desRow * incy];\n\
+                    %ADD(xnew[ desRow * incy], temp, acc1);\n\
+                #else\n\
+                    %ADD(xnew[ desRow * incx] , acc, x_vector[ desRow * incx]);\n\
+                #endif\n\
+            }\n\
+            else\n\
+            {\n\
+                // xnew[ desRow * incx] =  acc + A( desRow, desRow) * x_vector[ desRow * incx];\n\
+                accTemp = A( desRow, desRow );\n\
+\n\
+                #ifdef HEMV_ONLY\n\
+                    #ifndef SPMV_ONLY\n\
+                        //accTemp.odd = 0.0f;\n\
+                        %CLEAR_IMAGINARY( accTemp );\n\
+                    #endif\n\
+                #endif\n\
+\n\
+                %CONJUGATE(doConj, accTemp);\n\
+                %MAD(acc, accTemp, x_vector[ desRow * incx]);\n\
+\n\
+                #ifdef HEMV_ONLY\n\
+                    %TYPE temp, acc1;\n\
+                    %MUL(temp, xnew[ desRow * incy], beta);\n\
+                    %MUL(acc1, acc, alpha);\n\
+                       %ADD(xnew[ desRow * incy], temp, acc1);\n\
+                #else\n\
+                    xnew[ desRow * incx] = acc;\n\
+                #endif\n\
+            }\n\
+        }\n\
+        barrier(CLK_GLOBAL_MEM_FENCE);\n\
+    }\n\
+}";
+
+
+
+// Column-Major Lower Case
+
+static const char *trmv_CL_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+#ifdef PACKED\n\
+    #define A( row, col) (*( A + ((( col *((2*N) + 1 - col)) / 2) + (row - col))))\n\
+#else\n\
+    #define A( row, col) A[ row + col * lda]\n\
+#endif\n\
+\n\
+#define TARGET_ROWS_BY_VEC  ((%TARGET_ROWS)/(%V))\n\
+#define TARGET_WIDTH ((%BLOCKSIZE)/(TARGET_ROWS_BY_VEC))\n\
+__kernel void %PREFIXtrmv_CL_kernel( __global %TYPE const* restrict _A, __global %TYPE* _xnew, __global %TYPE const* restrict _x_vector,\n\
+                                    uint N, int incx, int isUnity, uint lda, int doConj, uint offa, uint offx\n\
+#ifdef HEMV_ONLY\n\
+, int incy, uint offy, %TYPE alpha, %TYPE beta\n\
+#endif\n\
+ )\n\
+{\n\
+    __global %TYPE* x_vector;\n\
+    __global %TYPE* xnew;\n\
+    __global %TYPE const * restrict A;\n\
+\n\
+    A = _A + offa;\n\
+    if ( incx < 0 ) // Goto end of vector\n\
+    {\n\
+        #ifdef HEMV_ONLY\n\
+            x_vector = _x_vector + offx + ( N - 1) * abs(incx);\n\
+        #else\n\
+            x_vector = _x_vector + ( N - 1) * abs(incx);\n\
+            xnew     = _xnew + offx + ( N - 1) * abs(incx);\n\
+        #endif\n\
+    }\n\
+    else\n\
+    {\n\
+        #ifdef HEMV_ONLY\n\
+            x_vector = _x_vector + offx;\n\
+        #else\n\
+            x_vector = _x_vector;\n\
+            xnew     = _xnew + offx;\n\
+        #endif\n\
+    }\n\
+\n\
+\n\
+    #ifdef HEMV_ONLY\n\
+    if(incy < 0)\n\
+"
+"\
+        xnew  = _xnew + offy + ( N - 1) * abs(incy);\n\
+    else\n\
+        xnew = _xnew + offy;\n\
+    #endif\n\
+\n\
+    __local %TYPE sXData[ TARGET_WIDTH ]; // Each column is multiplied with a common x_vector element\n\
+\n\
+    size_t gIdx = get_global_id(0);\n\
+    size_t bIdx = get_group_id(0);\n\
+    size_t threadIdx = get_local_id(0);\n\
+    int TARGET_ROWS  = %TARGET_ROWS;\n\
+\n\
+    // Last block always targets the top rows\n\
+    // which may be less than or equal to 64\n\
+    size_t nBlocks = (N-1)/ %TARGET_ROWS + 1;\n\
+\n\
+\n\
+    if( bIdx == (nBlocks-1))\n\
+    {\n\
+        // Target row of xNew is given by threadIdx\n\
+        size_t lastRow  = (N - (nBlocks -1) * %TARGET_ROWS) -1;\n\
+\n\
+        if( threadIdx > lastRow )\n\
+        {\n\
+            return;\n\
+        }\n\
+\n\
+        //float acc = 0.0f;\n\
+        %TYPE acc     = %MAKEVEC( 0.0);\n\
+        %TYPE accTemp     = %MAKEVEC( 0.0);\n\
+\n\
+        for ( int j= 0 ; j < threadIdx; j++)\n\
+        {\n\
+            //acc += A(threadIdx, j) * x_vector[ j * incx];\n\
+            accTemp = A(threadIdx, j);\n\
+            %CONJUGATE(doConj, accTemp);\n\
+            %MAD(acc, accTemp, x_vector[ j * incx]);\n\
+        }\n\
+\n\
+        if ( isUnity )\n\
+        {\n\
+            #ifdef HEMV_ONLY\n\
+                %TYPE acc1, temp;\n\
+                %MUL(acc1, acc, alpha);\n\
+                temp = xnew[ threadIdx * incy];\n\
+                %ADD(xnew[ threadIdx * incy], temp, acc1);\n\
+            #else\n\
+                %ADD(xnew[ threadIdx * incx] , acc, x_vector[ threadIdx * incx]);\n\
+            #endif\n\
+        }\n\
+"
+"\
+        else\n\
+        {    //xnew[ threadIdx * incx] =  acc +  A(threadIdx, threadIdx) * x_vector[ threadIdx * incx];\n\
+            accTemp = A(threadIdx, threadIdx);\n\
+\n\
+            #ifdef HEMV_ONLY\n\
+                #ifndef SPMV_ONLY\n\
+                    //accTemp.odd = 0.0f;\n\
+                    %CLEAR_IMAGINARY( accTemp );\n\
+                #endif\n\
+            #endif\n\
+\n\
+            %CONJUGATE(doConj, accTemp);\n\
+            %MAD(acc, accTemp, x_vector[ threadIdx * incx]);\n\
+\n\
+            #ifdef HEMV_ONLY\n\
+                %TYPE temp, acc1;\n\
+                %MUL(temp, xnew[ threadIdx * incy], beta);\n\
+                %MUL(acc1, acc, alpha);\n\
+                %ADD(xnew[ threadIdx * incy], temp, acc1);\n\
+            #else\n\
+                xnew[ threadIdx * incx] = acc;\n\
+            #endif\n\
+        }\n\
+    }\n\
+    else\n\
+    {\n\
+        %TYPE sumTemp= %MAKEVEC( 0.0);\n\
+        %TYPE%V sum = %VMAKEVEC( sumTemp);\n\
+\n\
+        // Variables that don't change while looping\n\
+        size_t startRow = N - (bIdx + 1)* %TARGET_ROWS;\n\
+        //size_t rowShift = ((threadIdx & ( TARGET_ROWS_BY_VEC -1 )) * %V);\n\
+        size_t rowShift = ((threadIdx % ( TARGET_ROWS_BY_VEC  )) * %V);\n\
+        size_t colShift = threadIdx / TARGET_ROWS_BY_VEC;\n\
+\n\
+        size_t row    = startRow + rowShift;\n\
+\n\
+        // gIdx is not destination row.\n\
+        size_t desRow  = startRow + threadIdx;\n\
+\n\
+        // startRow may be less than 4\n\
+        // So nLoops will be negative\n\
+        // and the FOR loop doesn't execute\n\
+        int nLoops = ( startRow / TARGET_WIDTH) - 1;\n\
+\n\
+        for( int j=0; j <= (nLoops); j++)\n\
+        {\n\
+            size_t startCol    = j * TARGET_WIDTH;\n\
+            size_t col     = startCol + colShift;\n\
+\n\
+"
+"\
+            //\n\
+            // Only TARGET_WIDTH threads points are to be read from X-vector\n\
+            // We don't use VLOAD here because incx could be > 1\n\
+            // Minimal prototyping shows that having separate loading code\n\
+            // for incx value of 1 does not change anything in performance\n\
+            // In fact, the extra IF costs us.\n\
+            //\n\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+            if (threadIdx < TARGET_WIDTH)\n\
+            {\n\
+                sXData[threadIdx] = x_vector[(startCol + threadIdx) * incx];\n\
+            }\n\
+\n\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+            // TARGET_ROWS_BY_VEC way bank-conflict : May broadcast if TARGET_ROWS = BLOCKSIZE, which reduces occupancy\n\
+            // And we loose performance as we don't have enough blocks to hide memory access and compute latenties per MP\n\
+            %TYPE xData =  sXData[colShift];\n\
+\n\
+            //sum += vload4(0, &A( row, col)) * ((float4)( xData, xData, xData, xData));\n\
+            // ((float4)( xData, xData, xData, xData));\n\
+            %TYPE%V loadedA = %VLOAD(0, (&A( row, col)));\n\
+            %CONJUGATE(doConj, loadedA);\n\
+\n\
+            %TYPE%V xDataTemp = %VMAKEVEC(xData);\n\
+            %VMAD(sum, loadedA, xDataTemp);\n\
+        }\n\
+\n\
+\n\
+        __local %TYPE%V sDataTemp[TARGET_ROWS_BY_VEC * TARGET_WIDTH];\n\
+        __local %TYPE* sData = sDataTemp;\n\
+        //sDataTemp[(threadIdx & ( TARGET_ROWS_BY_VEC -1 )) + (colShift * TARGET_ROWS_BY_VEC)] = sum;\n\
+        sDataTemp[(threadIdx % ( TARGET_ROWS_BY_VEC  )) + (colShift * TARGET_ROWS_BY_VEC)] = sum;\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+        // Reduce each block by DTARGET_ROWS threads to generate DTARGET_ROWS acc values\n\
+        if ( threadIdx < %TARGET_ROWS)\n\
+        {\n\
+            //float acc = 0.0f;\n\
+            %TYPE acc     = %MAKEVEC( 0.0);\n\
+            %TYPE accTemp     = %MAKEVEC( 0.0);\n\
+\n\
+            //#pragma unroll TARGET_WIDTH\n\
+            for( int j=0; j < TARGET_WIDTH; j++)\n\
+            {\n\
+                //acc += sData[ threadIdx + j * FTARGET_ROWS];\n\
+                %ADD(acc, acc, sData[ threadIdx + j * TARGET_ROWS]);\n\
+            }\n\
+\n\
+            for ( int j= ((nLoops+1)* TARGET_WIDTH) ; j < desRow; j++)\n\
+"
+"\
+            {\n\
+                //acc += A(desRow, j) * x_vector[ j * incx];\n\
+                accTemp = A(desRow, j);\n\
+                %CONJUGATE(doConj, accTemp);\n\
+                %MAD(acc, accTemp, x_vector[ j * incx]);\n\
+            }\n\
+\n\
+            if ( isUnity )\n\
+            {\n\
+                 #ifdef HEMV_ONLY\n\
+                    %TYPE acc1, temp;\n\
+                    %MUL(acc1, acc, alpha);\n\
+                    temp = xnew[ desRow * incy];\n\
+                    %ADD(xnew[ desRow * incy], temp, acc1);\n\
+                #else\n\
+                    %ADD(xnew[ desRow * incx] , acc, x_vector[ desRow * incx]);\n\
+                #endif\n\
+            }\n\
+            else\n\
+            {\n\
+                // xnew[ desRow * incx] =  acc + A(desRow, desRow) * x_vector[ desRow * incx];\n\
+                accTemp = A(desRow, desRow);\n\
+\n\
+                #ifdef HEMV_ONLY\n\
+                    #ifndef SPMV_ONLY\n\
+                        //accTemp.odd = 0.0f;\n\
+                        %CLEAR_IMAGINARY( accTemp );\n\
+                    #endif\n\
+                #endif\n\
+\n\
+                %CONJUGATE(doConj, accTemp);\n\
+                %MAD(acc, accTemp, x_vector[ desRow * incx]);\n\
+\n\
+                #ifdef HEMV_ONLY\n\
+                    %TYPE temp, acc1;\n\
+                    %MUL(temp, xnew[ desRow * incy], beta);\n\
+                    %MUL(acc1, acc, alpha);\n\
+                       %ADD(xnew[ desRow * incy], temp, acc1);\n\
+                #else\n\
+                    xnew[ desRow * incx] = acc;\n\
+                #endif\n\
+            }\n\
+        }\n\
+    }\n\
+}";
+
+
+
+// Column-Major Lower Transpose
+// Threads : %PREFIXBLOCKSIZET, Blocks launched = (N -1) / %PREFIXTARGET_ROWST + 1
+/*
+#define %PREFIXVECTOR_SIZET %V
+#define %PREFIXTARGET_WIDTH_BY_VECT ( %PREFIXBLOCKSIZET / %PREFIXTARGET_ROWST )
+#define %PREFIXTARGET_WIDTHT ( %PREFIXTARGET_WIDTH_BY_VECT * %PREFIXVECTOR_SIZET )
+*/
+
+static const char *trmv_CLT_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+\n\
+#ifdef PACKED\n\
+    #define A( row, col) (*( A + ((( col *((2*N) + 1 - col)) / 2) + (row - col))))\n\
+#else\n\
+    #define A( row, col) A[ row + col * lda]\n\
+#endif\n\
+\n\
+#define TARGET_WIDTH_BY_VEC ((%BLOCKSIZE) / (%TARGET_ROWS) )\n\
+#define TARGET_WIDTH ((TARGET_WIDTH_BY_VEC) * (%V))\n\
+__kernel void %PREFIXtrmv_CLT_kernel( __global %TYPE const* restrict _A, __global %TYPE * _xnew, __global %TYPE const* restrict _x_vector,\n\
+                                      uint N, int incx, int isUnity, uint lda, int doConj, uint offa, uint offx\n\
+#ifdef HEMV_ONLY\n\
+, int incy, uint offy, %TYPE alpha, %TYPE beta\n\
+#endif\n\
+ )\n\
+{\n\
+    __global %TYPE* x_vector;\n\
+    __global %TYPE* xnew;\n\
+    __global %TYPE const * restrict A = _A + offa;\n\
+\n\
+    if ( incx < 0 ) // Goto end of vector\n\
+    {\n\
+         #ifdef HEMV_ONLY\n\
+            x_vector = _x_vector + offx + ( N - 1) * abs(incx);\n\
+        #else\n\
+            x_vector = _x_vector + ( N - 1) * abs(incx);\n\
+            xnew     = _xnew + offx + ( N - 1) * abs(incx);\n\
+        #endif\n\
+    }\n\
+    else\n\
+    {\n\
+        #ifdef HEMV_ONLY\n\
+            x_vector = _x_vector + offx;\n\
+        #else\n\
+            x_vector = _x_vector;\n\
+            xnew     = _xnew + offx;\n\
+        #endif\n\
+    }\n\
+\n\
+\n\
+    #ifdef HEMV_ONLY\n\
+    if(incy < 0)\n\
+"
+"\
+        xnew  = _xnew + offy + ( N - 1) * abs(incy);\n\
+    else\n\
+        xnew = _xnew + offy;\n\
+    #endif\n\
+\n\
+    int gIdx     = get_global_id(0);\n\
+    int blockIdx    = get_group_id(0);\n\
+    int blockDim      = get_local_size(0);\n\
+    int threadIdx     = get_local_id(0);\n\
+\n\
+    __local %TYPE xShared[TARGET_WIDTH];\n\
+\n\
+    int startCol      = blockIdx * %TARGET_ROWS;\n\
+\n\
+    %TYPE accTemp= %INIT( 0.0);\n\
+    %TYPE%V acc  = %VMAKEVEC( accTemp);\n\
+\n\
+    //size_t rowShift = ((threadIdx & ( TARGET_WIDTH_BY_VEC -1 )) * %V);\n\
+    size_t rowShift = ((threadIdx % ( TARGET_WIDTH_BY_VEC  )) * %V);\n\
+    size_t colShift = threadIdx / TARGET_WIDTH_BY_VEC;\n\
+    size_t col    = startCol + colShift;\n\
+    int startRow;\n\
+\n\
+    for( startRow = (N - TARGET_WIDTH); ( startCol + %TARGET_ROWS - 1 ) < startRow; startRow = (startRow - TARGET_WIDTH))\n\
+    {\n\
+        // Load X data into Shared memory\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+        if (threadIdx < TARGET_WIDTH)\n\
+        {\n\
+            xShared[threadIdx] = x_vector[ (startRow + threadIdx) * incx];\n\
+        }\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+        //float4 xData = (float4)(xShared[ rowShift ], xShared[ rowShift + 1], xShared[ rowShift + 2], xShared[ rowShift + 3]);\n\
+        %TYPE%V xData;\n\
+        __local %TYPE%V* xSharedTemp = (xShared + rowShift);\n\
+        xData = *(xSharedTemp);\n\
+\n\
+        int row    = startRow + rowShift;\n\
+        //acc       += vload4(0, &A(row, col)) * xData;\n\
+        %TYPE%V loadedA = %VLOAD( 0, (&A(row, col)) );\n\
+        %CONJUGATE(doConj, loadedA);\n\
+        %VMAD(acc, loadedA, xData);\n\
+    }\n\
+    // Restore startRow\n\
+    startRow += TARGET_WIDTH;\n\
+\n\
+    __local %TYPE%V sDataTemp[TARGET_WIDTH_BY_VEC * %TARGET_ROWS];\n\
+    __local %TYPE* sData = sDataTemp;\n\
+\n\
+"
+"\
+    // blocks that did vectorLoads\n\
+    bool vectorBlocks = ( startRow != N);\n\
+    if ( vectorBlocks )\n\
+    {\n\
+\n\
+        //sDataTemp[ ( threadIdx & ( TARGET_WIDTH_BY_VEC -1 ) ) + (colShift * TARGET_WIDTH_BY_VEC) ] = acc;\n\
+        sDataTemp[ ( threadIdx % ( TARGET_WIDTH_BY_VEC  ) ) + (colShift * TARGET_WIDTH_BY_VEC) ] = acc;\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+    }\n\
+\n\
+    %TYPE sum     = %MAKEVEC( 0.0);\n\
+    %TYPE loadedA     = %MAKEVEC( 0.0);\n\
+\n\
+    if( threadIdx < %TARGET_ROWS && ( (startCol + threadIdx) < N))\n\
+    {\n\
+        if ( vectorBlocks )\n\
+        {\n\
+            //#pragma unroll    TARGET_WIDTH\n\
+            for( int i=0 ; i < TARGET_WIDTH; i++)\n\
+            {\n\
+                %ADD(sum, sum, sData[i + (threadIdx * TARGET_WIDTH )]);\n\
+            }\n\
+\n\
+        }\n\
+\n\
+        int destRow = blockIdx * %TARGET_ROWS + threadIdx;\n\
+\n\
+        // Loop from startRow - 1 till destRow\n\
+        for( int i= ( startRow - 1); i > destRow; i--)\n\
+        {\n\
+            loadedA = A(i, destRow);\n\
+            %CONJUGATE(doConj, loadedA);\n\
+            %MAD(sum, loadedA, x_vector[ i * incx]);\n\
+        }\n\
+        if ( isUnity)\n\
+        {\n\
+            #ifdef HEMV_ONLY\n\
+                %TYPE acc1, temp;\n\
+                %MUL(acc1, sum, alpha);\n\
+                temp = xnew[ destRow * incy];\n\
+                %ADD(xnew[ destRow * incy], temp, acc1);\n\
+            #else\n\
+                %ADD(xnew[ destRow * incx] , sum, x_vector[ destRow * incx]);\n\
+            #endif\n\
+        }\n\
+        else\n\
+        {\n\
+            loadedA = A(destRow, destRow);\n\
+\n\
+"
+"\
+            #ifdef HEMV_ONLY\n\
+                #ifndef SPMV_ONLY\n\
+                    //loadedA.odd = 0.0f;\n\
+                    %CLEAR_IMAGINARY( loadedA );\n\
+                #endif\n\
+            #endif\n\
+\n\
+            %CONJUGATE(doConj, loadedA);\n\
+            %MAD(sum, loadedA, x_vector[ destRow * incx]);\n\
+\n\
+            #ifdef HEMV_ONLY\n\
+                %TYPE temp, acc1;\n\
+                %MUL(temp, xnew[ destRow * incy], beta);\n\
+                %MUL(acc1, sum, alpha);\n\
+                %ADD(xnew[ destRow * incy], temp, acc1);\n\
+            #else\n\
+                xnew[ destRow * incx] = sum;\n\
+            #endif\n\
+        }\n\
+    }\n\
+}";
+
+
+
+
+
+// Column-Major Upper Transpose
+// Threads : %PREFIXBLOCKSIZET, Blocks launched = (N -1) / %PREFIXTARGET_ROWST + 1
+static const char *trmv_CUT_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+\n\
+#ifdef PACKED\n\
+    #define A( row, col) (*( A + ((col*(col+1))/2 + row)))\n\
+#else\n\
+    #define A( row, col) A[ row + col * lda]\n\
+#endif\n\
+\n\
+#define TARGET_WIDTH_BY_VEC ((%BLOCKSIZE) / (%TARGET_ROWS) )\n\
+#define TARGET_WIDTH ((TARGET_WIDTH_BY_VEC) * (%V))\n\
+\n\
+__kernel void %PREFIXtrmv_CUT_kernel( __global %TYPE const* restrict _A, __global %TYPE * _xnew, __global  %TYPE const* restrict _x_vector,\n\
+                                      uint N, int incx, int isUnity, uint lda, int doConj, uint offa, uint offx\n\
+#ifdef HEMV_ONLY\n\
+, int incy, uint offy, %TYPE alpha, %TYPE beta\n\
+#endif\n\
+ )\n\
+{\n\
+    __global %TYPE* x_vector;\n\
+    __global %TYPE* xnew;\n\
+    __global %TYPE const* restrict A = _A + offa;\n\
+\n\
+    if ( incx < 0 ) // Goto end of vector\n\
+    {\n\
+        #ifdef HEMV_ONLY\n\
+            x_vector = _x_vector + offx + ( N - 1) * abs(incx);\n\
+        #else\n\
+            x_vector = _x_vector + ( N - 1) * abs(incx);\n\
+            xnew     = _xnew + offx + ( N - 1) * abs(incx);\n\
+        #endif\n\
+    }\n\
+    else\n\
+    {\n\
+        #ifdef HEMV_ONLY\n\
+            x_vector = _x_vector + offx;\n\
+        #else\n\
+            x_vector = _x_vector;\n\
+            xnew     = _xnew + offx;\n\
+        #endif\n\
+    }\n\
+\n\
+\n\
+    #ifdef HEMV_ONLY\n\
+"
+"\
+    if(incy < 0)\n\
+        xnew  = _xnew + offy + ( N - 1) * abs(incy);\n\
+    else\n\
+        xnew = _xnew + offy;\n\
+    #endif\n\
+\n\
+    int gIdx     = get_global_id(0);\n\
+    int blockIdx    = get_group_id(0);\n\
+    int blockDim      = get_local_size(0);\n\
+    int threadIdx     = get_local_id(0);\n\
+\n\
+    __local %TYPE xShared[TARGET_WIDTH];\n\
+\n\
+    int startRow      = 0;\n\
+    int startCol      = N - (blockIdx + 1)* %TARGET_ROWS;\n\
+\n\
+    // Do scalar if this condition is true\n\
+    if ( (startRow + TARGET_WIDTH - 1 ) >= startCol)\n\
+    {\n\
+        int destRow = (startCol + threadIdx) ;\n\
+\n\
+        if( (threadIdx < %TARGET_ROWS) && ( destRow >= 0))\n\
+        {\n\
+            %TYPE sum = %MAKEVEC(0.0);\n\
+            %TYPE accTemp = %MAKEVEC(0.0);\n\
+\n\
+            // Loop from (startRow - 1) till destRow\n\
+            for( int i= 0; i < destRow; i++)\n\
+            {\n\
+                accTemp = A(i, destRow);\n\
+                %CONJUGATE(doConj, accTemp);\n\
+                %MAD(sum, accTemp, x_vector[ i * incx]);\n\
+            }\n\
+            if ( isUnity)\n\
+            {\n\
+                #ifdef HEMV_ONLY\n\
+                      %TYPE acc1, temp;\n\
+                    %MUL(acc1, sum, alpha);\n\
+                    temp = xnew[ destRow * incy];\n\
+                    %ADD(xnew[ destRow * incy], temp, acc1);\n\
+                   #else\n\
+                    %ADD(xnew[ destRow * incx] , sum, x_vector[ destRow * incx]);\n\
+                #endif\n\
+            }\n\
+            else\n\
+            {\n\
+                accTemp = A(destRow, destRow);\n\
+\n\
+                #ifdef HEMV_ONLY\n\
+                    #ifndef SPMV_ONLY\n\
+"
+"\
+                        //accTemp.odd = 0.0f;\n\
+                        %CLEAR_IMAGINARY( accTemp );\n\
+                    #endif\n\
+                #endif\n\
+\n\
+                %CONJUGATE(doConj, accTemp);\n\
+                %MAD(sum, accTemp, x_vector[ destRow * incx]);\n\
+\n\
+                #ifdef HEMV_ONLY\n\
+                    %TYPE temp, acc1;\n\
+                    %MUL(temp, xnew[ destRow * incy], beta);\n\
+                    %MUL(acc1, sum, alpha);\n\
+                    %ADD(xnew[ destRow * incy], temp, acc1);\n\
+                #else\n\
+                    xnew[ destRow * incx] = sum;\n\
+                #endif\n\
+            }\n\
+        }\n\
+    }\n\
+    else\n\
+    {\n\
+        // float4 acc = (float4)(0.0f, 0.0f, 0.0f, 0.0f);\n\
+        %TYPE accTemp = %MAKEVEC( 0.0);\n\
+        %TYPE%V acc   = %VMAKEVEC(accTemp);\n\
+\n\
+        //size_t rowShift = ((threadIdx & ( TARGET_WIDTH_BY_VEC -1 )) * %V);\n\
+        size_t rowShift = ((threadIdx % ( TARGET_WIDTH_BY_VEC  )) * %V);\n\
+        size_t colShift = threadIdx / TARGET_WIDTH_BY_VEC;\n\
+\n\
+        int col         = startCol + colShift;\n\
+\n\
+        for( int i=0; ; i++)\n\
+        {\n\
+            // Load X data into Shared memory\n\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+            if (threadIdx < TARGET_WIDTH)\n\
+            {\n\
+                xShared[threadIdx] = x_vector[ (startRow + threadIdx) * incx];\n\
+            }\n\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+            //float4 xData = (float4)(xShared[ rowShift ], xShared[ rowShift + 1], xShared[ rowShift + 2], xShared[ rowShift + 3]);\n\
+            %TYPE%V xData;\n\
+            __local %TYPE%V* xSharedTemp = (xShared + rowShift);\n\
+            xData = *(xSharedTemp);\n\
+\n\
+            int row    = startRow + rowShift;\n\
+            // acc       += vload4(0, &A(row,col)) * xData;\n\
+            %TYPE%V loadedA = %VLOAD( 0, (&A(row, col)));\n\
+            %CONJUGATE(doConj, loadedA);\n\
+"
+"\
+            %VMAD(acc, loadedA, xData);\n\
+\n\
+            startRow = startRow + TARGET_WIDTH;\n\
+            if ( (startRow + TARGET_WIDTH - 1) >= startCol)\n\
+            {\n\
+                break;\n\
+            }\n\
+        }\n\
+\n\
+        //__local float4 sData[16][4];\n\
+        //sData[(threadIdx & 15)][colShift] = acc;\n\
+        //barrier(CLK_LOCAL_MEM_FENCE);\n\
+        __local %TYPE%V sDataTemp[TARGET_WIDTH_BY_VEC * %TARGET_ROWS];\n\
+        __local %TYPE* sData = sDataTemp;\n\
+\n\
+        //sDataTemp[ ( threadIdx & ( TARGET_WIDTH_BY_VEC -1 ) ) + (colShift * TARGET_WIDTH_BY_VEC) ] = acc;\n\
+        sDataTemp[ ( threadIdx % ( TARGET_WIDTH_BY_VEC  ) ) + (colShift * TARGET_WIDTH_BY_VEC) ] = acc;\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+        //acc = (float4)(0.0f, 0.0f, 0.0f, 0.0f);\n\
+        %TYPE sum     = %MAKEVEC( 0.0);\n\
+        %TYPE loadedA     = %MAKEVEC( 0.0);\n\
+\n\
+\n\
+        if( threadIdx < %TARGET_ROWS )\n\
+        {\n\
+            //#pragma unroll    TARGET_WIDTH\n\
+            for( int i=0 ; i < TARGET_WIDTH; i++)\n\
+            {\n\
+                %ADD(sum, sum, sData[i + (threadIdx * TARGET_WIDTH )]);\n\
+            }\n\
+\n\
+            int destRow = (startCol + threadIdx) ;\n\
+\n\
+            // Loop from startRow - 1 till destRow\n\
+            for( int i= startRow; i < destRow; i++)\n\
+            {\n\
+                loadedA = A(i, destRow);\n\
+                %CONJUGATE(doConj, loadedA);\n\
+                %MAD(sum, loadedA, x_vector[ i * incx]);\n\
+            }\n\
+            if ( isUnity)\n\
+            {\n\
+                #ifdef HEMV_ONLY\n\
+                    %TYPE acc1, temp;\n\
+                    %MUL(acc1, sum, alpha);\n\
+                    temp = xnew[ destRow * incy];\n\
+                    %ADD(xnew[ destRow * incy], temp, acc1);\n\
+                #else\n\
+                    %ADD(xnew[ destRow * incx] , sum, x_vector[ destRow * incx]);\n\
+"
+"\
+                #endif\n\
+            }\n\
+            else\n\
+            {\n\
+                loadedA = A(destRow, destRow);\n\
+\n\
+                #ifdef HEMV_ONLY\n\
+                    #ifndef SPMV_ONLY\n\
+                        //loadedA.odd = 0.0f;\n\
+                        %CLEAR_IMAGINARY( loadedA );\n\
+                    #endif\n\
+                #endif\n\
+\n\
+                %CONJUGATE(doConj, loadedA);\n\
+                %MAD(sum, loadedA, x_vector[ destRow * incx]);\n\
+\n\
+                #ifdef HEMV_ONLY\n\
+                    %TYPE temp, acc1;\n\
+                    %MUL(temp, xnew[ destRow * incy], beta);\n\
+                    %MUL(acc1, sum, alpha);\n\
+                    %ADD(xnew[ destRow * incy], temp, acc1);\n\
+                #else\n\
+                    xnew[ destRow * incx] = sum;\n\
+                #endif\n\
+            }\n\
+        }\n\
+    }\n\
+}";
+
+
+
+
+

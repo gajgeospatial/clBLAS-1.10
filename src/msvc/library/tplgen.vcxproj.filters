@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\c6be139122d67f8af70d9b77af66c70a\tplgen-mkdir.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\c6be139122d67f8af70d9b77af66c70a\tplgen-download.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\c6be139122d67f8af70d9b77af66c70a\tplgen-update.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\c6be139122d67f8af70d9b77af66c70a\tplgen-patch.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\c6be139122d67f8af70d9b77af66c70a\tplgen-configure.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\c6be139122d67f8af70d9b77af66c70a\tplgen-build.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\c6be139122d67f8af70d9b77af66c70a\tplgen-install.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\8d572822c79070f98e6ee2d7aebd126a\tplgen-complete.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\c05ca6b9aa4c86e9b0818fbb2d47decc\tplgen.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\CMakeFiles\tplgen" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{D280D184-5710-3E47-B4DA-2541397795A9}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,1061 @@
+/* ************************************************************************
+ * Copyright 2013 Advanced Micro Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ************************************************************************/
+
+//
+// NOTE:                                  OUTDATED FILE - NOT USED
+//
+// BUG NOTE:
+// The SYMM_C_KERNEL() suffers from TAIL BUG. Does not handle TAILS properly on the M and N side.
+// Needs to be treated like GEMM2 - Having a separate TAIL_RUN and trimming M and N on Non-tail Runs.
+// However, SYMM is now composed from GEMM. Only handling the diaognal portion depends on this kernel.
+// So, we will fix LOADA_SECOND and LOADB_SECOND appropriately and use this kernel.
+// This kernel should not be used at all.
+// In essence, one should review this kernel only for the __SYMM_DIAGONAL__ portion.
+//
+
+const char *SYMM_C_KERNEL= "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+#if !defined(__SYMM_UPPER__) && !defined(__SYMM_LOWER__)\n\
+    #error Upper or Lower must be defined\n\
+#endif\n\
+\n\
+#if defined(__SYMM_UPPER__) && defined(__SYMM_LOWER__)\n\
+    #error Both Upper and Lower cannot be defined together\n\
+#endif\n\
+\n\
+#if !defined(__SYMM_LEFT__) && !defined(__SYMM_RIGHT__)\n\
+    #error Neither Left nor Right defined\n\
+#endif\n\
+\n\
+#if defined(__SYMM_LEFT__) && defined(__SYMM_RIGHT__)\n\
+    #error Both LEFT and RIGHT cannot be defined together\n\
+#endif\n\
+\n\
+#if defined(__SYMM_COLMAJOR__)\n\
+    void VECTOR_STORE(%TYPE%V data, __global %TYPE *A, uint M, uint N, uint lda, uint row, uint col)\n\
+    {\n\
+        if ( ((row + %V -1) < M) && (col < N) )\n\
+        {\n\
+            %VSTORE( data, 0, (&A[col*lda + row]));\n\
+            return;\n\
+        }\n\
+\n\
+        //\n\
+        // Construct from SCALAR\n\
+        //\n\
+        if ((row < M) && (col < N))\n\
+        {\n\
+            int i=0;\n\
+            %TYPE temp[%V];\n\
+\n\
+            //\n\
+            // FIXME: ENDIAN ISSUES - Currently for Little endian\n\
+            //          Needs fixes for Big Endian\n\
+            //\n\
+            *(__private %TYPE%V *)temp = data;\n\
+\n\
+            for(; i< (M-row); i++)\n\
+            {\n\
+                A[col*lda + row + i] = temp[i];\n\
+"
+"\
+            }\n\
+        }\n\
+        return;\n\
+    }\n\
+\n\
+    %TYPE%V VECTOR_LOAD(__global %TYPE *A, uint M, uint N, uint lda, uint row, uint col)\n\
+    {\n\
+        %TYPE temp[%V];\n\
+        %TYPE%V retval = (%TYPE%V) 0;\n\
+\n\
+        if ( ((row + %V -1) < M) && (col < N) )\n\
+        {\n\
+            retval = %VLOAD(0, (&A[col*lda + row]));\n\
+            return retval;\n\
+        }\n\
+\n\
+        //\n\
+        // Construct from SCALAR\n\
+        //\n\
+        if ((row < M) && (col < N))\n\
+        {\n\
+            int i=0;\n\
+\n\
+            for(; i< (M-row); i++)\n\
+            {\n\
+                temp[i] = A[col*lda + row + i];\n\
+            }\n\
+            for(; i< (%V);  i++)\n\
+            {\n\
+                temp[i] = 0;\n\
+            }\n\
+            %VLOADWITHINCX(retval, temp, 1);\n\
+        }\n\
+        return retval;\n\
+    }\n\
+\n\
+    %TYPE%V SYMM_VECTOR_LOAD_USING_SCALAR(__global %TYPE *A, uint M, uint lda, uint row, uint col)\n\
+    {\n\
+        %TYPE temp[%V];\n\
+        %TYPE%V retval;\n\
+\n\
+        for(uint i=0; i< (%V); i++)\n\
+        {\n\
+            if (((row + i) < M) && (col < M))\n\
+            {\n\
+                #ifdef __SYMM_UPPER__\n\
+                if ((row + i) <= col)\n\
+                #else\n\
+                if ((row + i) >= col)\n\
+                #endif\n\
+"
+"\
+                {\n\
+                    temp[i] = A[col*lda + row + i];\n\
+                } else {\n\
+                    temp[i] = A[(row+i)*lda + col];\n\
+                }\n\
+            } else {\n\
+                temp[i] = (%TYPE) 0;\n\
+            }\n\
+        }\n\
+        %VLOADWITHINCX(retval, temp, 1 );\n\
+        return retval;\n\
+    }\n\
+\n\
+    %TYPE%V SYMM_VECTOR_LOAD(__global %TYPE *A, uint M, uint lda, uint row, uint col)\n\
+    {\n\
+        %TYPE%V retval = (%TYPE%V) 0;\n\
+\n\
+        bool validAddress = ((row >= M) || (col >=M)) ? false : true;\n\
+        bool fullyWithinUpperTriangle = validAddress && ((row + %V -1) <= col);\n\
+        bool fullyWithinLowerTriangle = validAddress && (row > col) && ((row + %V -1) < M);\n\
+        bool protrudingLowerTriangle  = validAddress && ((row + %V -1) >= M);\n\
+        bool inBetweenDiagonal        = validAddress && (!fullyWithinUpperTriangle) && (!fullyWithinLowerTriangle) && (!protrudingLowerTriangle);\n\
+        if (fullyWithinLowerTriangle || fullyWithinUpperTriangle)\n\
+        {\n\
+            #ifdef __SYMM_UPPER__\n\
+            if (fullyWithinUpperTriangle)\n\
+            #else\n\
+            if (fullyWithinLowerTriangle)\n\
+            #endif\n\
+            {\n\
+                retval = %VLOAD(0, (&A[(col)*lda + (row)]));\n\
+            } else {\n\
+                retval = %VLOADWITHINCXV2(0, (&A[(row)*lda + (col)]), lda);\n\
+            }\n\
+        } else {\n\
+            if (protrudingLowerTriangle || inBetweenDiagonal)\n\
+            {\n\
+                retval = SYMM_VECTOR_LOAD_USING_SCALAR(A, M, lda, row, col);\n\
+            }\n\
+        }\n\
+        return retval;\n\
+    }\n\
+\n\
+    #ifdef __SYMM_LEFT__\n\
+    // (A) MxM * (B) MxN\n\
+        %TYPE%V LOADA(__global %TYPE *A, uint M, uint K, uint lda, uint row, uint col)\n\
+        {\n\
+            return SYMM_VECTOR_LOAD(A, M, lda, row, col);\n\
+        }\n\
+        #ifdef __SYMM_LOWER__\n\
+"
+"\
+            // CHECK: KPRINTF Behaviour with so many parentheses - If fails, use parentheses in the caller\n\
+            #define LOADA_FIRST(A,M,K,lda,row,col)    %VLOAD(0, (&A[(col)*lda + (row)]))\n\
+        #elif defined(__SYMM_UPPER__)\n\
+            // CHECK: KPRINTF Behaviour with so many parentheses - If fails, use parentheses in the caller\n\
+            #define LOADA_FIRST(A,M,K,lda,row,col)     %VLOADWITHINCXV2(0, (&A[(row)*lda + (col)]), lda)\n\
+        #endif\n\
+        #define LOADA_SECOND(A,M,K,lda,row,col)        SYMM_VECTOR_LOAD_USING_SCALAR(A, M, lda, row, col)\n\
+        #ifdef __SYMM_LOWER__\n\
+            // CHECK: KPRINTF Behaviour with so many parentheses - If fails, use parentheses in the caller\n\
+            #define LOADA_THIRD(A,M,K,lda,row, col)    %VLOADWITHINCXV2(0, (&A[(row)*lda + (col)]), lda)\n\
+        #elif defined(__SYMM_UPPER__)\n\
+            // CHECK: KPRINTF Behaviour with so many parentheses - If fails, use parentheses in the caller\n\
+            #define LOADA_THIRD(A,M,K,lda,row, col)    %VLOAD(0, (&A[(col)*lda + (row)]))\n\
+        #endif\n\
+        #define LOADA_TAIL(A,M,K,lda,row,col)         SYMM_VECTOR_LOAD_USING_SCALAR(A,M,lda,row,col)\n\
+\n\
+        %TYPE%V LOADB(__global %TYPE *B, uint K, uint N, uint ldb, uint row, uint col)\n\
+        {\n\
+            return VECTOR_LOAD(B, K, N, ldb, row, col );\n\
+        }\n\
+        #define LOADB_FIRST(B,K,N,ldb,row,col)     %VLOAD(0, (&B[(col)*(ldb) + (row)]))\n\
+        #define LOADB_SECOND(B,K,N,ldb,row,col)     %VLOAD(0, (&B[(col)*(ldb) + (row)]))\n\
+        #define LOADB_THIRD(B,K,N,ldb,row,col)     %VLOAD(0, (&B[(col)*(ldb) + (row)]))\n\
+        #define LOADB_TAIL(B,K,N,ldb,row,col)    VECTOR_LOAD(B, K, N, ldb, row, col)\n\
+\n\
+    #elif defined(__SYMM_RIGHT__)\n\
+        // (A)MxN * (B)NxN\n\
+        %TYPE%V LOADA(__global %TYPE *A, uint M, uint K, uint lda, uint row, uint col)\n\
+        {\n\
+            return VECTOR_LOAD(A, M, K, lda, row, col );\n\
+        }\n\
+        #define LOADA_FIRST(A,M,K,lda,row,col)    %VLOAD(0, (&A[(col)*(lda) + (row)]))\n\
+        #define LOADA_SECOND(A,M,K,lda,row,col)    %VLOAD(0, (&A[(col)*(lda) + (row)]))\n\
+        #define LOADA_THIRD(A,M,K,lda,row,col)    %VLOAD(0, (&A[(col)*(lda) + (row)]))\n\
+        #define LOADA_TAIL(A,M,K,lda,row,col)    VECTOR_LOAD(A, M, K, lda, row, col)\n\
+\n\
+        %TYPE%V LOADB(__global %TYPE *B, uint K, uint N, uint ldb, uint row, uint col)\n\
+        {\n\
+            return SYMM_VECTOR_LOAD(B, N, ldb, row, col);\n\
+        }\n\
+        #ifdef __SYMM_UPPER__\n\
+            // CHECK: KPRINTF Behaviour with so many parentheses - If fails, use parentheses in the caller\n\
+            #define LOADB_FIRST(B,K,N,ldb,row,col)    %VLOAD(0, (&B[(col)*(ldb) + (row)]))\n\
+        #elif defined(__SYMM_LOWER__)\n\
+            // CHECK: KPRINTF Behaviour with so many parentheses - If fails, use parentheses in the caller\n\
+            #define LOADB_FIRST(B,K,N,ldb,row,col)    %VLOADWITHINCXV2(0, (&B[(row)*(ldb)  + (col)]), ldb)\n\
+        #endif\n\
+        #define LOADB_SECOND(B,K,N,ldb,row,col)        SYMM_VECTOR_LOAD_USING_SCALAR(B, N, ldb, row, col)\n\
+        #ifdef __SYMM_UPPER__\n\
+            // CHECK: KPRINTF Behaviour with so many parentheses - If fails, use parentheses in the caller\n\
+"
+"\
+            #define LOADB_THIRD(B,K,N,ldb,row,col)    %VLOADWITHINCXV2(0, (&B[(row)*(ldb) + (col)]), ldb)\n\
+        #elif defined(__SYMM_LOWER__)\n\
+            // CHECK: KPRINTF Behaviour with so many parentheses - If fails, use parentheses in the caller\n\
+            #define LOADB_THIRD(B,K,N,ldb,row,col)    %VLOAD(0, (&B[(col)*(ldb) + (row)]))\n\
+        #endif\n\
+        #define LOADB_TAIL(B,K,N,ldb,row,col)        SYMM_VECTOR_LOAD_USING_SCALAR(B, N,ldb,row,col)\n\
+    #endif // Left, Right\n\
+\n\
+    __kernel void symm_C_kernel( __global %TYPE const * restrict _A, __global %TYPE const * restrict _B, __global %TYPE *_C,\n\
+                                     uint M, uint N, uint _lda, uint _ldb, int ldc, uint offa, uint offb, uint offc, %TYPE alpha, %TYPE beta)\n\
+    {\n\
+        __global %TYPE const *restrict A;\n\
+        __global %TYPE const *restrict B;\n\
+        __global %TYPE *C;\n\
+        uint K;\n\
+        uint lda, ldb;\n\
+        uint indexA, indexB, indexC;\n\
+        uint rowA, colA, rowB, colB, rowC, colC;\n\
+        uint numGroupsOnY;\n\
+        uint bidX, bidY;\n\
+        uint row, col;\n\
+        uint REDColStart, REDColEnd; // As the panel traverses these columns, it will slow down - Hence RED.\n\
+        uint tid = get_local_id(0);\n\
+        int panel;\n\
+        uint blockDimY;\n\
+        C = _C + offc;\n\
+    #ifdef __SYMM_LEFT__\n\
+        // MxM * MxN\n\
+        A = _A + offa;\n\
+        lda = _lda;\n\
+        B = _B + offb;\n\
+        ldb = _ldb;\n\
+        K = M;\n\
+    #elif defined(__SYMM_RIGHT__)\n\
+        // MxN * NxN\n\
+        A = _B + offb;\n\
+        lda = _ldb;\n\
+        B = _A + offa;\n\
+        ldb = _lda;\n\
+        K = N;\n\
+    #endif\n\
+\n\
+        //\n\
+        // %WIDTH - Preferably 16\n\
+        // %ITEMY, %ITEMX - 1 Thread is responsible for %ITEMY * %ITEMX sub-matrix in C\n\
+        //                    %ITEMY must be divisible by %V\n\
+        // The entire workgroup loops-together to complete ITEMY-ITEMX sub-matrix\n\
+        //\n\
+        uint threadsY = %WIDTH;\n\
+        uint threadsX = get_local_size(0)/threadsY;\n\
+"
+"\
+        uint offsetY = (tid % threadsY) * %V;\n\
+        uint offsetX = (tid / threadsY);\n\
+\n\
+        //\n\
+        // Column-Major ordering of Workgroups\n\
+        //\n\
+        // %ITEMY - Number of elements , a workitem processes in Y direction.\n\
+        // %ITEMX - Number of elements , a workitem processes in X direction.\n\
+        //\n\
+        // %V     - Vectoring Width\n\
+        // %PANEL(*) - Panel Width to access Rows of A and Columns of B\n\
+        //           Right now, %V is assumed to be the panel width.\n\
+        //           We don't use %PANEL in the current implementation.\n\
+        //\n\
+        blockDimY = ((M-1) / (threadsY * %ITEMY)) + 1;\n\
+        bidY = ( get_group_id(0) % ( blockDimY));\n\
+        bidX = ( get_group_id(0) / ( blockDimY));\n\
+\n\
+        //\n\
+        // <row,col> is the left-top of the TILE region\n\
+        // in the output C matrix that will be determined\n\
+        // by this workgroup\n\
+        //\n\
+        row =  (bidY * (threadsY * %ITEMY));\n\
+        col =  (bidX * (threadsX * %ITEMX));\n\
+\n\
+        //\n\
+        // REDColStart, REDColEnd:\n\
+        // SYMM Matrix  multiplication proceeds by multiplying panels on A's block-row\n\
+        // with panels on B's block-column.\n\
+        // However due to symmetric nature of A/B matrix compounded by the fact that\n\
+        // only upper OR lower triangle of the symm matrix is available, vector-loads\n\
+        // are not possible while traversing certain regions of the matrix.\n\
+        // REDColStart, REDColEnd identifies that region in which the panel crosses\n\
+        // the diagonal. This region will be the slowest portion of the kernel next to\n\
+        // processing the TAIL part.\n\
+        //\n\
+        #ifdef __SYMM_LEFT__\n\
+            REDColStart = row;\n\
+            REDColEnd = row  + (threadsY*(%ITEMY));\n\
+        #elif defined(__SYMM_RIGHT__)\n\
+            REDColStart = col;\n\
+            REDColEnd = col + (threadsX*(%ITEMX));\n\
+        #endif\n\
+        rowA     =     row + offsetY;\n\
+           colB     =     (col+offsetX);\n\
+        indexC     =     (col+offsetX)*ldc + (row + offsetY);\n\
+        bool tailBlock = ((row + threadsY*(%ITEMY)) > M) || ((col + threadsX*(%ITEMX)) > N);\n\
+\n\
+        %TYPE%V AVAL[%V][(%ITEMY_BY_V)]; // 8\n\
+"
+"\
+        %TYPE BVAL[%ITEMX][%V];\n\
+        %TYPE%V CVAL[(%ITEMY_BY_V)][%ITEMX];\n\
+\n\
+        %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+        for(uint i=0; i< (%ITEMY_BY_V); i++)\n\
+        {\n\
+            %IF(%ITEMX) #pragma unroll %ITEMX\n\
+            for(uint j=0; j<(%ITEMX); j++)\n\
+            {\n\
+                CVAL[i][j] = (%TYPE%V) 0;\n\
+            }\n\
+        }\n\
+\n\
+        uint ACOL=0;\n\
+        //\n\
+        //         SYMM\n\
+        //\n\
+        for(ACOL=0; ((tailBlock == false) && ((ACOL+%V-1) < K)); ACOL += %V /* %PANEL */)\n\
+        {\n\
+\n\
+            if ((ACOL+%V-1) < REDColStart)\n\
+            {\n\
+                //\n\
+                // Load B values\n\
+                //\n\
+                %IF(%ITEMX) #pragma unroll %ITEMX\n\
+                for(uint bcol = 0; bcol < %ITEMX; bcol++)\n\
+                {\n\
+                    //\n\
+                    // PENDING: PANEL iteration to Load the Panel Depth iterating by %V\n\
+                    //\n\
+                    *(__private %TYPE%V *)(&BVAL[bcol]) = LOADB_FIRST(B, K, N , ldb, ACOL, colB + (threadsX*bcol));\n\
+                }\n\
+\n\
+                //\n\
+                // Load A values\n\
+                //\n\
+                %IF(%ITEMY) #pragma unroll %ITEMY\n\
+                for(uint i = 0; i < (%V * (%ITEMY_BY_V)) /* PANEL * ITEMY/V */; i++)\n\
+                {\n\
+                    const uint yiterations = %ITEMY_BY_V;\n\
+                    uint c = (i / yiterations);\n\
+                    uint r = (i % yiterations);\n\
+\n\
+                    AVAL[c][r] = LOADA_FIRST(A, M, K, lda, rowA + r*threadsY*(%V), ACOL + c );\n\
+                }\n\
+            } else if (ACOL < REDColEnd)\n\
+            {\n\
+                //\n\
+                // Load B values\n\
+"
+"\
+                //\n\
+                %IF(%ITEMX) #pragma unroll %ITEMX\n\
+                for(uint bcol = 0; bcol < %ITEMX; bcol++)\n\
+                {\n\
+                    //\n\
+                    // PENDING: PANEL iteration to Load the Panel Depth iterating by %V\n\
+                    //\n\
+                    *(__private %TYPE%V *)(&BVAL[bcol]) = LOADB_SECOND(B, K, N , ldb, ACOL, colB + (threadsX*bcol));\n\
+                }\n\
+\n\
+                //\n\
+                // Load A values\n\
+                //\n\
+                %IF(%ITEMY) #pragma unroll %ITEMY\n\
+                for(uint i = 0; i < (%V * (%ITEMY_BY_V)) /* PANEL * ITEMY/V */; i++)\n\
+                {\n\
+                    const uint yiterations = %ITEMY_BY_V;\n\
+                    uint c = (i / yiterations);\n\
+                    uint r = (i % yiterations);\n\
+\n\
+                    AVAL[c][r] = LOADA_SECOND(A, M, K, lda, rowA + r*threadsY*(%V), ACOL + c );\n\
+                }\n\
+            } else {\n\
+                //\n\
+                // Load B values\n\
+                //\n\
+                %IF(%ITEMX) #pragma unroll %ITEMX\n\
+                for(uint bcol = 0; bcol < %ITEMX; bcol++)\n\
+                {\n\
+                    //\n\
+                    // PENDING: PANEL iteration to Load the Panel Depth iterating by %V\n\
+                    //\n\
+                    *(__private %TYPE%V *)(&BVAL[bcol]) = LOADB_THIRD(B, K, N , ldb, ACOL, colB + (threadsX*bcol));\n\
+                }\n\
+\n\
+                //\n\
+                // Load A values\n\
+                //\n\
+                %IF(%ITEMY) #pragma unroll %ITEMY\n\
+                for(uint i = 0; i < (%V * (%ITEMY_BY_V)) /* PANEL * ITEMY/V */; i++)\n\
+                {\n\
+                    const uint yiterations = %ITEMY_BY_V;\n\
+                    uint c = (i / yiterations);\n\
+                    uint r = (i % yiterations);\n\
+\n\
+                    AVAL[c][r] = LOADA_THIRD(A, M, K, lda, rowA + r*threadsY*(%V), ACOL + c );\n\
+                }\n\
+            }\n\
+\n\
+            %IF(%V) #pragma unroll %V\n\
+"
+"\
+            for(uint panel=0; panel < %V; panel++)\n\
+            {\n\
+                %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+                for(uint i=0; i<(%ITEMY_BY_V); i++)\n\
+                {\n\
+                    %IF(%ITEMX) #pragma unroll %ITEMX\n\
+                    for(uint j=0; j<(%ITEMX); j++)\n\
+                    {\n\
+                        %VMAD(CVAL[i][j] ,  AVAL[panel][i] , BVAL[j][panel]);\n\
+                    }\n\
+                }\n\
+            }\n\
+\n\
+            #ifdef SYMM_NEEDS_BARRIER\n\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+            #endif\n\
+        }\n\
+\n\
+        //\n\
+        //  SYMM -     The Tail....\n\
+        //        The tail can wag past M and N. The LOAD routines clamp those accesses\n\
+        //\n\
+        for(; ACOL < K; ACOL += %V /* %PANEL */)\n\
+        {\n\
+            //\n\
+            // Load B values\n\
+            //\n\
+            %IF(%ITEMX) #pragma unroll %ITEMX\n\
+            for(uint bcol = 0; bcol < %ITEMX; bcol++)\n\
+            {\n\
+                //\n\
+                // PENDING: PANEL iteration to Load the Panel Depth iterating by %V\n\
+                //\n\
+                *(__private %TYPE%V *)(&BVAL[bcol]) = LOADB_TAIL(B, K, N , ldb, ACOL, colB + (threadsX*bcol));\n\
+            }\n\
+\n\
+            //\n\
+            // Load A values\n\
+            //\n\
+            %IF(%ITEMY) #pragma unroll %ITEMY\n\
+            for(uint i = 0; i < (%V * (%ITEMY_BY_V)) /* PANEL * ITEMY/V */; i++)\n\
+            {\n\
+                const uint yiterations = %ITEMY_BY_V;\n\
+                uint c = (i / yiterations);\n\
+                uint r = (i % yiterations);\n\
+\n\
+                AVAL[c][r] = LOADA_TAIL(A, M, K, lda, rowA + r*threadsY*(%V), ACOL + c );\n\
+            }\n\
+\n\
+            %IF(%V) #pragma unroll %V\n\
+"
+"\
+            for(uint panel=0; panel < %V; panel++)\n\
+            {\n\
+                %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+                for(uint i=0; i<(%ITEMY_BY_V); i++)\n\
+                {\n\
+                    %IF(%ITEMX) #pragma unroll %ITEMX\n\
+                    for(uint j=0; j<(%ITEMX); j++)\n\
+                    {\n\
+                        %VMAD(CVAL[i][j] ,  AVAL[panel][i] , BVAL[j][panel]);\n\
+                    }\n\
+                }\n\
+            }\n\
+\n\
+            #ifdef SYMM_NEEDS_BARRIER\n\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+            #endif\n\
+        }\n\
+\n\
+\n\
+        //\n\
+        // STORE Result in C\n\
+        //\n\
+        %TYPE%V reg , betareg, alphareg;\n\
+        %TYPE%V alphav, betav;\n\
+        alphav = %VMAKEVEC(alpha);\n\
+        betav = %VMAKEVEC(beta);\n\
+\n\
+        %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+        for(uint i=0; i< (%ITEMY_BY_V); i++)\n\
+        {\n\
+            %IF(%ITEMX) #pragma unroll %ITEMX\n\
+            for(uint j=0; j<(%ITEMX); j++)\n\
+            {\n\
+                reg = VECTOR_LOAD(C, M, N, ldc, rowA + i*threadsY*%V, colB+(j*threadsX));\n\
+                %VMUL(betareg, betav, reg);\n\
+                %VMUL(alphareg, alphav, CVAL[i][j]);\n\
+                %ADD( reg, betareg, alphareg);\n\
+                VECTOR_STORE(reg, C, M, N, ldc, rowA + i*threadsY*%V, colB+(j*threadsX));\n\
+            }\n\
+        }\n\
+        return;\n\
+    }\n\
+#else\n\
+#error COLMAJOR Not Defined while compiling SYMM_C_KERNEL\n\
+#endif\n\
+";
+
+
+
+const char *SYMM_C_KERNEL_WORKING_EXCEPT_CSYMM_PROBLEM = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+#if !defined(__SYMM_UPPER__) && !defined(__SYMM_LOWER__)\n\
+    #error Upper or Lower must be defined\n\
+#endif\n\
+\n\
+#if defined(__SYMM_UPPER__) && defined(__SYMM_LOWER__)\n\
+    #error Both Upper and Lower cannot be defined together\n\
+#endif\n\
+\n\
+#if !defined(__SYMM_LEFT__) && !defined(__SYMM_RIGHT__)\n\
+    #error Neither Left nor Right defined\n\
+#endif\n\
+\n\
+#if defined(__SYMM_LEFT__) && defined(__SYMM_RIGHT__)\n\
+    #error Both LEFT and RIGHT cannot be defined together\n\
+#endif\n\
+\n\
+#if defined(__SYMM_COLMAJOR__)\n\
+    void VECTOR_STORE(%TYPE%V data, __global %TYPE *A, uint M, uint N, uint lda, uint row, uint col)\n\
+    {\n\
+        if ( ((row + %V -1) < M) && (col < N) )\n\
+        {\n\
+            %VSTORE( data, 0, (&A[col*lda + row]));\n\
+            return;\n\
+        }\n\
+\n\
+        //\n\
+        // Construct from SCALAR\n\
+        //\n\
+        if ((row < M) && (col < N))\n\
+        {\n\
+            int i=0;\n\
+            %TYPE temp[%V];\n\
+\n\
+            //\n\
+            // FIXME: ENDIAN ISSUES - Currently for Little endian\n\
+            //          Needs fixes for Big Endian\n\
+            //\n\
+            *(__private %TYPE%V *)temp = data;\n\
+\n\
+            for(; i< (M-row); i++)\n\
+            {\n\
+                A[col*lda + row + i] = temp[i];\n\
+"
+"\
+            }\n\
+        }\n\
+        return;\n\
+    }\n\
+\n\
+    %TYPE%V VECTOR_LOAD(__global %TYPE *A, uint M, uint N, uint lda, uint row, uint col)\n\
+    {\n\
+        %TYPE temp[%V];\n\
+        %TYPE%V retval = (%TYPE%V) 0;\n\
+\n\
+        if ( ((row + %V -1) < M) && (col < N) )\n\
+        {\n\
+            retval = %VLOAD(0, (&A[col*lda + row]));\n\
+            return retval;\n\
+        }\n\
+\n\
+        //\n\
+        // Construct from SCALAR\n\
+        //\n\
+        if ((row < M) && (col < N))\n\
+        {\n\
+            int i=0;\n\
+\n\
+            for(; i< (M-row); i++)\n\
+            {\n\
+                temp[i] = A[col*lda + row + i];\n\
+            }\n\
+            for(; i< (%V);  i++)\n\
+            {\n\
+                temp[i] = 0;\n\
+            }\n\
+            %VLOADWITHINCX(retval, temp, 1);\n\
+        }\n\
+        return retval;\n\
+    }\n\
+\n\
+    %TYPE%V SYMM_VECTOR_LOAD_USING_SCALAR(__global %TYPE *A, uint M, uint lda, uint row, uint col)\n\
+    {\n\
+        %TYPE temp[%V];\n\
+        %TYPE%V retval;\n\
+\n\
+        for(uint i=0; i< (%V); i++)\n\
+        {\n\
+            if (((row + i) < M) && (col < M))\n\
+            {\n\
+                #ifdef __SYMM_UPPER__\n\
+                if ((row + i) <= col)\n\
+                #else\n\
+                if ((row + i) >= col)\n\
+                #endif\n\
+"
+"\
+                {\n\
+                    temp[i] = A[col*lda + row + i];\n\
+                } else {\n\
+                    temp[i] = A[(row+i)*lda + col];\n\
+                }\n\
+            } else {\n\
+                temp[i] = (%TYPE) 0;\n\
+            }\n\
+        }\n\
+        %VLOADWITHINCX(retval, temp, 1 );\n\
+        return retval;\n\
+    }\n\
+\n\
+    %TYPE%V SYMM_VECTOR_LOAD(__global %TYPE *A, uint M, uint lda, uint row, uint col)\n\
+    {\n\
+        %TYPE%V retval = (%TYPE%V) 0;\n\
+\n\
+        bool validAddress = ((row >= M) || (col >=M)) ? false : true;\n\
+        bool fullyWithinUpperTriangle = validAddress && ((row + %V -1) <= col);\n\
+        bool fullyWithinLowerTriangle = validAddress && (row > col) && ((row + %V -1) < M);\n\
+        bool protrudingLowerTriangle  = validAddress && ((row + %V -1) >= M);\n\
+        bool inBetweenDiagonal        = validAddress && (!fullyWithinUpperTriangle) && (!fullyWithinLowerTriangle) && (!protrudingLowerTriangle);\n\
+        if (fullyWithinLowerTriangle || fullyWithinUpperTriangle)\n\
+        {\n\
+            #ifdef __SYMM_UPPER__\n\
+            if (fullyWithinUpperTriangle)\n\
+            #else\n\
+            if (fullyWithinLowerTriangle)\n\
+            #endif\n\
+            {\n\
+                retval = %VLOAD(0, (&A[(col)*lda + (row)]));\n\
+            } else {\n\
+                retval = %VLOADWITHINCXV2(0, (&A[(row)*lda + (col)]), lda);\n\
+            }\n\
+        } else {\n\
+            if (protrudingLowerTriangle || inBetweenDiagonal)\n\
+            {\n\
+                retval = SYMM_VECTOR_LOAD_USING_SCALAR(A, M, lda, row, col);\n\
+            }\n\
+        }\n\
+        return retval;\n\
+    }\n\
+\n\
+    #ifdef __SYMM_LEFT__\n\
+    // (A) MxM * (B) MxN\n\
+        %TYPE%V LOADA(__global %TYPE *A, uint M, uint K, uint lda, uint row, uint col)\n\
+        {\n\
+            return SYMM_VECTOR_LOAD(A, M, lda, row, col);\n\
+        }\n\
+        #ifdef __SYMM_LOWER__\n\
+"
+"\
+            // CHECK: KPRINTF Behaviour with so many parentheses - If fails, use parentheses in the caller\n\
+            #define LOADA_FIRST(A,M,K,lda,row,col)    %VLOAD(0, (&A[(col)*lda + (row)]))\n\
+        #elif defined(__SYMM_UPPER__)\n\
+            // CHECK: KPRINTF Behaviour with so many parentheses - If fails, use parentheses in the caller\n\
+            #define LOADA_FIRST(A,M,K,lda,row,col)     %VLOADWITHINCXV2(0, (&A[(row)*lda + (col)]), lda)\n\
+        #endif\n\
+        #define LOADA_SECOND(A,M,K,lda,row,col)        SYMM_VECTOR_LOAD_USING_SCALAR(A, M, lda, row, col)\n\
+        #ifdef __SYMM_LOWER__\n\
+            // CHECK: KPRINTF Behaviour with so many parentheses - If fails, use parentheses in the caller\n\
+            #define LOADA_THIRD(A,M,K,lda,row, col)    %VLOADWITHINCXV2(0, (&A[(row)*lda + (col)]), lda)\n\
+        #elif defined(__SYMM_UPPER__)\n\
+            // CHECK: KPRINTF Behaviour with so many parentheses - If fails, use parentheses in the caller\n\
+            #define LOADA_THIRD(A,M,K,lda,row, col)    %VLOAD(0, (&A[(col)*lda + (row)]))\n\
+        #endif\n\
+        #define LOADA_TAIL(A,M,K,lda,row,col)         SYMM_VECTOR_LOAD_USING_SCALAR(A,M,lda,row,col)\n\
+\n\
+        %TYPE%V LOADB(__global %TYPE *B, uint K, uint N, uint ldb, uint row, uint col)\n\
+        {\n\
+            return VECTOR_LOAD(B, K, N, ldb, row, col );\n\
+        }\n\
+        #define LOADB_FIRST(B,K,N,ldb,row,col)     %VLOAD(0, (&B[(col)*(ldb) + (row)]))\n\
+        #define LOADB_SECOND(B,K,N,ldb,row,col)     %VLOAD(0, (&B[(col)*(ldb) + (row)]))\n\
+        #define LOADB_THIRD(B,K,N,ldb,row,col)     %VLOAD(0, (&B[(col)*(ldb) + (row)]))\n\
+        #define LOADB_TAIL(B,K,N,ldb,row,col)    VECTOR_LOAD(B, K, N, ldb, row, col)\n\
+\n\
+    #elif defined(__SYMM_RIGHT__)\n\
+        // (A)MxN * (B)NxN\n\
+        %TYPE%V LOADA(__global %TYPE *A, uint M, uint K, uint lda, uint row, uint col)\n\
+        {\n\
+            return VECTOR_LOAD(A, M, K, lda, row, col );\n\
+        }\n\
+        #define LOADA_FIRST(A,M,K,lda,row,col)    %VLOAD(0, (&A[(col)*(lda) + (row)]))\n\
+        #define LOADA_SECOND(A,M,K,lda,row,col)    %VLOAD(0, (&A[(col)*(lda) + (row)]))\n\
+        #define LOADA_THIRD(A,M,K,lda,row,col)    %VLOAD(0, (&A[(col)*(lda) + (row)]))\n\
+        #define LOADA_TAIL(A,M,K,lda,row,col)    VECTOR_LOAD(A, M, K, lda, row, col)\n\
+\n\
+        %TYPE%V LOADB(__global %TYPE *B, uint K, uint N, uint ldb, uint row, uint col)\n\
+        {\n\
+            return SYMM_VECTOR_LOAD(B, N, ldb, row, col);\n\
+        }\n\
+        #ifdef __SYMM_UPPER__\n\
+            // CHECK: KPRINTF Behaviour with so many parentheses - If fails, use parentheses in the caller\n\
+            #define LOADB_FIRST(B,K,N,ldb,row,col)    %VLOAD(0, (&B[(col)*(ldb) + (row)]))\n\
+        #elif defined(__SYMM_LOWER__)\n\
+            // CHECK: KPRINTF Behaviour with so many parentheses - If fails, use parentheses in the caller\n\
+            #define LOADB_FIRST(B,K,N,ldb,row,col)    %VLOADWITHINCXV2(0, (&B[(row)*(ldb)  + (col)]), ldb)\n\
+        #endif\n\
+        #define LOADB_SECOND(B,K,N,ldb,row,col)        SYMM_VECTOR_LOAD_USING_SCALAR(B, N, ldb, row, col)\n\
+        #ifdef __SYMM_UPPER__\n\
+            // CHECK: KPRINTF Behaviour with so many parentheses - If fails, use parentheses in the caller\n\
+"
+"\
+            #define LOADB_THIRD(B,K,N,ldb,row,col)    %VLOADWITHINCXV2(0, (&B[(row)*(ldb) + (col)]), ldb)\n\
+        #elif defined(__SYMM_LOWER__)\n\
+            // CHECK: KPRINTF Behaviour with so many parentheses - If fails, use parentheses in the caller\n\
+            #define LOADB_THIRD(B,K,N,ldb,row,col)    %VLOAD(0, (&B[(col)*(ldb) + (row)]))\n\
+        #endif\n\
+        #define LOADB_TAIL(B,K,N,ldb,row,col)        SYMM_VECTOR_LOAD_USING_SCALAR(B, N,ldb,row,col)\n\
+    #endif // Left, Right\n\
+\n\
+    __kernel void symm_C_kernel( __global %TYPE const * restrict _A, __global %TYPE const * restrict _B, __global %TYPE *C,\n\
+                                     uint M, uint N, uint _lda, uint _ldb, int ldc, %TYPE alpha, %TYPE beta)\n\
+    {\n\
+        __global %TYPE const *restrict A;\n\
+        __global %TYPE const *restrict B;\n\
+        uint K;\n\
+        uint lda, ldb;\n\
+        uint indexA, indexB, indexC;\n\
+        uint rowA, colA, rowB, colB, rowC, colC;\n\
+        uint numGroupsOnY;\n\
+        uint bidX, bidY;\n\
+        uint row, col;\n\
+        uint REDColStart, REDColEnd; // As the panel traverses these columns, it will slow down - Hence RED.\n\
+        uint tid = get_local_id(0);\n\
+        int panel;\n\
+        uint blockDimY;\n\
+    #ifdef __SYMM_LEFT__\n\
+        // MxM * MxN\n\
+        A = _A;\n\
+        lda = _lda;\n\
+        B = _B;\n\
+        ldb = _ldb;\n\
+        K = M;\n\
+    #elif defined(__SYMM_RIGHT__)\n\
+        // MxN * NxN\n\
+        A = _B;\n\
+        lda = _ldb;\n\
+        B = _A;\n\
+        ldb = _lda;\n\
+        K = N;\n\
+    #endif\n\
+\n\
+        //\n\
+        // %WIDTH - Preferably 16\n\
+        // %ITEMY, %ITEMX - 1 Thread is responsible for %ITEMY * %ITEMX sub-matrix in C\n\
+        //                    %ITEMY must be divisible by %V\n\
+        // The entire workgroup loops-together to complete ITEMY-ITEMX sub-matrix\n\
+        //\n\
+        uint threadsY = %WIDTH;\n\
+        uint threadsX = get_local_size(0)/threadsY;\n\
+        uint offsetY = (tid % threadsY) * %V;\n\
+        uint offsetX = (tid / threadsY);\n\
+"
+"\
+\n\
+        //\n\
+        // Column-Major ordering of Workgroups\n\
+        //\n\
+        // %ITEMY - Number of elements , a workitem processes in Y direction.\n\
+        // %ITEMX - Number of elements , a workitem processes in X direction.\n\
+        //\n\
+        // %V     - Vectoring Width\n\
+        // %PANEL(*) - Panel Width to access Rows of A and Columns of B\n\
+        //           Right now, %V is assumed to be the panel width.\n\
+        //           We don't use %PANEL in the current implementation.\n\
+        //\n\
+        blockDimY = ((M-1) / (threadsY * %ITEMY)) + 1;\n\
+        bidY = ( get_group_id(0) % ( blockDimY));\n\
+        bidX = ( get_group_id(0) / ( blockDimY));\n\
+\n\
+        //\n\
+        // <row,col> is the left-top of the TILE region\n\
+        // in the output C matrix that will be determined\n\
+        // by this workgroup\n\
+        //\n\
+        row =  (bidY * (threadsY * %ITEMY));\n\
+        col =  (bidX * (threadsX * %ITEMX));\n\
+\n\
+        //\n\
+        // REDColStart, REDColEnd:\n\
+        // SYMM Matrix  multiplication proceeds by multiplying panels on A's block-row\n\
+        // with panels on B's block-column.\n\
+        // However due to symmetric nature of A/B matrix compounded by the fact that\n\
+        // only upper OR lower triangle of the symm matrix is available, vector-loads\n\
+        // are not possible while traversing certain regions of the matrix.\n\
+        // REDColStart, REDColEnd identifies that region in which the panel crosses\n\
+        // the diagonal. This region will be the slowest portion of the kernel next to\n\
+        // processing the TAIL part.\n\
+        //\n\
+        #ifdef __SYMM_LEFT__\n\
+            REDColStart = row;\n\
+            REDColEnd = row  + (threadsY*(%ITEMY));\n\
+        #elif defined(__SYMM_RIGHT__)\n\
+            REDColStart = col;\n\
+            REDColEnd = col + (threadsX*(%ITEMX));\n\
+        #endif\n\
+        rowA     =     row + offsetY;\n\
+           colB     =     (col+offsetX);\n\
+        indexC     =     (col+offsetX)*ldc + (row + offsetY);\n\
+        bool tailBlock = ((row + threadsY*(%ITEMY)) > M) || ((col + threadsX*(%ITEMX)) > N);\n\
+\n\
+        %TYPE%V AVAL[%V][(%ITEMY_BY_V)]; // 8\n\
+        %TYPE BVAL[%ITEMX][%V];\n\
+        %TYPE%V CVAL[(%ITEMY_BY_V)][%ITEMX];\n\
+"
+"\
+\n\
+        %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+        for(uint i=0; i< (%ITEMY_BY_V); i++)\n\
+        {\n\
+            %IF(%ITEMX) #pragma unroll %ITEMX\n\
+            for(uint j=0; j<(%ITEMX); j++)\n\
+            {\n\
+                CVAL[i][j] = (%TYPE%V) 0;\n\
+            }\n\
+        }\n\
+\n\
+        uint ACOL=0;\n\
+        //\n\
+        //         SYMM\n\
+        //\n\
+        for(ACOL=0; ((tailBlock == false) && ((ACOL+%V-1) < K)); ACOL += %V /* %PANEL */)\n\
+        {\n\
+\n\
+            if ((ACOL+%V-1) < REDColStart)\n\
+            {\n\
+                //\n\
+                // Load B values\n\
+                //\n\
+                %IF(%ITEMX) #pragma unroll %ITEMX\n\
+                for(uint bcol = 0; bcol < %ITEMX; bcol++)\n\
+                {\n\
+                    //\n\
+                    // PENDING: PANEL iteration to Load the Panel Depth iterating by %V\n\
+                    //\n\
+                    *(__private %TYPE%V *)(&BVAL[bcol]) = LOADB_FIRST(B, K, N , ldb, ACOL, colB + (threadsX*bcol));\n\
+                }\n\
+\n\
+                //\n\
+                // Load A values\n\
+                //\n\
+                %IF(%ITEMY) #pragma unroll %ITEMY\n\
+                for(uint i = 0; i < (%V * (%ITEMY_BY_V)) /* PANEL * ITEMY/V */; i++)\n\
+                {\n\
+                    const uint yiterations = %ITEMY_BY_V;\n\
+                    uint c = (i / yiterations);\n\
+                    uint r = (i % yiterations);\n\
+\n\
+                    AVAL[c][r] = LOADA_FIRST(A, M, K, lda, rowA + r*threadsY*(%V), ACOL + c );\n\
+                }\n\
+            } else if (ACOL < REDColEnd)\n\
+            {\n\
+                //\n\
+                // Load B values\n\
+                //\n\
+                %IF(%ITEMX) #pragma unroll %ITEMX\n\
+"
+"\
+                for(uint bcol = 0; bcol < %ITEMX; bcol++)\n\
+                {\n\
+                    //\n\
+                    // PENDING: PANEL iteration to Load the Panel Depth iterating by %V\n\
+                    //\n\
+                    *(__private %TYPE%V *)(&BVAL[bcol]) = LOADB_SECOND(B, K, N , ldb, ACOL, colB + (threadsX*bcol));\n\
+                }\n\
+\n\
+                //\n\
+                // Load A values\n\
+                //\n\
+                %IF(%ITEMY) #pragma unroll %ITEMY\n\
+                for(uint i = 0; i < (%V * (%ITEMY_BY_V)) /* PANEL * ITEMY/V */; i++)\n\
+                {\n\
+                    const uint yiterations = %ITEMY_BY_V;\n\
+                    uint c = (i / yiterations);\n\
+                    uint r = (i % yiterations);\n\
+\n\
+                    AVAL[c][r] = LOADA_SECOND(A, M, K, lda, rowA + r*threadsY*(%V), ACOL + c );\n\
+                }\n\
+            } else {\n\
+                //\n\
+                // Load B values\n\
+                //\n\
+                %IF(%ITEMX) #pragma unroll %ITEMX\n\
+                for(uint bcol = 0; bcol < %ITEMX; bcol++)\n\
+                {\n\
+                    //\n\
+                    // PENDING: PANEL iteration to Load the Panel Depth iterating by %V\n\
+                    //\n\
+                    *(__private %TYPE%V *)(&BVAL[bcol]) = LOADB_THIRD(B, K, N , ldb, ACOL, colB + (threadsX*bcol));\n\
+                }\n\
+\n\
+                //\n\
+                // Load A values\n\
+                //\n\
+                %IF(%ITEMY) #pragma unroll %ITEMY\n\
+                for(uint i = 0; i < (%V * (%ITEMY_BY_V)) /* PANEL * ITEMY/V */; i++)\n\
+                {\n\
+                    const uint yiterations = %ITEMY_BY_V;\n\
+                    uint c = (i / yiterations);\n\
+                    uint r = (i % yiterations);\n\
+\n\
+                    AVAL[c][r] = LOADA_THIRD(A, M, K, lda, rowA + r*threadsY*(%V), ACOL + c );\n\
+                }\n\
+            }\n\
+\n\
+            %IF(%V) #pragma unroll %V\n\
+            for(uint panel=0; panel < %V; panel++)\n\
+            {\n\
+"
+"\
+                %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+                for(uint i=0; i<(%ITEMY_BY_V); i++)\n\
+                {\n\
+                    %IF(%ITEMX) #pragma unroll %ITEMX\n\
+                    for(uint j=0; j<(%ITEMX); j++)\n\
+                    {\n\
+                        %VMAD(CVAL[i][j] ,  AVAL[panel][i] , BVAL[j][panel]);\n\
+                    }\n\
+                }\n\
+            }\n\
+\n\
+            #ifdef SYMM_NEEDS_BARRIER\n\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+            #endif\n\
+        }\n\
+\n\
+        //\n\
+        //  SYMM -     The Tail....\n\
+        //        The tail can wag past M and N. The LOAD routines clamp those accesses\n\
+        //\n\
+        for(; ACOL < K; ACOL += %V /* %PANEL */)\n\
+        {\n\
+            //\n\
+            // Load B values\n\
+            //\n\
+            %IF(%ITEMX) #pragma unroll %ITEMX\n\
+            for(uint bcol = 0; bcol < %ITEMX; bcol++)\n\
+            {\n\
+                //\n\
+                // PENDING: PANEL iteration to Load the Panel Depth iterating by %V\n\
+                //\n\
+                *(__private %TYPE%V *)(&BVAL[bcol]) = LOADB_TAIL(B, K, N , ldb, ACOL, colB + (threadsX*bcol));\n\
+            }\n\
+\n\
+            //\n\
+            // Load A values\n\
+            //\n\
+            %IF(%ITEMY) #pragma unroll %ITEMY\n\
+            for(uint i = 0; i < (%V * (%ITEMY_BY_V)) /* PANEL * ITEMY/V */; i++)\n\
+            {\n\
+                const uint yiterations = %ITEMY_BY_V;\n\
+                uint c = (i / yiterations);\n\
+                uint r = (i % yiterations);\n\
+\n\
+                AVAL[c][r] = LOADA_TAIL(A, M, K, lda, rowA + r*threadsY*(%V), ACOL + c );\n\
+            }\n\
+\n\
+            %IF(%V) #pragma unroll %V\n\
+            for(uint panel=0; panel < %V; panel++)\n\
+            {\n\
+"
+"\
+                %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+                for(uint i=0; i<(%ITEMY_BY_V); i++)\n\
+                {\n\
+                    %IF(%ITEMX) #pragma unroll %ITEMX\n\
+                    for(uint j=0; j<(%ITEMX); j++)\n\
+                    {\n\
+                        %VMAD(CVAL[i][j] ,  AVAL[panel][i] , BVAL[j][panel]);\n\
+                    }\n\
+                }\n\
+            }\n\
+\n\
+            #ifdef SYMM_NEEDS_BARRIER\n\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+            #endif\n\
+        }\n\
+\n\
+\n\
+        //\n\
+        // STORE Result in C\n\
+        //\n\
+        %TYPE%V reg , betareg, alphareg;\n\
+        %TYPE%V alphav, betav;\n\
+        alphav = %VMAKEVEC(alpha);\n\
+        betav = %VMAKEVEC(beta);\n\
+\n\
+        %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+        for(uint i=0; i< (%ITEMY_BY_V); i++)\n\
+        {\n\
+            %IF(%ITEMX) #pragma unroll %ITEMX\n\
+            for(uint j=0; j<(%ITEMX); j++)\n\
+            {\n\
+                reg = VECTOR_LOAD(C, M, N, ldc, rowA + i*threadsY*%V, colB+(j*threadsX));\n\
+                %VMUL(betareg, betav, reg);\n\
+                %VMUL(alphareg, alphav, CVAL[i][j]);\n\
+                %ADD( reg, betareg, alphareg);\n\
+                VECTOR_STORE(reg, C, M, N, ldc, rowA + i*threadsY*%V, colB+(j*threadsX));\n\
+            }\n\
+        }\n\
+        return;\n\
+    }\n\
+#else\n\
+#error COLMAJOR Not Defined while compiling SYMM_C_KERNEL\n\
+#endif\n\
+";
+
+
+
+

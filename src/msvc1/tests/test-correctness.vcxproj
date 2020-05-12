@@ -1,0 +1,484 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{D213B11D-AA57-3A0F-90D1-4346491DB4A6}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>test-correctness</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\staging\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">test-correctness.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">test-correctness</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\staging\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">test-correctness.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">test-correctness</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\staging\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">test-correctness.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">test-correctness</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\staging\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">test-correctness.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">test-correctness</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\gtest-external-prefix\src\gtest-external\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\tests\include;C:\Development\op3d_active\clBLAS-1.10\src\include};C:\Development\op3d_active\clBLAS-1.10\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;TEST_WITH_SINGLE_DEVICE;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;TEST_WITH_SINGLE_DEVICE;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\gtest-external-prefix\src\gtest-external\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\tests\include;C:\Development\op3d_active\clBLAS-1.10\src\include};C:\Development\op3d_active\clBLAS-1.10\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\gtest-external-prefix\src\gtest-external\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\tests\include;C:\Development\op3d_active\clBLAS-1.10\src\include};C:\Development\op3d_active\clBLAS-1.10\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>gtest-external-prefix\src\gtest-external-build\$(Configuration)\gtest.lib;gtest-external-prefix\src\gtest-external-build\$(Configuration)\gtest_main.lib;..\library\Debug\clBLAS.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\Win32\OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/tests/Debug/test-correctness.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/staging/Debug/test-correctness.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\gtest-external-prefix\src\gtest-external\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\tests\include;C:\Development\op3d_active\clBLAS-1.10\src\include};C:\Development\op3d_active\clBLAS-1.10\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Release/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;TEST_WITH_SINGLE_DEVICE;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;TEST_WITH_SINGLE_DEVICE;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\gtest-external-prefix\src\gtest-external\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\tests\include;C:\Development\op3d_active\clBLAS-1.10\src\include};C:\Development\op3d_active\clBLAS-1.10\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\gtest-external-prefix\src\gtest-external\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\tests\include;C:\Development\op3d_active\clBLAS-1.10\src\include};C:\Development\op3d_active\clBLAS-1.10\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>gtest-external-prefix\src\gtest-external-build\$(Configuration)\gtest.lib;gtest-external-prefix\src\gtest-external-build\$(Configuration)\gtest_main.lib;..\library\Release\clBLAS.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\Win32\OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/tests/Release/test-correctness.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/staging/Release/test-correctness.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\gtest-external-prefix\src\gtest-external\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\tests\include;C:\Development\op3d_active\clBLAS-1.10\src\include};C:\Development\op3d_active\clBLAS-1.10\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;TEST_WITH_SINGLE_DEVICE;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;TEST_WITH_SINGLE_DEVICE;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\gtest-external-prefix\src\gtest-external\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\tests\include;C:\Development\op3d_active\clBLAS-1.10\src\include};C:\Development\op3d_active\clBLAS-1.10\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\gtest-external-prefix\src\gtest-external\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\tests\include;C:\Development\op3d_active\clBLAS-1.10\src\include};C:\Development\op3d_active\clBLAS-1.10\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>gtest-external-prefix\src\gtest-external-build\$(Configuration)\gtest.lib;gtest-external-prefix\src\gtest-external-build\$(Configuration)\gtest_main.lib;..\library\MinSizeRel\clBLAS.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\Win32\OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/tests/MinSizeRel/test-correctness.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/staging/MinSizeRel/test-correctness.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\gtest-external-prefix\src\gtest-external\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\tests\include;C:\Development\op3d_active\clBLAS-1.10\src\include};C:\Development\op3d_active\clBLAS-1.10\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;TEST_WITH_SINGLE_DEVICE;CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;TEST_WITH_SINGLE_DEVICE;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\gtest-external-prefix\src\gtest-external\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\tests\include;C:\Development\op3d_active\clBLAS-1.10\src\include};C:\Development\op3d_active\clBLAS-1.10\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\gtest-external-prefix\src\gtest-external\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\tests\include;C:\Development\op3d_active\clBLAS-1.10\src\include};C:\Development\op3d_active\clBLAS-1.10\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>gtest-external-prefix\src\gtest-external-build\$(Configuration)\gtest.lib;gtest-external-prefix\src\gtest-external-build\$(Configuration)\gtest_main.lib;..\library\RelWithDebInfo\clBLAS.lib;C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\Win32\OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/tests/RelWithDebInfo/test-correctness.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/staging/RelWithDebInfo/test-correctness.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/tests/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc1 --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc1/tests/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/tests/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\gtest-external-prefix\tmp\gtest-external-cfgcmd.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\tests\copyTestDependencies.cmake.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\gtest.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject-download.cmake.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/tests/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc1 --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc1/tests/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/tests/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\gtest-external-prefix\tmp\gtest-external-cfgcmd.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\tests\copyTestDependencies.cmake.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\gtest.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject-download.cmake.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/tests/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc1 --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc1/tests/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/tests/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\gtest-external-prefix\tmp\gtest-external-cfgcmd.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\tests\copyTestDependencies.cmake.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\gtest.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject-download.cmake.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/tests/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc1 --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc1/tests/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/tests/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\gtest-external-prefix\tmp\gtest-external-cfgcmd.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\tests\copyTestDependencies.cmake.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\gtest.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject-download.cmake.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\blas-lapack.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\BlasBase-corr.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-gemm.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-trmm.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-trsm.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-gemv.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-symv.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-spmv.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-syr2k.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-syrk.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-trmv.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-tpmv.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-trsv.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-symm.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-gemm2.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-ger.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-gerc.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-her.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-her2.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-syr.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-spr.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-syr2.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-hemv.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-hpmv.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-hemm.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-herk.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-tpsv.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-hpr.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-hpr2.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-spr2.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-gbmv.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-hbmv.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-tbmv.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-tbsv.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-sbmv.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-her2k.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-scal.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-swap.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-copy.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-axpy.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-dot.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-dotc.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-rotg.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-rotm.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-rot.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-rotmg.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-nrm2.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-asum.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\corr-iamax.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\test-correctness.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\tcase-filter.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\cmdline.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\common.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\clBLAS-wrapper.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\BlasBase.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\blas.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\blas-cblas.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\blas-wrapper.cpp" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\blas-lapack.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\trsm-delta.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\tcase-filter.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\delta.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\correctness\trsv-delta.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\clBLAS.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\clBLAS-complex.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\cltypes.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\defbool.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\blas-internal.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\blas-cblas.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\blas-wrapper.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\clBLAS-wrapper.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\cmdline.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\BlasBase.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\common.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\gemm.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\trmm.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\tpmv.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\trsm.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\gemv.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\symv.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\spmv.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\syr2k.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\syrk.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\trmv.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\trsv.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\symm.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\ger.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\gerc.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\syr.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\spr.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\her.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\her2.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\syr2.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\hemv.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\hpmv.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\hemm.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\herk.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\tpsv.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\hpr.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\hpr2.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\spr2.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\gbmv.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\hbmv.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\tbmv.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\tbsv.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\copy.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\sbmv.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\dot.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\dotc.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\her2k.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\scal.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\swap.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\axpy.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\rotg.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\rotm.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\rot.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\asum.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\rotmg.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\nrm2.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\iamax.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\blas-math.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\blas-random.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\matrix.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\ZERO_CHECK.vcxproj">
+      <Project>{6F5DE493-B27D-3EDF-91E6-AC848AA805F2}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\clBLAS.vcxproj">
+      <Project>{F4AA849F-C4CC-3944-9D71-53CC83426342}</Project>
+      <Name>clBLAS</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\gtest-external.vcxproj">
+      <Project>{C5E6A8FE-3EA6-3F66-B516-CF1AA7BC8AB5}</Project>
+      <Name>gtest-external</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

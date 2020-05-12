@@ -1,0 +1,117 @@
+/* ************************************************************************
+ * Copyright 2013 Advanced Micro Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ************************************************************************/
+
+
+
+static const char *rotg_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+\n\
+#define ZERO (%TYPE)0.0\n\
+#define PZERO (%PTYPE)0.0\n\
+\n\
+// CABS(A) returns SQRT(REALPART(A)**2+IMAGPART(A)**2) -- opencl function length() computes the same\n\
+#define CABS( arg )  length( arg )\n\
+\n\
+__kernel void %PREFIXrotg_kernel( __global %TYPE *_A, __global %TYPE *_B, __global %PTYPE *_C,\n\
+                                __global %TYPE *_S, uint offa, uint offb, uint offc, uint offs )\n\
+{\n\
+    %TYPE Areg, Breg, Sreg;\n\
+    %PTYPE Creg;\n\
+\n\
+    Areg = _A[offa];\n\
+    Breg = _B[offb];\n\
+\n\
+    if(get_global_id(0) == 0)       // Only 1 thread will work\n\
+    {\n\
+        #ifndef COMPLEX         // Real and complex math for rotg are different according to netlib\n\
+            %TYPE R, Z, roe, scale, absA, absB;\n\
+\n\
+            absA = fabs(Areg);\n\
+            absB = fabs(Breg);\n\
+\n\
+            roe = (isgreater(absA, absB))? Areg: Breg;\n\
+            scale = absA + absB;\n\
+\n\
+            if(isequal(scale, ZERO))\n\
+            {\n\
+                Creg = 1.0;\n\
+                Sreg = ZERO;\n\
+                R = ZERO;\n\
+                Z = ZERO;\n\
+            }\n\
+            else\n\
+            {\n\
+                // R = scale * sqrt( pown((Areg/scale), 2) + pown((Breg/scale), 2) );\n\
+                // gentype hypot (gentype x, gentype y) -- Computes the value of the\n\
+                //          square root of x2+ y2 without undue overflow or underflow.\n\
+                R = scale * hypot( (Areg/scale), (Breg/scale) );\n\
+                R = (isless(roe, ZERO))? (-R): R;\n\
+                Creg = Areg / R;\n\
+"
+"\
+                Sreg = Breg / R;\n\
+                Z = (isgreater(absA, absB))? Sreg:\n\
+                        ( (isnotequal(Creg, ZERO))? (1.0/Creg): 1.0 );\n\
+            }\n\
+            _A[offa] = R;\n\
+            _B[offb] = Z;\n\
+            _C[offc] = Creg;\n\
+            _S[offs] = Sreg;\n\
+        #else           // For comlpex type\n\
+            %TYPE alpha, temp;\n\
+            %PTYPE norm, scale, cabsA, cabsB;\n\
+\n\
+            cabsA = CABS(Areg);\n\
+            cabsB = CABS(Breg);\n\
+\n\
+            if(isequal(cabsA, PZERO))\n\
+            {\n\
+                Creg = PZERO;\n\
+                Sreg = (%TYPE)(1.0, 0.0);\n\
+                Areg = Breg;\n\
+            }\n\
+            else\n\
+            {\n\
+                scale = cabsA + cabsB;\n\
+                // norm = scale * sqrt( pown( CABS(Areg/scale), 2 ) + pown( CABS(Breg/scale), 2 ) );\n\
+                norm = scale * hypot( CABS(Areg/scale), CABS(Breg/scale) );\n\
+                alpha = Areg / cabsA;\n\
+                Creg = cabsA / norm;\n\
+\n\
+                temp = Breg;\n\
+                %CONJUGATE(1, temp);\n\
+                %MUL( Sreg, alpha, temp );\n\
+                Sreg = Sreg / norm;\n\
+\n\
+                Areg = alpha * norm;\n\
+            }\n\
+            _C[offc] = Creg;\n\
+            _S[offs] = Sreg;\n\
+            _A[offa] = Areg;\n\
+        #endif      // COMPLEX\n\
+    }\n\
+}\n\
+\n";
+
+
+
+

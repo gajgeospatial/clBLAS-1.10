@@ -1,0 +1,393 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\tests\correctness\blas-lapack.c">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\BlasBase-corr.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-gemm.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-trmm.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-trsm.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-gemv.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-symv.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-spmv.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-syr2k.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-syrk.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-trmv.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-tpmv.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-trsv.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-symm.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-gemm2.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-ger.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-gerc.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-her.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-her2.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-syr.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-spr.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-syr2.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-hemv.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-hpmv.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-hemm.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-herk.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-tpsv.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-hpr.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-hpr2.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-spr2.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-gbmv.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-hbmv.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-tbmv.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-tbsv.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-sbmv.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-her2k.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-scal.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-swap.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-copy.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-axpy.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-dot.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-dotc.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-rotg.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-rotm.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-rot.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-rotmg.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-nrm2.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-asum.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\corr-iamax.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\test-correctness.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\tcase-filter.cpp">
+      <Filter>correctness</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\cmdline.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\common.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\clBLAS-wrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\BlasBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\blas.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\blas-cblas.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\blas-wrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\tests\correctness\blas-lapack.h">
+      <Filter>correctness</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\correctness\trsm-delta.h">
+      <Filter>correctness</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\correctness\tcase-filter.h">
+      <Filter>correctness</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\correctness\delta.h">
+      <Filter>correctness</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\correctness\trsv-delta.h">
+      <Filter>correctness</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\clBLAS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\clBLAS-complex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\cltypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\include\defbool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\blas-internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\blas-cblas.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\blas-wrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\clBLAS-wrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\cmdline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\BlasBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\gemm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\trmm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\tpmv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\trsm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\gemv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\symv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\spmv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\syr2k.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\syrk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\trmv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\trsv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\symm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\ger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\gerc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\syr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\spr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\her.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\her2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\syr2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\hemv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\hpmv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\hemm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\herk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\tpsv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\hpr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\hpr2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\spr2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\gbmv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\hbmv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\tbmv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\tbsv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\copy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\sbmv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\dot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\dotc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\her2k.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\scal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\swap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\axpy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\rotg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\rotm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\rot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\asum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\rotmg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\nrm2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\iamax.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\blas-math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\blas-random.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\matrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\tests\include\timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{E6B7F8AD-12DE-314C-8AD3-AACA9D15DBAC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{DF335895-5972-3DC8-A1AE-B6B233650879}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="correctness">
+      <UniqueIdentifier>{FD775A6A-95C4-3D3F-AFDA-4663F952BD93}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

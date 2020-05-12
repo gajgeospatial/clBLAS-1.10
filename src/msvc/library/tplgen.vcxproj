@@ -1,0 +1,858 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{72885BC4-9DEE-3B2E-8AE0-388564CBBB3B}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>tplgen</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\c6be139122d67f8af70d9b77af66c70a\tplgen-mkdir.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Creating directories for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-build
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/tmp
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-mkdir
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-mkdir.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-mkdir</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Creating directories for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-build
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/tmp
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-mkdir
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-mkdir.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-mkdir</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Creating directories for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-build
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/tmp
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-mkdir
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-mkdir.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-mkdir</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Creating directories for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-build
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/tmp
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-mkdir
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-mkdir.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-mkdir</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\c6be139122d67f8af70d9b77af66c70a\tplgen-download.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing download step (DIR copy) for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E remove_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory C:/Development/op3d_active/clBLAS-1.10/src/library/tools/tplgen C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-download
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-download.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\tplgen-urlinfo.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-mkdir;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-download</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing download step (DIR copy) for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E remove_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory C:/Development/op3d_active/clBLAS-1.10/src/library/tools/tplgen C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-download
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-download.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\tplgen-urlinfo.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-mkdir;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-download</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Performing download step (DIR copy) for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E remove_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory C:/Development/op3d_active/clBLAS-1.10/src/library/tools/tplgen C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-download
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-download.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\tplgen-urlinfo.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-mkdir;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-download</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Performing download step (DIR copy) for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E remove_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E copy_directory C:/Development/op3d_active/clBLAS-1.10/src/library/tools/tplgen C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-download
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-download.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\tplgen-urlinfo.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-mkdir;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-download</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\c6be139122d67f8af70d9b77af66c70a\tplgen-update.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">No update step for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-update
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-update.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-download;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-update</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">No update step for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-update
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-update.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-download;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-update</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">No update step for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-update
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-update.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-download;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-update</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">No update step for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-update
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-update.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-download;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-update</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\c6be139122d67f8af70d9b77af66c70a\tplgen-patch.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">No patch step for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-patch
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-patch.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-download;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-patch</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">No patch step for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-patch
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-patch.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-download;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-patch</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">No patch step for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-patch
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-patch.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-download;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-patch</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">No patch step for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-patch
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-patch.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-download;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-patch</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\c6be139122d67f8af70d9b77af66c70a\tplgen-configure.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing configure step for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" "-GVisual Studio 15 2017" "-DCMAKE_GENERATOR_INSTANCE:INTERNAL=C:/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise" C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-configure
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-configure.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\tmp\tplgen-cfgcmd.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-update;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-patch;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-configure</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing configure step for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" "-GVisual Studio 15 2017" "-DCMAKE_GENERATOR_INSTANCE:INTERNAL=C:/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise" C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-configure
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-configure.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\tmp\tplgen-cfgcmd.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-update;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-patch;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-configure</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Performing configure step for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" "-GVisual Studio 15 2017" "-DCMAKE_GENERATOR_INSTANCE:INTERNAL=C:/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise" C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-configure
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-configure.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\tmp\tplgen-cfgcmd.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-update;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-patch;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-configure</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Performing configure step for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" "-GVisual Studio 15 2017" "-DCMAKE_GENERATOR_INSTANCE:INTERNAL=C:/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise" C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-configure
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-configure.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\tmp\tplgen-cfgcmd.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-update;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-patch;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-configure</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\c6be139122d67f8af70d9b77af66c70a\tplgen-build.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing build step for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" --build . --config Debug
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-build
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-build.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-configure;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-build</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing build step for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" --build . --config Release
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-build
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-build.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-configure;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-build</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Performing build step for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" --build . --config MinSizeRel
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-build
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-build.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-configure;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-build</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Performing build step for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" --build . --config RelWithDebInfo
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-build
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-build.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-configure;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-build</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\c6be139122d67f8af70d9b77af66c70a\tplgen-install.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">No install step for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-install
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-install.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-build;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-install</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">No install step for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-install
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-install.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-build;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-install</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">No install step for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-install
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-install.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-build;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-install</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">No install step for 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-install
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c6be139122d67f8af70d9b77af66c70a/tplgen-install.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-build;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-install</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\8d572822c79070f98e6ee2d7aebd126a\tplgen-complete.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Completed 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/CMakeFiles/$(Configuration)
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/CMakeFiles/$(Configuration)/tplgen-complete
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-done
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/8d572822c79070f98e6ee2d7aebd126a/tplgen-complete.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-install;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-mkdir;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-download;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-update;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-patch;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-configure;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-build;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-install;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\CMakeFiles\$(Configuration)\tplgen-complete</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Completed 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/CMakeFiles/$(Configuration)
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/CMakeFiles/$(Configuration)/tplgen-complete
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-done
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/8d572822c79070f98e6ee2d7aebd126a/tplgen-complete.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-install;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-mkdir;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-download;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-update;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-patch;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-configure;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-build;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-install;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\CMakeFiles\$(Configuration)\tplgen-complete</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Completed 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/CMakeFiles/$(Configuration)
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/CMakeFiles/$(Configuration)/tplgen-complete
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-done
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/8d572822c79070f98e6ee2d7aebd126a/tplgen-complete.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-install;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-mkdir;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-download;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-update;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-patch;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-configure;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-build;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-install;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\CMakeFiles\$(Configuration)\tplgen-complete</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Completed 'tplgen'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/CMakeFiles/$(Configuration)
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/CMakeFiles/$(Configuration)/tplgen-complete
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/src/tplgen-stamp/$(Configuration)/tplgen-done
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/8d572822c79070f98e6ee2d7aebd126a/tplgen-complete.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-install;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-mkdir;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-download;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-update;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-patch;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-configure;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-build;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\src\tplgen-stamp\$(Configuration)\tplgen-install;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\CMakeFiles\$(Configuration)\tplgen-complete</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\c05ca6b9aa4c86e9b0818fbb2d47decc\tplgen.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c05ca6b9aa4c86e9b0818fbb2d47decc/tplgen.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\CMakeFiles\$(Configuration)\tplgen-complete;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\CMakeFiles\tplgen</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c05ca6b9aa4c86e9b0818fbb2d47decc/tplgen.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\CMakeFiles\$(Configuration)\tplgen-complete;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\CMakeFiles\tplgen</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+      </Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c05ca6b9aa4c86e9b0818fbb2d47decc/tplgen.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\CMakeFiles\$(Configuration)\tplgen-complete;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\CMakeFiles\tplgen</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+      </Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/c05ca6b9aa4c86e9b0818fbb2d47decc/tplgen.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\CMakeFiles\$(Configuration)\tplgen-complete;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\CMakeFiles\tplgen</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\tmp\tplgen-cfgcmd.txt.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPythonInterp.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\InstallRequiredSystemLibraries.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\tmp\tplgen-cfgcmd.txt.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPythonInterp.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\InstallRequiredSystemLibraries.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\tmp\tplgen-cfgcmd.txt.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPythonInterp.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\InstallRequiredSystemLibraries.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\tplgen-prefix\tmp\tplgen-cfgcmd.txt.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPythonInterp.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\InstallRequiredSystemLibraries.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\library\CMakeFiles\tplgen" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

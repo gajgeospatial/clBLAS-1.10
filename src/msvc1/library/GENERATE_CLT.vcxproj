@@ -1,0 +1,244 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{9B4F073F-7314-3C68-A5BB-22F05ECE27EE}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>GENERATE_CLT</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\CMakeFiles\e3ee1250cbf7749333cbbcebfb0aae8f\GENERATE_CLT.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'"></Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+tplgen-prefix\src\tplgen-build\$(Configuration)\tplgen -o C:/Development/op3d_active/clBLAS-1.10/src/msvc1/include -i C:/Development/op3d_active/clBLAS-1.10/src/library/blas/gens/clTemplates/ gemm.cl gemm_helper.cl gbmv.cl ger.cl her.cl symm_helper.cl syr2_her2.cl syr_her.cl trsv.cl her2.cl symm.cl syr2.cl syr.cl trmv.cl trsv_gemv.cl swap.cl scal.cl copy.cl axpy.cl dot.cl reduction.cl rotg.cl rotmg.cl rotm.cl iamax.cl nrm2.cl asum.cl custom_gemm.cl dgemm_hawai.cl dgemm_hawaiiChannelConfilct.cl dgemm_hawaiiSplitKernel.cl sgemm_hawaiiSplitKernel.cl dtrsm_gpu.cl dtrsm_gpu192.cl dgemm_gcn_SmallMatrices.cl sgemm_gcn_SmallMatrices.cl sgemm_gcn_bigMatrices.cl sgemm_gcn.cl zgemm_gcn.cl
+if %errorlevel% neq 0 goto :cmEnd
+tplgen-prefix\src\tplgen-build\$(Configuration)\tplgen -o C:/Development/op3d_active/clBLAS-1.10/src/msvc1/include -i / dgemm_hawai.clHawaii_64.bin.cl dtrsm_gpu.clHawaii_64.bin.cl dtrsm_gpu192.clHawaii_64.bin.cl dgemm_hawaiiChannelConfilct.clHawaii_64.bin.cl dgemm_hawaiiSplitKernel.clHawaii_64.bin.cl sgemm_hawaiiSplitKernel.clHawaii_64.bin.cl sgemm_hawaiiSplitKernel.clBonaire_64.bin.cl dgemm_hawai.clTahiti_64.bin.cl dtrsm_gpu.clTahiti_64.bin.cl dgemm_gcn_SmallMatrices.clHawaii_64.bin.cl dgemm_gcn_SmallMatrices.clTahiti_64.bin.cl sgemm_gcn_SmallMatrices.clHawaii_64.bin.cl sgemm_gcn_SmallMatrices.clTahiti_64.bin.cl sgemm_gcn_SmallMatrices.clBonaire_64.bin.cl sgemm_gcn_bigMatrices.clHawaii_64.bin.cl sgemm_gcn_bigMatrices.clTahiti_64.bin.cl sgemm_gcn_bigMatrices.clBonaire_64.bin.cl sgemm_gcn.clHawaii_64.bin.cl zgemm_gcn.clHawaii_64.bin.cl sgemm_gcn.clBonaire_64.bin.cl sgemm_gcn.clTahiti_64.bin.cl sgemm_hawaiiSplit64_32.clHawaii_64.bin.cl
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc1/CMakeFiles/e3ee1250cbf7749333cbbcebfb0aae8f/GENERATE_CLT.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\CMakeFiles\GENERATE_CLT</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'"></Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+tplgen-prefix\src\tplgen-build\$(Configuration)\tplgen -o C:/Development/op3d_active/clBLAS-1.10/src/msvc1/include -i C:/Development/op3d_active/clBLAS-1.10/src/library/blas/gens/clTemplates/ gemm.cl gemm_helper.cl gbmv.cl ger.cl her.cl symm_helper.cl syr2_her2.cl syr_her.cl trsv.cl her2.cl symm.cl syr2.cl syr.cl trmv.cl trsv_gemv.cl swap.cl scal.cl copy.cl axpy.cl dot.cl reduction.cl rotg.cl rotmg.cl rotm.cl iamax.cl nrm2.cl asum.cl custom_gemm.cl dgemm_hawai.cl dgemm_hawaiiChannelConfilct.cl dgemm_hawaiiSplitKernel.cl sgemm_hawaiiSplitKernel.cl dtrsm_gpu.cl dtrsm_gpu192.cl dgemm_gcn_SmallMatrices.cl sgemm_gcn_SmallMatrices.cl sgemm_gcn_bigMatrices.cl sgemm_gcn.cl zgemm_gcn.cl
+if %errorlevel% neq 0 goto :cmEnd
+tplgen-prefix\src\tplgen-build\$(Configuration)\tplgen -o C:/Development/op3d_active/clBLAS-1.10/src/msvc1/include -i / dgemm_hawai.clHawaii_64.bin.cl dtrsm_gpu.clHawaii_64.bin.cl dtrsm_gpu192.clHawaii_64.bin.cl dgemm_hawaiiChannelConfilct.clHawaii_64.bin.cl dgemm_hawaiiSplitKernel.clHawaii_64.bin.cl sgemm_hawaiiSplitKernel.clHawaii_64.bin.cl sgemm_hawaiiSplitKernel.clBonaire_64.bin.cl dgemm_hawai.clTahiti_64.bin.cl dtrsm_gpu.clTahiti_64.bin.cl dgemm_gcn_SmallMatrices.clHawaii_64.bin.cl dgemm_gcn_SmallMatrices.clTahiti_64.bin.cl sgemm_gcn_SmallMatrices.clHawaii_64.bin.cl sgemm_gcn_SmallMatrices.clTahiti_64.bin.cl sgemm_gcn_SmallMatrices.clBonaire_64.bin.cl sgemm_gcn_bigMatrices.clHawaii_64.bin.cl sgemm_gcn_bigMatrices.clTahiti_64.bin.cl sgemm_gcn_bigMatrices.clBonaire_64.bin.cl sgemm_gcn.clHawaii_64.bin.cl zgemm_gcn.clHawaii_64.bin.cl sgemm_gcn.clBonaire_64.bin.cl sgemm_gcn.clTahiti_64.bin.cl sgemm_hawaiiSplit64_32.clHawaii_64.bin.cl
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc1/CMakeFiles/e3ee1250cbf7749333cbbcebfb0aae8f/GENERATE_CLT.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\CMakeFiles\GENERATE_CLT</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'"></Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+tplgen-prefix\src\tplgen-build\$(Configuration)\tplgen -o C:/Development/op3d_active/clBLAS-1.10/src/msvc1/include -i C:/Development/op3d_active/clBLAS-1.10/src/library/blas/gens/clTemplates/ gemm.cl gemm_helper.cl gbmv.cl ger.cl her.cl symm_helper.cl syr2_her2.cl syr_her.cl trsv.cl her2.cl symm.cl syr2.cl syr.cl trmv.cl trsv_gemv.cl swap.cl scal.cl copy.cl axpy.cl dot.cl reduction.cl rotg.cl rotmg.cl rotm.cl iamax.cl nrm2.cl asum.cl custom_gemm.cl dgemm_hawai.cl dgemm_hawaiiChannelConfilct.cl dgemm_hawaiiSplitKernel.cl sgemm_hawaiiSplitKernel.cl dtrsm_gpu.cl dtrsm_gpu192.cl dgemm_gcn_SmallMatrices.cl sgemm_gcn_SmallMatrices.cl sgemm_gcn_bigMatrices.cl sgemm_gcn.cl zgemm_gcn.cl
+if %errorlevel% neq 0 goto :cmEnd
+tplgen-prefix\src\tplgen-build\$(Configuration)\tplgen -o C:/Development/op3d_active/clBLAS-1.10/src/msvc1/include -i / dgemm_hawai.clHawaii_64.bin.cl dtrsm_gpu.clHawaii_64.bin.cl dtrsm_gpu192.clHawaii_64.bin.cl dgemm_hawaiiChannelConfilct.clHawaii_64.bin.cl dgemm_hawaiiSplitKernel.clHawaii_64.bin.cl sgemm_hawaiiSplitKernel.clHawaii_64.bin.cl sgemm_hawaiiSplitKernel.clBonaire_64.bin.cl dgemm_hawai.clTahiti_64.bin.cl dtrsm_gpu.clTahiti_64.bin.cl dgemm_gcn_SmallMatrices.clHawaii_64.bin.cl dgemm_gcn_SmallMatrices.clTahiti_64.bin.cl sgemm_gcn_SmallMatrices.clHawaii_64.bin.cl sgemm_gcn_SmallMatrices.clTahiti_64.bin.cl sgemm_gcn_SmallMatrices.clBonaire_64.bin.cl sgemm_gcn_bigMatrices.clHawaii_64.bin.cl sgemm_gcn_bigMatrices.clTahiti_64.bin.cl sgemm_gcn_bigMatrices.clBonaire_64.bin.cl sgemm_gcn.clHawaii_64.bin.cl zgemm_gcn.clHawaii_64.bin.cl sgemm_gcn.clBonaire_64.bin.cl sgemm_gcn.clTahiti_64.bin.cl sgemm_hawaiiSplit64_32.clHawaii_64.bin.cl
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc1/CMakeFiles/e3ee1250cbf7749333cbbcebfb0aae8f/GENERATE_CLT.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\CMakeFiles\GENERATE_CLT</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'"></Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+tplgen-prefix\src\tplgen-build\$(Configuration)\tplgen -o C:/Development/op3d_active/clBLAS-1.10/src/msvc1/include -i C:/Development/op3d_active/clBLAS-1.10/src/library/blas/gens/clTemplates/ gemm.cl gemm_helper.cl gbmv.cl ger.cl her.cl symm_helper.cl syr2_her2.cl syr_her.cl trsv.cl her2.cl symm.cl syr2.cl syr.cl trmv.cl trsv_gemv.cl swap.cl scal.cl copy.cl axpy.cl dot.cl reduction.cl rotg.cl rotmg.cl rotm.cl iamax.cl nrm2.cl asum.cl custom_gemm.cl dgemm_hawai.cl dgemm_hawaiiChannelConfilct.cl dgemm_hawaiiSplitKernel.cl sgemm_hawaiiSplitKernel.cl dtrsm_gpu.cl dtrsm_gpu192.cl dgemm_gcn_SmallMatrices.cl sgemm_gcn_SmallMatrices.cl sgemm_gcn_bigMatrices.cl sgemm_gcn.cl zgemm_gcn.cl
+if %errorlevel% neq 0 goto :cmEnd
+tplgen-prefix\src\tplgen-build\$(Configuration)\tplgen -o C:/Development/op3d_active/clBLAS-1.10/src/msvc1/include -i / dgemm_hawai.clHawaii_64.bin.cl dtrsm_gpu.clHawaii_64.bin.cl dtrsm_gpu192.clHawaii_64.bin.cl dgemm_hawaiiChannelConfilct.clHawaii_64.bin.cl dgemm_hawaiiSplitKernel.clHawaii_64.bin.cl sgemm_hawaiiSplitKernel.clHawaii_64.bin.cl sgemm_hawaiiSplitKernel.clBonaire_64.bin.cl dgemm_hawai.clTahiti_64.bin.cl dtrsm_gpu.clTahiti_64.bin.cl dgemm_gcn_SmallMatrices.clHawaii_64.bin.cl dgemm_gcn_SmallMatrices.clTahiti_64.bin.cl sgemm_gcn_SmallMatrices.clHawaii_64.bin.cl sgemm_gcn_SmallMatrices.clTahiti_64.bin.cl sgemm_gcn_SmallMatrices.clBonaire_64.bin.cl sgemm_gcn_bigMatrices.clHawaii_64.bin.cl sgemm_gcn_bigMatrices.clTahiti_64.bin.cl sgemm_gcn_bigMatrices.clBonaire_64.bin.cl sgemm_gcn.clHawaii_64.bin.cl zgemm_gcn.clHawaii_64.bin.cl sgemm_gcn.clBonaire_64.bin.cl sgemm_gcn.clTahiti_64.bin.cl sgemm_hawaiiSplit64_32.clHawaii_64.bin.cl
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc1/CMakeFiles/e3ee1250cbf7749333cbbcebfb0aae8f/GENERATE_CLT.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\CMakeFiles\GENERATE_CLT</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc1 --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\tplgen-prefix\tmp\tplgen-cfgcmd.txt.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPythonInterp.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\InstallRequiredSystemLibraries.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc1 --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\tplgen-prefix\tmp\tplgen-cfgcmd.txt.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPythonInterp.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\InstallRequiredSystemLibraries.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc1 --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\tplgen-prefix\tmp\tplgen-cfgcmd.txt.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPythonInterp.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\InstallRequiredSystemLibraries.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc1 --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\tplgen-prefix\tmp\tplgen-cfgcmd.txt.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPythonInterp.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\InstallRequiredSystemLibraries.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\CMakeFiles\GENERATE_CLT" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\ZERO_CHECK.vcxproj">
+      <Project>{6F5DE493-B27D-3EDF-91E6-AC848AA805F2}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\tplgen.vcxproj">
+      <Project>{7F34AE59-F49B-3092-9356-946468E72262}</Project>
+      <Name>tplgen</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

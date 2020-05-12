@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\gtest-external-prefix\src\gtest-external-build\CMakeFiles\d12d766180bf6093469b0a6744e482b8\generate.stamp.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{8D82CE78-15C2-3C17-8054-F1A1ECDD233D}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

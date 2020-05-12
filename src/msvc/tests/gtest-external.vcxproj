@@ -1,0 +1,866 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8AA0EC2F-CB3C-315E-AF91-048ABD72D369}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>gtest-external</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\tests\include;C:\Development\op3d_active\clBLAS-1.10\src\include};C:\Development\op3d_active\clBLAS-1.10\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\tests\include;C:\Development\op3d_active\clBLAS-1.10\src\include};C:\Development\op3d_active\clBLAS-1.10\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\tests\include;C:\Development\op3d_active\clBLAS-1.10\src\include};C:\Development\op3d_active\clBLAS-1.10\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\tests\include;C:\Development\op3d_active\clBLAS-1.10\src\include};C:\Development\op3d_active\clBLAS-1.10\src\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\6ec01562b1ed386144ec141064c02e22\gtest-external-mkdir.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Creating directories for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-build
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/tmp
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-mkdir
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-mkdir.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-mkdir</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Creating directories for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-build
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/tmp
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-mkdir
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-mkdir.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-mkdir</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Creating directories for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-build
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/tmp
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-mkdir
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-mkdir.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-mkdir</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Creating directories for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-build
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/tmp
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-mkdir
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-mkdir.rule;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-mkdir</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\6ec01562b1ed386144ec141064c02e22\gtest-external-download.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing download step (download, verify and extract) for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -P C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/download-gtest-external.cmake
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -P C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/verify-gtest-external.cmake
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -P C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/extract-gtest-external.cmake
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-download
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-download.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\gtest-external-urlinfo.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-mkdir;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-download</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing download step (download, verify and extract) for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -P C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/download-gtest-external.cmake
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -P C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/verify-gtest-external.cmake
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -P C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/extract-gtest-external.cmake
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-download
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-download.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\gtest-external-urlinfo.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-mkdir;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-download</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Performing download step (download, verify and extract) for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -P C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/download-gtest-external.cmake
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -P C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/verify-gtest-external.cmake
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -P C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/extract-gtest-external.cmake
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-download
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-download.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\gtest-external-urlinfo.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-mkdir;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-download</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Performing download step (download, verify and extract) for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -P C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/download-gtest-external.cmake
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -P C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/verify-gtest-external.cmake
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -P C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/extract-gtest-external.cmake
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-download
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-download.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\gtest-external-urlinfo.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-mkdir;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-download</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\6ec01562b1ed386144ec141064c02e22\gtest-external-update.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">No update step for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-update
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-update.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-download;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-update</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">No update step for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-update
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-update.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-download;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-update</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">No update step for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-update
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-update.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-download;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-update</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">No update step for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-update
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-update.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-download;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-update</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\6ec01562b1ed386144ec141064c02e22\gtest-external-patch.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">No patch step for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-patch
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-patch.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-download;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-patch</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">No patch step for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-patch
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-patch.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-download;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-patch</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">No patch step for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-patch
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-patch.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-download;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-patch</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">No patch step for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-patch
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-patch.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-download;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-patch</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\6ec01562b1ed386144ec141064c02e22\gtest-external-configure.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing configure step for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -CC:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/tmp/gtest-external-cache-Debug.cmake "-GVisual Studio 15 2017" "-DCMAKE_GENERATOR_INSTANCE:INTERNAL=C:/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise" C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-configure
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-configure.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\tmp\gtest-external-cfgcmd.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-update;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-patch;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-configure</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing configure step for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -CC:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/tmp/gtest-external-cache-Release.cmake "-GVisual Studio 15 2017" "-DCMAKE_GENERATOR_INSTANCE:INTERNAL=C:/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise" C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-configure
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-configure.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\tmp\gtest-external-cfgcmd.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-update;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-patch;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-configure</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Performing configure step for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -CC:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/tmp/gtest-external-cache-MinSizeRel.cmake "-GVisual Studio 15 2017" "-DCMAKE_GENERATOR_INSTANCE:INTERNAL=C:/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise" C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-configure
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-configure.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\tmp\gtest-external-cfgcmd.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-update;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-patch;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-configure</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Performing configure step for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -CC:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/tmp/gtest-external-cache-RelWithDebInfo.cmake "-GVisual Studio 15 2017" "-DCMAKE_GENERATOR_INSTANCE:INTERNAL=C:/Program Files (x86)/Microsoft Visual Studio/2017/Enterprise" C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-configure
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-configure.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\tmp\gtest-external-cfgcmd.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-update;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-patch;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-configure</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\6ec01562b1ed386144ec141064c02e22\gtest-external-build.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Performing build step for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" --build . --config Debug
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-build
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-build.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-configure;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-build</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Performing build step for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" --build . --config Release
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-build
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-build.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-configure;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-build</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Performing build step for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" --build . --config MinSizeRel
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-build
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-build.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-configure;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-build</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Performing build step for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" --build . --config RelWithDebInfo
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-build
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-build.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-configure;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-build</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\6ec01562b1ed386144ec141064c02e22\gtest-external-install.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">No install step for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-install
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-install.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-build;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-install</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">No install step for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-install
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-install.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-build;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-install</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">No install step for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-install
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-install.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-build;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-install</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">No install step for 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+cd C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-build
+if %errorlevel% neq 0 goto :cmEnd
+C:
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-install
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/6ec01562b1ed386144ec141064c02e22/gtest-external-install.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-build;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-install</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\05fc3de85ddc423ffaff454cfcdf809a\gtest-external-complete.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Completed 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/CMakeFiles/$(Configuration)
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/CMakeFiles/$(Configuration)/gtest-external-complete
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-done
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/05fc3de85ddc423ffaff454cfcdf809a/gtest-external-complete.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-install;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-mkdir;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-download;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-update;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-patch;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-configure;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-build;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-install;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\CMakeFiles\$(Configuration)\gtest-external-complete</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Completed 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/CMakeFiles/$(Configuration)
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/CMakeFiles/$(Configuration)/gtest-external-complete
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-done
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/05fc3de85ddc423ffaff454cfcdf809a/gtest-external-complete.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-install;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-mkdir;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-download;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-update;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-patch;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-configure;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-build;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-install;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\CMakeFiles\$(Configuration)\gtest-external-complete</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Completed 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/CMakeFiles/$(Configuration)
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/CMakeFiles/$(Configuration)/gtest-external-complete
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-done
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/05fc3de85ddc423ffaff454cfcdf809a/gtest-external-complete.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-install;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-mkdir;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-download;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-update;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-patch;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-configure;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-build;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-install;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\CMakeFiles\$(Configuration)\gtest-external-complete</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Completed 'gtest-external'</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -E make_directory C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/CMakeFiles/$(Configuration)
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/CMakeFiles/$(Configuration)/gtest-external-complete
+if %errorlevel% neq 0 goto :cmEnd
+"C:\Program Files\CMake\bin\cmake.exe" -E touch C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/src/gtest-external-stamp/$(Configuration)/gtest-external-done
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/05fc3de85ddc423ffaff454cfcdf809a/gtest-external-complete.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-install;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-mkdir;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-download;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-update;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-patch;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-configure;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-build;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\src\gtest-external-stamp\$(Configuration)\gtest-external-install;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\CMakeFiles\$(Configuration)\gtest-external-complete</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\b8fde84cb73955cb7a98b1ebe646b222\gtest-external.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+      </Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/b8fde84cb73955cb7a98b1ebe646b222/gtest-external.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\CMakeFiles\$(Configuration)\gtest-external-complete;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\CMakeFiles\gtest-external</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+      </Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/b8fde84cb73955cb7a98b1ebe646b222/gtest-external.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\CMakeFiles\$(Configuration)\gtest-external-complete;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\CMakeFiles\gtest-external</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+      </Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/b8fde84cb73955cb7a98b1ebe646b222/gtest-external.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\CMakeFiles\$(Configuration)\gtest-external-complete;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\CMakeFiles\gtest-external</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+      </Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc/CMakeFiles/b8fde84cb73955cb7a98b1ebe646b222/gtest-external.rule;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\CMakeFiles\$(Configuration)\gtest-external-complete;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\CMakeFiles\gtest-external</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/tests/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/tests/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\tmp\gtest-external-cfgcmd.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\tests\copyTestDependencies.cmake.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\gtest.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject-download.cmake.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/tests/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/tests/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\tmp\gtest-external-cfgcmd.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\tests\copyTestDependencies.cmake.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\gtest.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject-download.cmake.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/tests/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/tests/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\tmp\gtest-external-cfgcmd.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\tests\copyTestDependencies.cmake.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\gtest.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject-download.cmake.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/tests/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/tests/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\gtest-external-prefix\tmp\gtest-external-cfgcmd.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\tests\copyTestDependencies.cmake.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\gtest.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject-download.cmake.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\tests\CMakeFiles\gtest-external" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

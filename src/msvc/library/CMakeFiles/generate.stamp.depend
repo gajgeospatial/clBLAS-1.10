@@ -1,0 +1,9 @@
+# CMake generation dependency list for this directory.
+C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt
+C:/Development/op3d_active/clBLAS-1.10/src/msvc/library/tplgen-prefix/tmp/tplgen-cfgcmd.txt.in
+C:/Program Files/CMake/share/cmake-3.14/Modules/ExternalProject.cmake
+C:/Program Files/CMake/share/cmake-3.14/Modules/FindPackageHandleStandardArgs.cmake
+C:/Program Files/CMake/share/cmake-3.14/Modules/FindPackageMessage.cmake
+C:/Program Files/CMake/share/cmake-3.14/Modules/FindPythonInterp.cmake
+C:/Program Files/CMake/share/cmake-3.14/Modules/InstallRequiredSystemLibraries.cmake
+C:/Program Files/CMake/share/cmake-3.14/Modules/RepositoryInfo.txt.in

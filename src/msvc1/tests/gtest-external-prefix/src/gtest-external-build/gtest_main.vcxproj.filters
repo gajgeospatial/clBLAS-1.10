@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\gtest-external-prefix\src\gtest-external\src\gtest_main.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\gtest-external-prefix\src\gtest-external\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{0F5782BD-ECC5-3FDB-9FEC-181214D91E87}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,299 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{914BFFF1-BE19-3EA6-9E38-23B43D501CED}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>test-short</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName).dir\vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">test-short</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectName).dir\vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">test-short</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;.\gtest-external-prefix\src\gtest-external\include;..\..\;..\..\tests\include;..\..\include};..\..\include;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;SHORT_TESTS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;TEST_WITH_SINGLE_DEVICE;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;SHORT_TESTS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;TEST_WITH_SINGLE_DEVICE;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;.\gtest-external-prefix\src\gtest-external\include;..\..\;..\..\tests\include;..\..\include};..\..\include;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;.\gtest-external-prefix\src\gtest-external\include;..\..\;..\..\tests\include;..\..\include};..\..\include;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>gtest.lib;gtest_main.lib;clBLAS.lib;OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>gtest-external-prefix\src\gtest-external-build\$(Configuration);$(SolutionDir)vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration);..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\Win32;%(AdditionalLibraryDirectories);</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(OutDir)test-short.lib</ImportLibrary>
+      <ProgramDataBaseFile>$(OutDir)$(TargetName).pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;.\gtest-external-prefix\src\gtest-external\include;..\..\;..\..\tests\include;..\..\include};..\..\include;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;SHORT_TESTS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;TEST_WITH_SINGLE_DEVICE;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;SHORT_TESTS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;TEST_WITH_SINGLE_DEVICE;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;.\gtest-external-prefix\src\gtest-external\include;..\..\;..\..\tests\include;..\..\include};..\..\include;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;.\gtest-external-prefix\src\gtest-external\include;..\..\;..\..\tests\include;..\..\include};..\..\include;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>gtest.lib;gtest_main.lib;clBLAS.lib;OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>gtest-external-prefix\src\gtest-external-build\$(Configuration);$(SolutionDir)vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration);..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\Win32;%(AdditionalLibraryDirectories);</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(OutDir)test-short.lib</ImportLibrary>
+      <ProgramDataBaseFile>$(OutDir)$(TargetName).pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\tests\correctness\blas-lapack.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\correctness\BlasBase-corr.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-gemm.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-trmm.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-trsm.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-gemv.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-symv.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-spmv.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-syr2k.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-syrk.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-trmv.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-tpmv.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-trsv.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-symm.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-gemm2.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-ger.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-gerc.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-her.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-her2.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-syr.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-spr.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-syr2.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-hemv.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-hpmv.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-hemm.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-herk.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-tpsv.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-hpr.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-hpr2.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-spr2.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-gbmv.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-hbmv.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-tbmv.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-tbsv.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-sbmv.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-her2k.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-scal.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-swap.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-copy.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-axpy.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-dot.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-dotc.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-rotg.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-rotm.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-rot.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-rotmg.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-nrm2.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-asum.cpp" />
+    <ClCompile Include="..\..\tests\correctness\corr-iamax.cpp" />
+    <ClCompile Include="..\..\tests\correctness\test-correctness.cpp" />
+    <ClCompile Include="..\..\tests\correctness\tcase-filter.cpp" />
+    <ClCompile Include="..\..\tests\cmdline.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\common.cpp" />
+    <ClCompile Include="..\..\tests\clBLAS-wrapper.cpp" />
+    <ClCompile Include="..\..\tests\BlasBase.cpp" />
+    <ClCompile Include="..\..\tests\blas.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\blas-cblas.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="..\..\tests\blas-wrapper.cpp" />
+    <ClInclude Include="..\..\tests\correctness\blas-lapack.h" />
+    <ClInclude Include="..\..\tests\correctness\trsm-delta.h" />
+    <ClInclude Include="..\..\tests\correctness\tcase-filter.h" />
+    <ClInclude Include="..\..\tests\correctness\delta.h" />
+    <ClInclude Include="..\..\tests\correctness\trsv-delta.h" />
+    <ClInclude Include="..\..\clBLAS.h" />
+    <ClInclude Include="..\..\clBLAS-complex.h" />
+    <ClInclude Include="..\..\include\cltypes.h" />
+    <ClInclude Include="..\..\include\defbool.h" />
+    <ClInclude Include="..\..\tests\include\blas-internal.h" />
+    <ClInclude Include="..\..\tests\include\blas-cblas.h" />
+    <ClInclude Include="..\..\tests\include\blas-wrapper.h" />
+    <ClInclude Include="..\..\tests\include\clBLAS-wrapper.h" />
+    <ClInclude Include="..\..\tests\include\cmdline.h" />
+    <ClInclude Include="..\..\tests\include\BlasBase.h" />
+    <ClInclude Include="..\..\tests\include\common.h" />
+    <ClInclude Include="..\..\tests\include\gemm.h" />
+    <ClInclude Include="..\..\tests\include\trmm.h" />
+    <ClInclude Include="..\..\tests\include\tpmv.h" />
+    <ClInclude Include="..\..\tests\include\trsm.h" />
+    <ClInclude Include="..\..\tests\include\gemv.h" />
+    <ClInclude Include="..\..\tests\include\symv.h" />
+    <ClInclude Include="..\..\tests\include\spmv.h" />
+    <ClInclude Include="..\..\tests\include\syr2k.h" />
+    <ClInclude Include="..\..\tests\include\syrk.h" />
+    <ClInclude Include="..\..\tests\include\trmv.h" />
+    <ClInclude Include="..\..\tests\include\trsv.h" />
+    <ClInclude Include="..\..\tests\include\symm.h" />
+    <ClInclude Include="..\..\tests\include\ger.h" />
+    <ClInclude Include="..\..\tests\include\gerc.h" />
+    <ClInclude Include="..\..\tests\include\syr.h" />
+    <ClInclude Include="..\..\tests\include\spr.h" />
+    <ClInclude Include="..\..\tests\include\her.h" />
+    <ClInclude Include="..\..\tests\include\her2.h" />
+    <ClInclude Include="..\..\tests\include\syr2.h" />
+    <ClInclude Include="..\..\tests\include\hemv.h" />
+    <ClInclude Include="..\..\tests\include\hpmv.h" />
+    <ClInclude Include="..\..\tests\include\hemm.h" />
+    <ClInclude Include="..\..\tests\include\herk.h" />
+    <ClInclude Include="..\..\tests\include\tpsv.h" />
+    <ClInclude Include="..\..\tests\include\hpr.h" />
+    <ClInclude Include="..\..\tests\include\hpr2.h" />
+    <ClInclude Include="..\..\tests\include\spr2.h" />
+    <ClInclude Include="..\..\tests\include\gbmv.h" />
+    <ClInclude Include="..\..\tests\include\hbmv.h" />
+    <ClInclude Include="..\..\tests\include\tbmv.h" />
+    <ClInclude Include="..\..\tests\include\tbsv.h" />
+    <ClInclude Include="..\..\tests\include\copy.h" />
+    <ClInclude Include="..\..\tests\include\sbmv.h" />
+    <ClInclude Include="..\..\tests\include\dot.h" />
+    <ClInclude Include="..\..\tests\include\dotc.h" />
+    <ClInclude Include="..\..\tests\include\her2k.h" />
+    <ClInclude Include="..\..\tests\include\scal.h" />
+    <ClInclude Include="..\..\tests\include\swap.h" />
+    <ClInclude Include="..\..\tests\include\axpy.h" />
+    <ClInclude Include="..\..\tests\include\rotg.h" />
+    <ClInclude Include="..\..\tests\include\rotm.h" />
+    <ClInclude Include="..\..\tests\include\rot.h" />
+    <ClInclude Include="..\..\tests\include\asum.h" />
+    <ClInclude Include="..\..\tests\include\rotmg.h" />
+    <ClInclude Include="..\..\tests\include\nrm2.h" />
+    <ClInclude Include="..\..\tests\include\iamax.h" />
+    <ClInclude Include="..\..\tests\include\blas-math.h" />
+    <ClInclude Include="..\..\tests\include\blas-random.h" />
+    <ClInclude Include="..\..\tests\include\matrix.h" />
+    <ClInclude Include="..\..\tests\include\timer.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\library\clBLAS.vcxproj">
+      <Project>{0B938596-E4BA-3C26-BED4-A21A426782BF}</Project>
+      <Name>clBLAS</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

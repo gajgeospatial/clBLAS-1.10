@@ -1,0 +1,407 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{B52464F1-71B2-346C-A674-A6AB4D9E89A9}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>AutoGemm_Tools_Profile</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AutoGemm_Tools_Profile.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AutoGemm_Tools_Profile</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AutoGemm_Tools_Profile.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AutoGemm_Tools_Profile</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">AutoGemm_Tools_Profile.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">AutoGemm_Tools_Profile</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">AutoGemm_Tools_Profile.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">AutoGemm_Tools_Profile</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION="1.2";CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION=\"1.2\";CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\Win32\OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/Debug/AutoGemm_Tools_Profile.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/Debug/AutoGemm_Tools_Profile.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Release/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION="1.2";CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION=\"1.2\";CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\Win32\OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/Release/AutoGemm_Tools_Profile.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/Release/AutoGemm_Tools_Profile.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION="1.2";CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION=\"1.2\";CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\Win32\OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/MinSizeRel/AutoGemm_Tools_Profile.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/MinSizeRel/AutoGemm_Tools_Profile.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION="1.2";CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION=\"1.2\";CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\Win32\OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/RelWithDebInfo/AutoGemm_Tools_Profile.lib</ImportLibrary>
+      <ProgramDataBaseFile>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/RelWithDebInfo/AutoGemm_Tools_Profile.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\CMakeFiles\2b04de99f48f996a565bc3c6911092e2\AutoGemmClKernels.h.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating ../include/AutoGemmIncludes/AutoGemmClKernels.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.h, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.h, ../include/AutoGemmIncludes/AutoGemmKernelSelection.h, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.h, ../include/AutoGemmIncludes/AutoGemmKernelSources.h, ../include/AutoGemmIncludes/AutoGemmClKernels.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelection.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSources.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files (x86)\Python38-32\python.exe" C:/Development/op3d_active/clBLAS-1.10/src/library/blas/AutoGemm/AutoGemm.py --output-path C:/Development/op3d_active/clBLAS-1.10/src/msvc1/include --opencl-compiler-version 1.2 --architecture Hawaii
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc1/CMakeFiles/2b04de99f48f996a565bc3c6911092e2/AutoGemmClKernels.h.rule;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemm.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemmParameters.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Common.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Includes.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelOpenCL.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelParameters.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelSelection.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelsToPreCompile.py;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating ../include/AutoGemmIncludes/AutoGemmClKernels.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.h, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.h, ../include/AutoGemmIncludes/AutoGemmKernelSelection.h, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.h, ../include/AutoGemmIncludes/AutoGemmKernelSources.h, ../include/AutoGemmIncludes/AutoGemmClKernels.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelection.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSources.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files (x86)\Python38-32\python.exe" C:/Development/op3d_active/clBLAS-1.10/src/library/blas/AutoGemm/AutoGemm.py --output-path C:/Development/op3d_active/clBLAS-1.10/src/msvc1/include --opencl-compiler-version 1.2 --architecture Hawaii
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc1/CMakeFiles/2b04de99f48f996a565bc3c6911092e2/AutoGemmClKernels.h.rule;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemm.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemmParameters.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Common.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Includes.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelOpenCL.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelParameters.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelSelection.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelsToPreCompile.py;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Generating ../include/AutoGemmIncludes/AutoGemmClKernels.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.h, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.h, ../include/AutoGemmIncludes/AutoGemmKernelSelection.h, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.h, ../include/AutoGemmIncludes/AutoGemmKernelSources.h, ../include/AutoGemmIncludes/AutoGemmClKernels.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelection.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSources.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files (x86)\Python38-32\python.exe" C:/Development/op3d_active/clBLAS-1.10/src/library/blas/AutoGemm/AutoGemm.py --output-path C:/Development/op3d_active/clBLAS-1.10/src/msvc1/include --opencl-compiler-version 1.2 --architecture Hawaii
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc1/CMakeFiles/2b04de99f48f996a565bc3c6911092e2/AutoGemmClKernels.h.rule;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemm.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemmParameters.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Common.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Includes.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelOpenCL.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelParameters.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelSelection.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelsToPreCompile.py;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Generating ../include/AutoGemmIncludes/AutoGemmClKernels.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.h, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.h, ../include/AutoGemmIncludes/AutoGemmKernelSelection.h, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.h, ../include/AutoGemmIncludes/AutoGemmKernelSources.h, ../include/AutoGemmIncludes/AutoGemmClKernels.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelection.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSources.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files (x86)\Python38-32\python.exe" C:/Development/op3d_active/clBLAS-1.10/src/library/blas/AutoGemm/AutoGemm.py --output-path C:/Development/op3d_active/clBLAS-1.10/src/msvc1/include --opencl-compiler-version 1.2 --architecture Hawaii
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc1/CMakeFiles/2b04de99f48f996a565bc3c6911092e2/AutoGemmClKernels.h.rule;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemm.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemmParameters.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Common.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Includes.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelOpenCL.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelParameters.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelSelection.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelsToPreCompile.py;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc1 --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\tplgen-prefix\tmp\tplgen-cfgcmd.txt.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPythonInterp.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\InstallRequiredSystemLibraries.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc1 --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\tplgen-prefix\tmp\tplgen-cfgcmd.txt.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPythonInterp.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\InstallRequiredSystemLibraries.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc1 --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\tplgen-prefix\tmp\tplgen-cfgcmd.txt.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPythonInterp.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\InstallRequiredSystemLibraries.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc1 --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\tplgen-prefix\tmp\tplgen-cfgcmd.txt.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPythonInterp.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\InstallRequiredSystemLibraries.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemmTools\ProfileAutoGemm.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.cpp" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.h" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemm.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemmParameters.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Common.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Includes.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelOpenCL.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelParameters.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelSelection.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelsToPreCompile.py" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\ZERO_CHECK.vcxproj">
+      <Project>{6F5DE493-B27D-3EDF-91E6-AC848AA805F2}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,1151 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|Win32">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|Win32">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{F4AA849F-C4CC-3944-9D71-53CC83426342}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>clBLAS</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'" Label="Configuration">
+    <ConfigurationType>DynamicLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\staging\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">clBLAS.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">clBLAS</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\staging\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">clBLAS.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">clBLAS</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\staging\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">clBLAS.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">clBLAS</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\staging\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">clBLAS.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">clBLAS</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">.dll</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;BUILDING_CLBLAS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION="1.2";CMAKE_INTDIR="Debug";clBLAS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;BUILDING_CLBLAS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION=\"1.2\";CMAKE_INTDIR=\"Debug\";clBLAS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\Win32\OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/Debug/clBLAS.lib</ImportLibrary>
+      <ModuleDefinitionFile>C:/Development/op3d_active/clBLAS-1.10/src/clBLAS.def</ModuleDefinitionFile>
+      <ProgramDataBaseFile>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/staging/Debug/clBLAS.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Release/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;BUILDING_CLBLAS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION="1.2";CMAKE_INTDIR="Release";clBLAS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;BUILDING_CLBLAS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION=\"1.2\";CMAKE_INTDIR=\"Release\";clBLAS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\Win32\OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/Release/clBLAS.lib</ImportLibrary>
+      <ModuleDefinitionFile>C:/Development/op3d_active/clBLAS-1.10/src/clBLAS.def</ModuleDefinitionFile>
+      <ProgramDataBaseFile>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/staging/Release/clBLAS.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;BUILDING_CLBLAS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION="1.2";CMAKE_INTDIR="MinSizeRel";clBLAS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;BUILDING_CLBLAS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION=\"1.2\";CMAKE_INTDIR=\"MinSizeRel\";clBLAS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\Win32\OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/MinSizeRel/clBLAS.lib</ImportLibrary>
+      <ModuleDefinitionFile>C:/Development/op3d_active/clBLAS-1.10/src/clBLAS.def</ModuleDefinitionFile>
+      <ProgramDataBaseFile>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/staging/MinSizeRel/clBLAS.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;BUILDING_CLBLAS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION="1.2";CMAKE_INTDIR="RelWithDebInfo";clBLAS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;BUILDING_CLBLAS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION=\"1.2\";CMAKE_INTDIR=\"RelWithDebInfo\";clBLAS_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;C:\Development\op3d_active\clBLAS-1.10\src;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include;C:\Development\op3d_active\clBLAS-1.10\src\library\.;C:\Development\op3d_active\clBLAS-1.10\src\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include;C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\include;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\trtri;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\Win32\OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/RelWithDebInfo/clBLAS.lib</ImportLibrary>
+      <ModuleDefinitionFile>C:/Development/op3d_active/clBLAS-1.10/src/clBLAS.def</ModuleDefinitionFile>
+      <ProgramDataBaseFile>C:/Development/op3d_active/clBLAS-1.10/src/msvc1/staging/RelWithDebInfo/clBLAS.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\CMakeFiles\2b04de99f48f996a565bc3c6911092e2\AutoGemmClKernels.h.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating ../include/AutoGemmIncludes/AutoGemmClKernels.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.h, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.h, ../include/AutoGemmIncludes/AutoGemmKernelSelection.h, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.h, ../include/AutoGemmIncludes/AutoGemmKernelSources.h, ../include/AutoGemmIncludes/AutoGemmClKernels.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelection.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSources.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files (x86)\Python38-32\python.exe" C:/Development/op3d_active/clBLAS-1.10/src/library/blas/AutoGemm/AutoGemm.py --output-path C:/Development/op3d_active/clBLAS-1.10/src/msvc1/include --opencl-compiler-version 1.2 --architecture Hawaii
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc1/CMakeFiles/2b04de99f48f996a565bc3c6911092e2/AutoGemmClKernels.h.rule;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemm.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemmParameters.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Common.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Includes.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelOpenCL.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelParameters.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelSelection.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelsToPreCompile.py;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating ../include/AutoGemmIncludes/AutoGemmClKernels.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.h, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.h, ../include/AutoGemmIncludes/AutoGemmKernelSelection.h, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.h, ../include/AutoGemmIncludes/AutoGemmKernelSources.h, ../include/AutoGemmIncludes/AutoGemmClKernels.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelection.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSources.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files (x86)\Python38-32\python.exe" C:/Development/op3d_active/clBLAS-1.10/src/library/blas/AutoGemm/AutoGemm.py --output-path C:/Development/op3d_active/clBLAS-1.10/src/msvc1/include --opencl-compiler-version 1.2 --architecture Hawaii
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc1/CMakeFiles/2b04de99f48f996a565bc3c6911092e2/AutoGemmClKernels.h.rule;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemm.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemmParameters.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Common.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Includes.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelOpenCL.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelParameters.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelSelection.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelsToPreCompile.py;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Generating ../include/AutoGemmIncludes/AutoGemmClKernels.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.h, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.h, ../include/AutoGemmIncludes/AutoGemmKernelSelection.h, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.h, ../include/AutoGemmIncludes/AutoGemmKernelSources.h, ../include/AutoGemmIncludes/AutoGemmClKernels.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelection.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSources.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files (x86)\Python38-32\python.exe" C:/Development/op3d_active/clBLAS-1.10/src/library/blas/AutoGemm/AutoGemm.py --output-path C:/Development/op3d_active/clBLAS-1.10/src/msvc1/include --opencl-compiler-version 1.2 --architecture Hawaii
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc1/CMakeFiles/2b04de99f48f996a565bc3c6911092e2/AutoGemmClKernels.h.rule;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemm.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemmParameters.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Common.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Includes.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelOpenCL.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelParameters.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelSelection.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelsToPreCompile.py;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Generating ../include/AutoGemmIncludes/AutoGemmClKernels.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.h, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.h, ../include/AutoGemmIncludes/AutoGemmKernelSelection.h, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.h, ../include/AutoGemmIncludes/AutoGemmKernelSources.h, ../include/AutoGemmIncludes/AutoGemmClKernels.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelection.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSources.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files (x86)\Python38-32\python.exe" C:/Development/op3d_active/clBLAS-1.10/src/library/blas/AutoGemm/AutoGemm.py --output-path C:/Development/op3d_active/clBLAS-1.10/src/msvc1/include --opencl-compiler-version 1.2 --architecture Hawaii
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/msvc1/CMakeFiles/2b04de99f48f996a565bc3c6911092e2/AutoGemmClKernels.h.rule;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemm.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemmParameters.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Common.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Includes.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelOpenCL.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelParameters.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelSelection.py;C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelsToPreCompile.py;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.h;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc1 --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\tplgen-prefix\tmp\tplgen-cfgcmd.txt.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPythonInterp.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\InstallRequiredSystemLibraries.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc1 --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\tplgen-prefix\tmp\tplgen-cfgcmd.txt.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPythonInterp.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\InstallRequiredSystemLibraries.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc1 --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\tplgen-prefix\tmp\tplgen-cfgcmd.txt.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPythonInterp.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\InstallRequiredSystemLibraries.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Building Custom Rule C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Development/op3d_active/clBLAS-1.10/src -BC:/Development/op3d_active/clBLAS-1.10/src/msvc1 --check-stamp-file C:/Development/op3d_active/clBLAS-1.10/src/msvc1/library/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:/Development/op3d_active/clBLAS-1.10/src/library/CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\tplgen-prefix\tmp\tplgen-cfgcmd.txt.in;C:\Program Files\CMake\share\cmake-3.14\Modules\ExternalProject.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageHandleStandardArgs.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPackageMessage.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\FindPythonInterp.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\InstallRequiredSystemLibraries.cmake;C:\Program Files\CMake\share\cmake-3.14\Modules\RepositoryInfo.txt.in;C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\list.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\clkern.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\kern_cache.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\kerngen_core.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\kgen_basic.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\kgen_loop_helper.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\kgen_guard.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\misc.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\devinfo.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\devinfo-cache.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\mutex.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\rwlock.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\trace_malloc.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\md5sum.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\gens\dblock_kgen.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\init.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\impl.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\scimage.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xgemv.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xsymv.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xgemm.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xtrmm.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xtrsm.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xsyrk.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xsyr2k.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xtrmv.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xtrsv.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xsymm.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xgemm2.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xger.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xsyr.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xsyr2.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xher.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xher2.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xhemv.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xhemm.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xherk.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xhpmv.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xspmv.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xgbmv.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xtbmv.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xshbmv.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xtbsv.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xher2k.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xswap.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xscal.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xcopy.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xaxpy.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xdot.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xrotg.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xrotmg.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xrot.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xrotm.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\ixamax.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xnrm2.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xasum.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\matrix.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\fill.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\functor.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\functor_selector.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\functor_xgemm.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\functor_xscal.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\functor_xtrsm.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\functor_xscal_generic.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\tahiti.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\hawaii.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\bonaire.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\gcn_dgemm.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\gpu_dtrsm.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\gpu_dtrsm192.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\functor_fill.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\hawaii_dgemmChannelConflict.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\hawaii_dgemmSplitKernel.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\hawaii_sgemmSplitKernel.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\hawaii_sgemmSplit64_32.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\gcn_dgemmCommon.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\gcn_sgemm.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\gcn_zgemm.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\gcn_dgemmSmallMatrices.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\gcn_sgemmSmallMatrices.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\hawaii_sgemmBranchKernel.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\hawaii_sgemmBig1024Kernel.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\GemmSpecialCases.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\common.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\common2.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\blas_funcs.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\events.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\matrix_props.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\matrix_dims.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\kdump.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\solution_assert.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\solution_seq.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\solution_seq_make.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\problem_iter.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\kernel_extra.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\binary_lookup.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\functor_cache.cc" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\gen_init.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\blas_kgen.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\blas_subgroup.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\gen_helper.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\tilemul.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\fetch.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\tile.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\tile_iter.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\decomposition.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\gemv.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\symv.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\gemm.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\trmm.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\trsm.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\syrxk.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\trxm_common.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\trsm_kgen.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\xxmv_common.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\blas_kgen_legacy.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\gen_helper_legacy.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\trxm_common_legacy.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\trsm_kgen_legacy.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\blkmul.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\gemm_lds.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\gemm_img.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\trmm_lds.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\trmm_img.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\trsm_lds.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\trsm_img.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\trsm_cached_lds.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\trmv_reg.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\ger_lds.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\trsv_trtri.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\trsv_gemv.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\kprintf.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\syr_lds.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\her_lds.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\syr2_lds.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\her2_lds.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\symm_cached.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\gemm_cached.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\gemm_tail_cached.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\gbmv.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\tuned_numbers.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\swap_reg.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\scal_reg.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\copy_reg.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\axpy_reg.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\dot.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\reduction.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\rotg_reg.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\rotmg_reg.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\rotm_reg.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\iamax.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\nrm2.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\asum.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune\toolslib.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune\fileio.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune\dimension.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune\storage_init.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune\storage_io.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune\storage_data.c">
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">CompileAsC</CompileAs>
+      <CompileAs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">CompileAsC</CompileAs>
+    </ClCompile>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\clBLAS.def" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\clBLAS.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\clBLAS-complex.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\clkern.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\cltypes.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\dblock_kgen.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\defbool.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\devinfo.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\dis_warning.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\kern_cache.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\kernel_extra.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\kerngen.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\list.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\mempat.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\msvc.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\mutex.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\rwlock.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\solver.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\md5sum.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\binary_lookup.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include\blas_funcs.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include\matrix_dims.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include\matrix_props.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include\blas_mempat.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include\clblas-internal.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include\solution_seq.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include\events.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include\xgemm.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\functor.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\functor_xgemm.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\functor_xscal.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\functor_xtrsm.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\functor_xscal_generic.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\functor_selector.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\tahiti.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\hawaii.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\bonaire.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\gcn_dgemm.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\gpu_dtrsm.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\gpu_dtrsm192.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\BinaryBuild.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\hawaii_dgemmChannelConflict.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\hawaii_dgemmSplitKernel.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\hawaii_sgemmSplitKernel.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\hawaii_sgemmSplit64_32.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\gcn_dgemmCommon.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\gcn_sgemm.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\gcn_zgemm.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\gcn_dgemmSmallMatrices.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\gcn_sgemmSmallMatrices.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\hawaii_sgemmBranchKernel.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\hawaii_sgemmBig1024Kernel.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources\UserGemmClKernels.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources\UserGemmKernelSourceIncludes.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\fetch.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\blas_kgen.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\blas_subgroup.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\gen_helper.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\init.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\trxm_common.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\trsm_kgen.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\xxmv_common.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\tile.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\tile_iter.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\tuned_numbers.h" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.cpp" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h" />
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.h" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemm.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemmParameters.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Common.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Includes.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelOpenCL.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelParameters.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelSelection.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelsToPreCompile.py" />
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources\UserGemmClKernels.cc" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\ZERO_CHECK.vcxproj">
+      <Project>{6F5DE493-B27D-3EDF-91E6-AC848AA805F2}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\library\GENERATE_CLT.vcxproj">
+      <Project>{9B4F073F-7314-3C68-A5BB-22F05ECE27EE}</Project>
+      <Name>GENERATE_CLT</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

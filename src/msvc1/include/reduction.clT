@@ -1,0 +1,369 @@
+/* ************************************************************************
+ * Copyright 2013 Advanced Micro Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ************************************************************************/
+
+
+
+static const char *red_sum_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+\n\
+__kernel void %PREFIXred_sum_kernel( __global %TYPE *_X, __global %TYPE *_res,\n\
+                                                    uint N, uint offx, uint offRes )\n\
+{\n\
+     __global %TYPE *X = _X + offx;\n\
+    __global %TYPE *res = _res + offRes;\n\
+    %TYPE redVal = (%TYPE) 0.0;\n\
+\n\
+    int gOffset;\n\
+    for( gOffset=(get_global_id(0) * %V); (gOffset + %V - 1)<N; gOffset+=( get_global_size(0) * %V ) )\n\
+    {\n\
+        %TYPE%V reg1;\n\
+        reg1 = %VLOAD( 0, (X + gOffset) );\n\
+        redVal +=  %REDUCE_SUM( reg1 );\n\
+        }\n\
+    // Loop for the last thread to handle the tail part of the vector\n\
+    // Using the same gOffset used above\n\
+    for( ; gOffset<N; gOffset++ )\n\
+    {\n\
+        redVal += X[gOffset];\n\
+    }\n\
+\n\
+    // Note: this has to be called outside any if-conditions- because REDUCTION uses barrier\n\
+    %REDUCTION_BY_SUM( redVal );\n\
+\n\
+    if( (get_local_id(0)) == 0 ) {\n\
+        res[0] = redVal;\n\
+    }\n\
+}\n\
+\n";
+
+
+
+
+static const char *red_max_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+        #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+        #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+    #define MAX 0x1.fffffffffffffp1023      // Max in case of d/z (values from khronos site)\n\
+#else\n\
+    #define MAX 0x1.fffffep127f             // Max in case of s/c\n\
+#endif\n\
+\n\
+__kernel void %PREFIXred_max_kernel( __global %TYPE *_X, __global %TYPE *_res,\n\
+                                                    uint N, uint offx, uint offRes )\n\
+{\n\
+     __global %TYPE *X = _X + offx;\n\
+    __global %TYPE *res = _res + offRes;\n\
+    %TYPE redVal = (%TYPE) - MAX;\n\
+\n\
+    int gOffset;\n\
+    for( gOffset=(get_global_id(0) * %V); (gOffset + %V - 1)<N; gOffset+=( get_global_size(0) * %V ) )\n\
+    {\n\
+        %TYPE%V reg1;\n\
+        reg1 = %VLOAD( 0, (X + gOffset) );\n\
+        %TYPE scalarMax = %REDUCE_MAX( reg1 );\n\
+        redVal =  fmax( redVal, scalarMax );\n\
+        }\n\
+    // Loop for the last thread to handle the tail part of the vector\n\
+    // Using the same gOffset used above\n\
+    for( ; gOffset<N; gOffset++ )\n\
+    {\n\
+        redVal = fmax( redVal, X[gOffset] );\n\
+    }\n\
+\n\
+    // Note: this has to be called outside any if-conditions- because REDUCTION uses barrier\n\
+    %REDUCTION_BY_MAX( redVal );\n\
+\n\
+    if( (get_local_id(0)) == 0 ) {\n\
+        res[0] = redVal;\n\
+    }\n\
+}\n\
+\n";
+
+
+
+static const char *red_min_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+        #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+        #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+\n\
+    #define MAX 0x1.fffffffffffffp1023      // Max in case of d/z (values from khronos site)\n\
+#else\n\
+    #define MAX 0x1.fffffep127f             // Max in case of s/c\n\
+#endif\n\
+\n\
+__kernel void %PREFIXred_min_kernel( __global %TYPE *_X, __global %TYPE *_res,\n\
+                                                    uint N, uint offx, uint offRes )\n\
+{\n\
+     __global %TYPE *X = _X + offx;\n\
+    __global %TYPE *res = _res + offRes;\n\
+    %TYPE redVal = (%TYPE) MAX;\n\
+\n\
+    int gOffset;\n\
+    for( gOffset=(get_global_id(0) * %V); (gOffset + %V - 1)<N; gOffset+=( get_global_size(0) * %V ) )\n\
+    {\n\
+        %TYPE%V reg1;\n\
+        reg1 = %VLOAD( 0, (X + gOffset) );\n\
+        %TYPE scalarMin = %REDUCE_MIN( reg1 );\n\
+        redVal =  fmin( redVal, scalarMin );\n\
+        }\n\
+    // Loop for the last thread to handle the tail part of the vector\n\
+    // Using the same gOffset used above\n\
+    for( ; gOffset<N; gOffset++ )\n\
+    {\n\
+        redVal = fmin( redVal, X[gOffset] );\n\
+    }\n\
+\n\
+    // Note: this has to be called outside any if-conditions- because REDUCTION uses barrier\n\
+    %REDUCTION_BY_MIN( redVal );\n\
+\n\
+    if( (get_local_id(0)) == 0 ) {\n\
+        res[0] = redVal;\n\
+    }\n\
+}\n\
+\n";
+
+
+
+
+static const char *red_with_index_kernel = "\
+\n\
+/******************************************************\n\
+ *  Implementations available for REDUCTION_BY_MAX\n\
+     0 - ATOMIC_FLI\n\
+     1 - REG_FLI,\n\
+     2 - ATOMIC_FHI,\n\
+     3 - REG_FHI\n\
+\n\
+    Implementation available for REDUCE_MAX\n\
+    0 - FHI\n\
+    1 - FLI\n\
+ ***************************************************/\n\
+\n\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+        #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+        #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+\n\
+    #define MIN 0x1.0p-1022         // Min in case of d/z (values from khronos site)\n\
+#else\n\
+    #define MIN 0x1.0p-126f         // Min in case od s/c\n\
+#endif\n\
+\n\
+\n\
+__kernel void %PREFIXred_with_index_kernel( __global %TYPE *_X, __global uint *_res,\n\
+                                                    uint N, uint offx, uint offRes )\n\
+{\n\
+     __global %TYPE *X = _X + offx;\n\
+    __global uint *XIndex = (__global uint*)(&X[N]);\n\
+    __global uint *res = _res + offRes;\n\
+    %TYPE maxVal = (%TYPE)MIN, val = (%TYPE)MIN;\n\
+    uint maxIndex = 0, index = 0;\n\
+\n\
+    int gOffset;\n\
+    for( gOffset=(get_global_id(0) * %V); (gOffset + %V - 1)<N; gOffset+=( get_global_size(0) * %V ) )\n\
+    {\n\
+        %TYPE%V vReg1 = %VLOAD( 0, (X + gOffset) );\n\
+\n\
+        %REDUCE_MAX(vReg1,val,index,1); // Find max within a vector\n\
+        if(val > maxVal)\n\
+        {\n\
+            maxVal = val;\n\
+            maxIndex = XIndex[(gOffset + index)];\n\
+    }\n\
+    }\n\
+    // Loop for the last thread to handle the tail part of the vector\n\
+    // Using the same gOffset used above\n\
+"
+"\
+    for( ; gOffset<N; gOffset++ )\n\
+    {\n\
+        %TYPE sreg1 = X[gOffset];\n\
+        if(sreg1 > maxVal)\n\
+        {\n\
+            maxVal = sreg1;\n\
+            maxIndex = XIndex[gOffset];\n\
+        }\n\
+    }\n\
+\n\
+    // Note: this has to be called outside any if-conditions- because REDUCTION uses barrier\n\
+#ifdef REDUCE_MAX_WITH_INDEX_ATOMICS\n\
+    %REDUCTION_BY_MAX(maxVal,maxIndex,0);\n\
+#else\n\
+    %REDUCTION_BY_MAX(maxVal,maxIndex,1);\n\
+#endif\n\
+\n\
+\n\
+    if(get_local_id(0) == 0)\n\
+    {\n\
+        res[0] = maxIndex;\n\
+    }\n\
+}\n\
+\n";
+
+
+
+
+static const char *red_hypot_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+        #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+        #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+\n\
+__kernel void %PREFIXred_hypot_kernel( __global %TYPE *_X, __global %TYPE *_res,\n\
+                                                    uint N, uint offx, uint offRes )\n\
+{\n\
+     __global %TYPE *X = _X + offx;\n\
+    __global %TYPE *res = _res + offRes;\n\
+    %TYPE redVal = (%TYPE) 0.0;\n\
+\n\
+    int gOffset;\n\
+    for( gOffset=(get_global_id(0) * %V); (gOffset + %V - 1)<N; gOffset+=( get_global_size(0) * %V ) )\n\
+    {\n\
+        %TYPE%V reg1;\n\
+        reg1 = %VLOAD( 0, (X + gOffset) );\n\
+        %TYPE scalarHypot = %REDUCE_HYPOT( reg1 );\n\
+        redVal =  hypot( redVal, scalarHypot );\n\
+    }\n\
+    // Loop for the last thread to handle the tail part of the vector\n\
+    // Using the same gOffset used above\n\
+    for( ; gOffset<N; gOffset++ )\n\
+    {\n\
+        redVal = hypot( redVal, X[gOffset] );\n\
+    }\n\
+\n\
+    // Note: this has to be called outside any if-conditions- because REDUCTION uses barrier\n\
+    %REDUCTION_BY_HYPOT( redVal );\n\
+\n\
+    if( (get_local_id(0)) == 0 ) {\n\
+        res[0] = redVal;\n\
+    }\n\
+}\n\
+\n";
+
+
+
+static const char *red_ssq_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+        #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+        #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+    #define MAX 0x1.fffffffffffffp1023      // Max in case of d/z (values from khronos site)\n\
+#else\n\
+    #define MAX 0x1.fffffep127f             // Max in case of s/c\n\
+#endif\n\
+\n\
+#define ZERO (%TYPE)0.0\n\
+\n\
+// Since scale & ssq are always of primitive type,\n\
+// This kernel will always be called only for float/double\n\
+\n\
+__kernel void %PREFIXred_ssq_kernel( __global %TYPE *_X, __global %TYPE *_res,\n\
+                                                    uint N, uint offx, uint offRes )\n\
+{\n\
+     __global %TYPE *X = _X + offx;\n\
+    __global %TYPE *res = _res + offRes;\n\
+    %TYPE scale = -MAX;\n\
+\n\
+    int gOffset;\n\
+    for( gOffset=(get_global_id(0) * %V); (gOffset + %V - 1)<N; gOffset+=( get_global_size(0) * %V ) )\n\
+    {\n\
+        %TYPE%V scale1;\n\
+        scale1 = %VLOAD( 0, (X + gOffset) );\n\
+\n\
+        %TYPE regMax = %REDUCE_MAX( scale1 );\n\
+        scale = fmax( scale, regMax );\n\
+    }\n\
+\n\
+    for( ; gOffset<N; gOffset++ )\n\
+    {\n\
+        %TYPE sReg;\n\
+        sReg = X[gOffset];\n\
+        scale = fmax( scale, sReg );\n\
+    }\n\
+\n\
+    %REDUCTION_BY_MAX( scale );\n\
+\n\
+    __local %TYPE _scaleOfWG;\n\
+\n\
+    if( (get_local_id(0)) == 0 ) {\n\
+        _scaleOfWG = scale;\n\
+    }\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+"
+"\
+    // At this point we have scale.\n\
+    // Now we calculate ssq by loading the array again and dividing the\n\
+    // elements by scale and squaring it.\n\
+\n\
+    %TYPE ssq = (%TYPE) 0.0;\n\
+    %TYPE scaleOfWG = _scaleOfWG;\n\
+\n\
+    // If scale was zero, that means the whole array encountered before was filled with zeroes\n\
+    // Note: scale is a local variable, either all enter or none\n\
+    if(isnotequal(scaleOfWG, ZERO))\n\
+    {\n\
+        for( gOffset=(get_global_id(0) * %V); (gOffset + %V - 1)<N; gOffset+=( get_global_size(0) * %V ) )\n\
+        {\n\
+            %TYPE%V scale1, ssq1;\n\
+            scale1 = %VLOAD( 0, (X + gOffset) );\n\
+            ssq1 = %VLOAD( 0, (X + gOffset + N) );\n\
+\n\
+            %TYPE%V tempSsq = (scale1 / scaleOfWG) * (scale1 / scaleOfWG) * ssq1;\n\
+\n\
+            ssq += %REDUCE_SUM( tempSsq );\n\
+        }\n\
+\n\
+        for( ; gOffset<N; gOffset++ )\n\
+        {\n\
+            %TYPE scale1, ssq1;\n\
+            scale1 = X[gOffset];\n\
+            ssq1 = X[gOffset + N];\n\
+\n\
+            ssq += (scale1 / scaleOfWG) * (scale1 / scaleOfWG) * ssq1;\n\
+        }\n\
+\n\
+        %REDUCTION_BY_SUM( ssq );\n\
+    }\n\
+\n\
+    if( (get_local_id(0)) == 0 ) {\n\
+        res[0] = scaleOfWG * sqrt(ssq);\n\
+    }\n\
+}\n\
+\n";
+
+
+
+

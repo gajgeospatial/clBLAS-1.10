@@ -1,0 +1,127 @@
+/* ************************************************************************
+ * Copyright 2013 Advanced Micro Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ************************************************************************/
+
+
+
+static const char *rotm_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+\n\
+#define ZERO    (%TYPE)0.0\n\
+#define ONE     (%TYPE)1.0\n\
+#define TWO     (%TYPE)2.0\n\
+\n\
+__kernel void %PREFIXrotm_kernel( __global %TYPE *_X, __global %TYPE *_Y, uint N,\n\
+                                uint offx, int incx, uint offy, int incy\n\
+#ifndef DO_ROT\n\
+                                , __global %TYPE *_param, uint offParam             // Rotm parameters\n\
+#else\n\
+                                , %PTYPE C,  %PTYPE S                               // Rot parameters\n\
+#endif\n\
+                                )\n\
+{\n\
+    __global %TYPE *X = _X + offx;\n\
+    __global %TYPE *Y = _Y + offy;\n\
+\n\
+    if ( incx < 0 ) {\n\
+        X = X + (N - 1) * abs(incx);\n\
+    }\n\
+    if ( incy < 0 ) {\n\
+        Y = Y + (N - 1) * abs(incy);\n\
+    }\n\
+\n\
+    %PTYPE H11, H21, H12, H22, flag;    // All these are of PTYPE for rot and rotm\n\
+\n\
+    #ifndef DO_ROT\n\
+    // Incase of Rotm\n\
+        flag = _param[offParam];\n\
+        H11 = _param[offParam+1];\n\
+        H21 = _param[offParam+2];\n\
+        H12 = _param[offParam+3];\n\
+        H22 = _param[offParam+4];\n\
+\n\
+        (flag == (ZERO))? (H11 = ONE, H22 = ONE)                            : 1;    // 1 is dummy here to avoid compilation error\n\
+        (flag == (ONE) )? (H21 = -ONE, H12 = ONE)                           : 1;\n\
+        (flag == (-TWO))? (H11 = ONE, H21 = ZERO, H12 = ZERO, H22 = ONE)    : 1;\n\
+    #else   // ROT\n\
+        H11 = C;\n\
+        H12 = S;\n\
+        H21 = -S;\n\
+        H22 = C;\n\
+"
+"\
+    #endif\n\
+\n\
+    int gOffset;\n\
+    for( gOffset=(get_global_id(0) * %V); (gOffset + %V - 1)<N; gOffset+=( get_global_size(0) * %V ) )\n\
+    {\n\
+        %TYPE%V vReg1, vReg2, temp;\n\
+\n\
+        #ifdef INCX_NONUNITY\n\
+            %VLOADWITHINCX( vReg1, (X + (gOffset*incx)), incx);\n\
+        #else\n\
+            vReg1 = %VLOAD( 0, (X + gOffset) );\n\
+        #endif\n\
+\n\
+        #ifdef INCY_NONUNITY\n\
+            %VLOADWITHINCX( vReg2, (Y + (gOffset*incy)), incy);\n\
+        #else\n\
+            vReg2 = %VLOAD( 0, (Y + gOffset) );\n\
+        #endif\n\
+\n\
+        temp = (vReg1 * H11) + (vReg2 * H12);\n\
+        vReg2 = (vReg1 * H21) + (vReg2 * H22);\n\
+\n\
+        #ifdef INCX_NONUNITY\n\
+            %VSTOREWITHINCX( (X + (gOffset * incx)), temp, incx );\n\
+        #else\n\
+            %VSTORE( temp, 0 ,(X + (gOffset * incx)) );\n\
+        #endif\n\
+\n\
+        #ifdef INCY_NONUNITY\n\
+            %VSTOREWITHINCX( (Y + (gOffset * incy)), vReg2, incy );\n\
+        #else\n\
+            %VSTORE( vReg2, 0 ,(Y + (gOffset * incy)) );\n\
+        #endif\n\
+    }\n\
+\n\
+    // Loop for the last thread to handle the tail part of the vector\n\
+    // Using the same gOffset used above\n\
+    for( ; gOffset<N; gOffset++ )\n\
+    {\n\
+        %TYPE sReg1, sReg2, temp;\n\
+        sReg1 = X[gOffset * incx];\n\
+        sReg2 = Y[gOffset * incy];\n\
+\n\
+        temp = (sReg1 * H11) + (sReg2 * H12);\n\
+        sReg2 = (sReg1 * H21) + (sReg2 * H22);\n\
+\n\
+        X[gOffset * incx] = temp;\n\
+        Y[gOffset * incy] = sReg2;\n\
+        }\n\
+}\n\
+"
+"\
+\n";
+
+
+
+

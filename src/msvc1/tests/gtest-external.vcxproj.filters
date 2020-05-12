@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\CMakeFiles\c186db668097ab3f23cb9199c979582e\gtest-external-mkdir.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\CMakeFiles\c186db668097ab3f23cb9199c979582e\gtest-external-download.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\CMakeFiles\c186db668097ab3f23cb9199c979582e\gtest-external-update.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\CMakeFiles\c186db668097ab3f23cb9199c979582e\gtest-external-patch.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\CMakeFiles\c186db668097ab3f23cb9199c979582e\gtest-external-configure.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\CMakeFiles\c186db668097ab3f23cb9199c979582e\gtest-external-build.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\CMakeFiles\c186db668097ab3f23cb9199c979582e\gtest-external-install.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\CMakeFiles\382186ff5d464d97d8e6a5bc1269a05e\gtest-external-complete.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\CMakeFiles\9d9facb48cccc89d63c6fd53911f28fd\gtest-external.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\tests\CMakeFiles\gtest-external" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{87DAF2FA-030E-3A06-892E-BBB20244AE08}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

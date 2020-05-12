@@ -1,0 +1,228 @@
+/* ************************************************************************
+ * Copyright 2013 Advanced Micro Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ************************************************************************/
+
+
+static const char *nrm2_hypot_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+    #define MIN 0x1.0p-1022         // Min in case of d/z (values from khronos site)\n\
+#else\n\
+    #define MIN 0x1.0p-126f         // Min in case od s/c\n\
+#endif\n\
+\n\
+__kernel void %PREFIXnrm2_hypot_kernel( __global %TYPE *_X, __global %PTYPE *scratchBuff,\n\
+                                        uint N, uint offx, int incx )\n\
+{\n\
+    __global %TYPE *X = _X + offx;\n\
+\n\
+    #ifdef RETURN_ON_INVALID\n\
+        // Incase of incx<1, NRM2 will be zero\n\
+        if( get_global_id(0) == 0 ) {\n\
+            scratchBuff[0] = (%PTYPE)0.0;\n\
+        }\n\
+        return;\n\
+    #endif\n\
+\n\
+    int gOffset;\n\
+    %TYPE%V res = (%TYPE%V) 0.0;\n\
+    for( gOffset=(get_global_id(0) * %V); (gOffset + %V - 1)<N; gOffset+=( get_global_size(0) * %V ) )\n\
+    {\n\
+        %TYPE%V vReg1;\n\
+\n\
+        #ifdef INCX_NONUNITY\n\
+            %VLOADWITHINCX( vReg1, (X + (gOffset*incx)), incx);\n\
+        #else\n\
+            vReg1 = %VLOAD( 0, (X + gOffset) );\n\
+        #endif\n\
+\n\
+        res = hypot( res, vReg1 );\n\
+    }\n\
+    %TYPE nrm2 = %REDUCE_HYPOT( res );\n\
+\n\
+    // Loop for the last thread to handle the tail part of the vector\n\
+    // Using the same gOffset used above\n\
+    for( ; gOffset<N; gOffset++ )\n\
+    {\n\
+        %TYPE sReg1;\n\
+        sReg1 = X[gOffset * incx];\n\
+        nrm2 = hypot( nrm2, sReg1 );\n\
+    }\n\
+\n\
+"
+"\
+    // Note: this has to be called outside any if-conditions- because REDUCTION uses barrier\n\
+    // dotP of work-item 0 will have the final reduced item of the work-group\n\
+    %REDUCTION_BY_HYPOT( nrm2 );\n\
+\n\
+    %PTYPE nrm2_ptype;\n\
+    #ifdef COMPLEX\n\
+        nrm2_ptype = hypot( nrm2.even, nrm2.odd );\n\
+    #else\n\
+        nrm2_ptype = nrm2;\n\
+    #endif\n\
+\n\
+\n\
+    if( (get_local_id(0)) == 0 ) {\n\
+        scratchBuff[ get_group_id(0) ] = nrm2_ptype;\n\
+    }\n\
+}\n\
+\n";
+
+
+
+static const char *nrm2_ssq_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+    #define MAX 0x1.fffffffffffffp1023      // Max in case of d/z (values from khronos site)\n\
+#else\n\
+    #define MAX 0x1.fffffep127f             // Max in case of s/c\n\
+#endif\n\
+\n\
+#define PZERO (%PTYPE)0.0\n\
+#define ZERO (%TYPE)0.0\n\
+#define VZERO (%TYPE%V)0.0\n\
+\n\
+//\n\
+// Same scratch buffer will be used both scale and ssq.\n\
+// So a scratch buffer of size 2*N is needed.\n\
+// scale will be stored in scratch-buffer from [0] to [get_num_groups(0) - 1]\n\
+// ssq will be stored from [get_num_groups(0)] to [2*get_num_groups(0) - 1]\n\
+//\n\
+\n\
+__kernel void %PREFIXnrm2_ssq_kernel( __global %TYPE *_X, __global %PTYPE *scratchBuff,\n\
+                                        uint N, uint offx, int incx )\n\
+{\n\
+    __global %TYPE *X = _X + offx;\n\
+    uint numWGs = get_num_groups(0);\n\
+\n\
+    #ifdef RETURN_ON_INVALID\n\
+        // Incase of incx<1, NRM2 will be zero\n\
+        if( get_global_id(0) == 0 ) {\n\
+            scratchBuff[0] = PZERO;\n\
+            scratchBuff[numWGs] = PZERO;\n\
+        }\n\
+        return;\n\
+    #endif\n\
+\n\
+    // First we find the max element in the whole work-group\n\
+    // i.e calculating scale\n\
+    %TYPE maxFound = (%TYPE) -MAX;\n\
+\n\
+    int gOffset;\n\
+    for( gOffset=(get_global_id(0) * %V); (gOffset + %V - 1)<N; gOffset+=( get_global_size(0) * %V ) )\n\
+    {\n\
+        %TYPE%V vReg1;\n\
+\n\
+        #ifdef INCX_NONUNITY\n\
+            %VLOADWITHINCX( vReg1, (X + (gOffset*incx)), incx);\n\
+        #else\n\
+"
+"\
+            vReg1 = %VLOAD( 0, (X + gOffset) );\n\
+        #endif\n\
+\n\
+        vReg1 = fabs( vReg1 );\n\
+        %TYPE regMax = %REDUCE_MAX( vReg1 );\n\
+        maxFound = fmax( maxFound, regMax );\n\
+    }\n\
+\n\
+    for( ; gOffset<N; gOffset++ )\n\
+    {\n\
+        %TYPE sReg1;\n\
+\n\
+        sReg1 = X[gOffset * incx];\n\
+        sReg1 = fabs( sReg1 );\n\
+        maxFound = fmax( maxFound, sReg1 );\n\
+    }\n\
+\n\
+    %REDUCTION_BY_MAX( maxFound );\n\
+\n\
+    __local %PTYPE _scale;\n\
+\n\
+    if( (get_local_id(0)) == 0 ) {\n\
+        #ifdef COMPLEX\n\
+            _scale = fmax( maxFound.even, maxFound.odd );\n\
+        #else\n\
+            _scale = maxFound;\n\
+        #endif\n\
+    }\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+    // At this point we have scale.\n\
+    // Now we calculate ssq by loading the array again and dividing the\n\
+    // elements by scale and squaring it.\n\
+\n\
+    %TYPE ssq = ZERO;\n\
+    %PTYPE scaleOfWG = _scale;\n\
+\n\
+    // If scaleOfWG was zero, that means the whole array encountered before was filled with zeroes\n\
+    // Note: _scale is a local variable, either all enter or none\n\
+    if(isnotequal(scaleOfWG, PZERO))\n\
+    {\n\
+        for( gOffset=(get_global_id(0) * %V); (gOffset + %V - 1)<N; gOffset+=( get_global_size(0) * %V ) )\n\
+        {\n\
+            %TYPE%V vReg1;\n\
+\n\
+            #ifdef INCX_NONUNITY\n\
+                %VLOADWITHINCX( vReg1, (X + (gOffset*incx)), incx);\n\
+            #else\n\
+                vReg1 = %VLOAD( 0, (X + gOffset) );\n\
+            #endif\n\
+"
+"\
+\n\
+            vReg1 = fabs( vReg1 );\n\
+            %TYPE%V tempSsq = (vReg1 / scaleOfWG) * (vReg1 / scaleOfWG);\n\
+\n\
+            ssq += %REDUCE_SUM( tempSsq );\n\
+        }\n\
+\n\
+        for( ; gOffset<N; gOffset++ )\n\
+        {\n\
+            %TYPE sReg1;\n\
+\n\
+            sReg1 = X[gOffset * incx];\n\
+            sReg1 = fabs( sReg1 );\n\
+\n\
+            ssq += (sReg1 / scaleOfWG) * (sReg1 / scaleOfWG);\n\
+        }\n\
+\n\
+        %REDUCTION_BY_SUM( ssq );\n\
+    }\n\
+\n\
+    if( (get_local_id(0)) == 0 ) {\n\
+        scratchBuff[ get_group_id(0) ] = scaleOfWG;\n\
+\n\
+        #ifdef COMPLEX\n\
+            scratchBuff[ numWGs + get_group_id(0) ] = ssq.even + ssq.odd;\n\
+        #else\n\
+            scratchBuff[ numWGs + get_group_id(0) ] = ssq;\n\
+        #endif\n\
+    }\n\
+}\n\
+\n";
+
+
+
+

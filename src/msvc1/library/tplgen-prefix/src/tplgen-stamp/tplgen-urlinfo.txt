@@ -1,0 +1,3 @@
+repository='external project URL'
+module='C:/Development/op3d_active/clBLAS-1.10/src/library/tools/tplgen'
+tag=''

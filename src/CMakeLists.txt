@@ -284,7 +284,7 @@ set( Boost_DETAILED_FAILURE_MSG   ON )
 # set( Boost_DEBUG ON )
 set( Boost_ADDITIONAL_VERSIONS "1.44.0" "1.44" "1.47.0" "1.47" "1.60.0" "1.60" )
 
-find_package( Boost 1.33.0 COMPONENTS program_options )
+find_package( Boost 1.67.0 COMPONENTS program_options )
 message(STATUS "Boost_PROGRAM_OPTIONS_LIBRARY: ${Boost_PROGRAM_OPTIONS_LIBRARY}")
 
 

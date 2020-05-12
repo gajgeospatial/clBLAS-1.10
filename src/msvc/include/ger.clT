@@ -1,0 +1,308 @@
+/* ************************************************************************
+ * Copyright 2013 Advanced Micro Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ************************************************************************/
+
+
+// Column-Major Case
+
+static const char *ger_C_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+\n\
+#define BH %BH_DEF\n\
+#define BW %BW_DEF\n\
+\n\
+__kernel void %PREFIXger_C_kernel( __global %TYPE const* restrict _X, __global %TYPE const* restrict _Y, __global %TYPE* _A,\n\
+                uint M, uint N, uint offx, int incx, uint offy, int incy, uint offa, uint lda,\n\
+                %TYPE alpha, int doConj )\n\
+{\n\
+    __global %TYPE* A;\n\
+    __global %TYPE const* restrict X;\n\
+    __global %TYPE const* restrict Y;\n\
+\n\
+    A = _A + offa;\n\
+    X = _X + offx;\n\
+    Y = _Y + offy;\n\
+\n\
+    if ( incx < 0 ) // Goto end of vector\n\
+    {\n\
+        X = X + ( M - 1) * abs(incx);\n\
+    }\n\
+\n\
+    if ( incy < 0 ) // Goto end of vector\n\
+    {\n\
+        Y = Y + ( N - 1) * abs(incy);\n\
+    }\n\
+\n\
+    // create local memory\n\
+  __local %TYPE%V localXV[ BH ];\n\
+  __local %TYPE *localX = (__local %TYPE *)localXV;\n\
+    __local %TYPE localY[ BW ];\n\
+\n\
+    uint lID = get_local_id( 0 );\n\
+    uint gID = get_group_id( 0 );\n\
+\n\
+    uint tIDy = lID & ( BH-1 );  //get y coordinate of a thread in 1D workgroup\n\
+    uint tIDx = lID / BH;        //get x coordinate of a thread in !D workgroup\n\
+    uint nBlocksX = (( N + BW - 1) / BW );\n\
+    uint nBlocksY = (( M + BH * %V - 1 ) / ( BH * %V ));\n\
+\n\
+    uint gIDy = gID % nBlocksY;    //get y coordinate of a workgroup in 1D grid\n\
+    uint gIDx = gID / nBlocksY;    // get x coordinate of a workgroup in a 1D grid\n\
+\n\
+"
+"\
+    uint row = (( BH * gIDy)+  tIDy) * %V;\n\
+    uint col = (( BW * gIDx)+  tIDx);\n\
+\n\
+\n\
+    if( (gIDx != (nBlocksX-1)) && (gIDy != (nBlocksY-1)) )       // Completely vector blocks\n\
+    {\n\
+        //populate local memory\n\
+        for( int i = lID; i< ( BH * %V); i+= get_local_size(0) )\n\
+        {\n\
+            int idx = i + ( gIDy * BH * %V);\n\
+            localX[ i ] = *(X + (idx * incx));\n\
+        }\n\
+\n\
+        for( int i = lID; i< BW; i+= get_local_size(0) )\n\
+        {\n\
+            int idx = i + ( gIDx * BW);\n\
+            localY[ i ] = *(Y + (idx * incy));\n\
+        }\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+        %TYPE%V prevA, temp;\n\
+        %TYPE yReg = localY[  tIDx ];\n\
+        %TYPE%V xReg = *(__local %TYPE%V*)(&localX[ tIDy * %V]);\n\
+\n\
+        prevA = %VLOAD( 0, ( A + col*lda + row ) );\n\
+        %CONJUGATE(doConj, yReg);\n\
+        %VMUL( temp, xReg, alpha );\n\
+        %VMAD( prevA, temp, yReg);\n\
+        %VSTORE( prevA, 0 , ( A + col*lda + row ) );\n\
+\n\
+    }\n\
+    else                            // Border blocks in both X & Y direction\n\
+    {\n\
+        //populate local memory\n\
+        for( int i = lID; i< ( BH * %V); i+= get_local_size(0) )\n\
+        {\n\
+            int idx = i + ( gIDy * BH * %V);\n\
+               if ( idx < M )\n\
+            {\n\
+                localX[ i ] = *(X + (idx * incx));\n\
+            }\n\
+        }\n\
+\n\
+        for( int i = lID; i< BW; i+= get_local_size(0) )\n\
+        {\n\
+            int idx = i + ( gIDx * BW);\n\
+            if ( idx < N)\n\
+            {\n\
+                   localY[ i ] = *(Y + (idx * incy));\n\
+            }\n\
+"
+"\
+        }\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+        uint gTIDx = (gIDx * BW) + tIDx;\n\
+        if ( gTIDx < N)  // if whithin last column\n\
+        {\n\
+            if( (row + %V - 1) < M )  // if the next V rows are still within M, then do vector math\n\
+            {\n\
+                %TYPE%V prevA, temp;\n\
+                %TYPE yReg = localY[  tIDx ];\n\
+                %TYPE%V xReg = *(__local %TYPE%V*)(&localX[ tIDy * %V]);\n\
+\n\
+                prevA = %VLOAD( 0, ( A + col*lda + row ) );\n\
+                %CONJUGATE(doConj, yReg);\n\
+                %VMUL( temp, xReg, alpha );\n\
+                %VMAD( prevA, temp, yReg);\n\
+                %VSTORE( prevA, 0 , ( A + col*lda + row ) );\n\
+\n\
+            }\n\
+            else if( row < M  )  //else do scalar multiplication\n\
+            {\n\
+                %TYPE xRegS, yReg, prevA, temp;\n\
+                for( int i=row; i<M; i++ )\n\
+                {\n\
+                    yReg  = localY[ tIDx ];\n\
+                    xRegS = localX[ (tIDy * %V) + (i-row) ];\n\
+                    prevA = A[ col*lda + i];\n\
+                    %CONJUGATE(doConj, yReg);\n\
+                    %MUL( temp, xRegS, alpha );\n\
+                    %MAD( prevA, temp, yReg );\n\
+                    A[ col*lda + i ] = prevA;\n\
+                }\n\
+            }\n\
+        }\n\
+    }\n\
+}\n\
+\n";
+
+
+
+
+
+//Row major kernel
+
+static const char *ger_R_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+\n\
+#define BH %BH_DEF\n\
+#define BW %BW_DEF\n\
+\n\
+__kernel void %PREFIXger_R_kernel( __global %TYPE const* restrict _X, __global %TYPE const* restrict _Y, __global %TYPE* _A,\n\
+                uint M, uint N, uint offx, int incx, uint offy, int incy, uint offa, uint lda,\n\
+                %TYPE alpha, int doConj )\n\
+{\n\
+    __global %TYPE* A;\n\
+    __global %TYPE const* restrict X;\n\
+    __global %TYPE const* restrict Y;\n\
+\n\
+    A = _A + offa;\n\
+    X = _X + offx;\n\
+    Y = _Y + offy;\n\
+\n\
+    if ( incx < 0 ) // Goto end of vector\n\
+    {\n\
+        X = X + ( M - 1) * abs(incx);\n\
+    }\n\
+\n\
+    if ( incy < 0 ) // Goto end of vector\n\
+    {\n\
+        Y = Y + ( N - 1) * abs(incy);\n\
+    }\n\
+\n\
+    __local %TYPE localX[ BH ];\n\
+    __local %TYPE%V localYV[ BW ];\n\
+    __local %TYPE *localY = (__local %TYPE *)localYV;\n\
+\n\
+    uint lID = get_local_id( 0 );\n\
+    uint gID = get_group_id( 0 );\n\
+\n\
+    uint tIDy = lID / BW;\n\
+    uint tIDx = lID & ( BW - 1);\n\
+    uint nBlocksY = (( M + BH - 1) / BH );\n\
+    uint nBlocksX = (( N + BW * %V - 1 ) / ( BW * %V ));\n\
+\n\
+    uint gIDy = gID / nBlocksX;\n\
+    uint gIDx = gID % nBlocksX;\n\
+\n\
+    uint row = (( BH * gIDy)+  tIDy);\n\
+"
+"\
+    uint col = (( BW * gIDx)+  tIDx) * %V;\n\
+\n\
+    if( (gIDy != (nBlocksY-1)) && (gIDx != (nBlocksX-1)) )         // Perfectly vector blocks\n\
+    {\n\
+        //populate local memory\n\
+        for( int i = lID; i< ( BW * %V); i+= get_local_size(0) )\n\
+        {\n\
+            int idx = i + ( gIDx * BW * %V);\n\
+            localY[ i ] = *(Y + (idx * incy));\n\
+        }\n\
+\n\
+        for( int i = lID; i< BH; i+= get_local_size(0) )\n\
+        {\n\
+            int idx = i + ( gIDy * BH);\n\
+            localX[ i ] = *(X + (idx * incx));\n\
+        }\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+        %TYPE%V prevA, temp;\n\
+        %TYPE xReg = localX[ tIDy ];\n\
+        %TYPE%V yRegS = *(__local %TYPE%V*)(&localY[ tIDx * %V]);\n\
+\n\
+        prevA = %VLOAD( 0, ( A + row*lda + col ) );\n\
+        %CONJUGATE(doConj, yRegS);\n\
+        %VMUL( temp, yRegS, alpha );\n\
+        %VMAD( prevA, temp, xReg );\n\
+        %VSTORE( prevA, 0 , ( A + row*lda + col ) );\n\
+    }\n\
+    else\n\
+    {\n\
+        //populate local memory\n\
+        for( int i = lID; i< ( BW * %V); i+= get_local_size(0) )\n\
+        {\n\
+            int idx = i + ( gIDx * BW * %V);\n\
+            if ( idx < N)\n\
+            {\n\
+                localY[ i ] = *(Y + (idx * incy));\n\
+            }\n\
+        }\n\
+\n\
+        for( int i = lID; i< BH; i+= get_local_size(0) )\n\
+        {\n\
+            int idx = i + ( gIDy * BH);\n\
+            if ( idx < M)\n\
+            {\n\
+                localX[ i ] = *(X + (idx * incx));\n\
+            }\n\
+        }\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+"
+"\
+        uint gTIDy = gIDy * BH + tIDy;\n\
+        if ( gTIDy < M)\n\
+        {\n\
+            if( (col + %V - 1) < N )\n\
+            {\n\
+                %TYPE%V prevA, temp;\n\
+                %TYPE xReg = localX[ tIDy ];\n\
+                %TYPE%V yRegS = *(__local %TYPE%V*)(&localY[ tIDx * %V]);\n\
+\n\
+                prevA = %VLOAD( 0, ( A + row*lda + col ) );\n\
+                %CONJUGATE(doConj, yRegS);\n\
+                %VMUL( temp, yRegS, alpha );\n\
+                %VMAD( prevA, temp, xReg );\n\
+                %VSTORE( prevA, 0 , ( A + row*lda + col ) );\n\
+\n\
+            }\n\
+            else if( col < N  )\n\
+            {\n\
+                %TYPE xReg, yRegS, prevA, temp;\n\
+                for( int i=col; i<N; i++ )\n\
+                {\n\
+                    yRegS = localY[ (tIDx * %V) + (i-col) ];\n\
+                    xReg  = localX[ tIDy ];\n\
+                    prevA = A[ row*lda + i];\n\
+                    %CONJUGATE(doConj, yRegS);\n\
+                    %MUL( temp, yRegS, alpha );\n\
+                    %MAD( prevA, temp, xReg );\n\
+                    A[ row*lda + i ] = prevA;\n\
+                }\n\
+            }\n\
+        }\n\
+    }\n\
+}\n\
+\n";
+
+
+

@@ -1,0 +1,305 @@
+/* ************************************************************************
+ * Copyright 2013 Advanced Micro Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ************************************************************************/
+
+
+// Row-Major Non-transpose case
+static const char *gbmv_RNT_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+\n\
+#define  H  ( %DEF_H )\n\
+#define  TARGET_ROWS  ( %DEF_TARGET_ROWS )\n\
+\n\
+__kernel void %PREFIXgbmv_RNT_kernel( __global const %TYPE * _A, __global %TYPE * _y_vector, __global %TYPE const* restrict _x_vector,\n\
+                                        uint M, uint N, uint KL, uint KU, uint lda, int incx, int incy, uint offa, uint offx, uint offy\n\
+#ifndef TBMV_ONLY\n\
+                                    ,%TYPE alpha, %TYPE beta\n\
+#endif\n\
+                                                              )\n\
+{\n\
+    __global const %TYPE * A;\n\
+    __global %TYPE const* restrict X;\n\
+    __global %TYPE* Y;\n\
+    __local %TYPE localRed[ (H+1) * TARGET_ROWS ];  // To avoid bank-conflict\n\
+\n\
+    A = _A + offa;\n\
+    if ( incx < 0 )                     // Goto end of vector\n\
+        X = _x_vector + offx + ( N - 1 ) * abs(incx);\n\
+    else\n\
+        X = _x_vector + offx;\n\
+\n\
+    if( incy < 0 )\n\
+        Y = _y_vector + offy + ( M - 1 ) * abs(incy);\n\
+    else\n\
+        Y = _y_vector + offy;\n\
+\n\
+    int gId = get_group_id( 0 );\n\
+    int lId = get_local_id( 0 );\n\
+    int threadRow = (lId / H);\n\
+    int threadCol = (lId % H);\n\
+    int row = ( gId * TARGET_ROWS ) + threadRow;\n\
+    int AStartColIndex = max( (int)(KL-row), 0 );\n\
+    int XStartIndex = ( row <= KL )? 0: (int)(row-KL);\n\
+    bool diagPresent = ( row < N ) ? true: false;\n\
+    int numSubDiags = min( row, max( 0, min( ((int)min( KL, N )), (int)(N+KL-row) ) ) );\n\
+    int numSupDiags = max( 0, min( (int)KU, (int)(N-1-row) ) );\n\
+    %TYPE reg1, reg2, sum;\n\
+\n\
+    if( row < M )\n\
+    {\n\
+        sum = %MAKEVEC(0.0);\n\
+"
+"\
+        localRed[ lId ] = %MAKEVEC(0.0);\n\
+        // Sub-diagonal iteration\n\
+        #ifdef GIVEN_SHBMV_UPPER\n\
+            int symmStartRow = max( 0, (row - (int)KU) );       // row - (BW-1) = KU\n\
+            int symmStartCol = min( (int)KU, row );             // row - (BW-1) = KU\n\
+        #endif\n\
+        for( int i=threadCol; i<numSubDiags; i+= H )\n\
+        {\n\
+            #ifdef GIVEN_SHBMV_UPPER\n\
+                reg1 = A[ ((symmStartRow+i) * lda) + (symmStartCol - i) ];\n\
+                %CONJUGATE(1 , reg1);                           // Hermitian transpose- will be ignored for real cases\n\
+            #else\n\
+                reg1 = A[ (row * lda) + (AStartColIndex + i) ];\n\
+            #endif\n\
+\n\
+            #ifdef DO_CONJ\n\
+                %CONJUGATE(1 , reg1);\n\
+            #endif\n\
+            reg2 = X[ (XStartIndex + i) * incx ];\n\
+            %MAD( sum, reg1, reg2 );\n\
+        }\n\
+        #ifdef GIVEN_SHBMV_UPPER\n\
+            AStartColIndex = 0;\n\
+        #else\n\
+            AStartColIndex += numSubDiags;\n\
+        #endif\n\
+        XStartIndex += numSubDiags;\n\
+\n\
+        // Calculate diagonal component -- only by first thread of the row\n\
+        if( diagPresent )\n\
+        {\n\
+            if( threadCol == 0 )\n\
+            {\n\
+                reg2 = X[ XStartIndex * incx ];\n\
+                #ifndef UNIT_DIAG\n\
+                    reg1 = A[ (row * lda) + AStartColIndex ];\n\
+                    #ifdef DO_CONJ\n\
+                        %CONJUGATE(1 , reg1);\n\
+                    #endif\n\
+                    #ifdef HBMV_ONLY\n\
+                        reg1.odd = 0.0;                 // Imaginary part of diagonal is assumed to be zero\n\
+                    #endif\n\
+                    %MAD( sum, reg1, reg2 );\n\
+                #else\n\
+                    sum += reg2;\n\
+                #endif\n\
+            }\n\
+            AStartColIndex ++;\n\
+            XStartIndex ++;\n\
+        }\n\
+"
+"\
+    }\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+    if( row < M )\n\
+    {\n\
+        // Super-diagonal iteration\n\
+        #ifdef GIVEN_SHBMV_LOWER\n\
+            AStartColIndex = (KL+1) - 2;            // KL+1 is BW\n\
+        #endif\n\
+\n\
+        for( int i=threadCol; i<numSupDiags; i+= H )\n\
+        {\n\
+            #ifdef GIVEN_SHBMV_LOWER\n\
+                reg1 = A[ ((row+i+1) * lda) + (AStartColIndex - i) ];\n\
+                %CONJUGATE(1 , reg1);                           // Hermitian transpose- will be ignored for real cases\n\
+            #else\n\
+                reg1 = A[ (row * lda) + (AStartColIndex + i) ];\n\
+            #endif\n\
+\n\
+            #ifdef DO_CONJ\n\
+                %CONJUGATE(1 , reg1);\n\
+            #endif\n\
+            reg2 = X[ (XStartIndex + i) * incx ];\n\
+            %MAD( sum, reg1, reg2 );\n\
+        }\n\
+        localRed[ (threadRow * (H+1)) + threadCol ] = sum;\n\
+    }\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+    // Update the Y vector\n\
+    if( (threadCol == 0) && (row < M) )\n\
+    {\n\
+        sum = %MAKEVEC(0.0);\n\
+        for( int i=0; i<H; i++ )\n\
+        {\n\
+            %ADD( sum, sum, localRed[ (threadRow * (H+1)) + i ] );\n\
+        }\n\
+        #ifndef TBMV_ONLY\n\
+            %MUL( reg1, alpha, sum );\n\
+            %MUL( reg2, beta, Y [ row * incy ] );\n\
+            %ADD( Y[ row * incy ], reg1, reg2 );\n\
+        #else\n\
+            Y[ row * incy ] = sum;\n\
+        #endif\n\
+    }\n\
+\n\
+}\n\
+";
+
+
+
+
+
+// Row-Major Transpose case
+static const char *gbmv_RT_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+\n\
+#define TARGET_ROWS  ( %DEF_TARGET_ROWS )\n\
+#define HEIGHT ( %DEF_H)\n\
+#pragma OPENCL EXTENSION cl_amd_printf : enable\n\
+__kernel void %PREFIXgbmv_RT_kernel( __global const %TYPE * _A, __global %TYPE * _y_vector, __global %TYPE const* restrict _x_vector,\n\
+                                    uint M, uint N, uint KL, uint KU, uint lda, int incx, int incy, uint offa, uint offx, uint offy\n\
+#ifndef TBMV_ONLY\n\
+                                    ,%TYPE alpha, %TYPE beta\n\
+#endif\n\
+                                    )\n\
+{\n\
+    __global const %TYPE * A = _A + offa;\n\
+    __global %TYPE const * restrict X;\n\
+    __global %TYPE *Y;\n\
+\n\
+    if ( incx < 0 ) // Goto end of X vector\n\
+    {\n\
+        X = _x_vector + offx + ( M - 1) * abs(incx);\n\
+    }\n\
+    else\n\
+    {\n\
+        X = _x_vector + offx;\n\
+    }\n\
+\n\
+    if( incy < 0 ) // Goto end of Y vector\n\
+    {\n\
+        Y = _y_vector + offy + ( N - 1) * abs(incy);\n\
+    }\n\
+    else\n\
+    {\n\
+        Y = _y_vector + offy;\n\
+    }\n\
+\n\
+    int blkID, thrID;\n\
+    int blkColIndx, blkStrtCol, blkStrtRow, blkOffset;\n\
+    int thrRow, thrCol;\n\
+    int bandWidth = KL + KU + 1;\n\
+\n\
+    blkID = get_group_id(0);\n\
+    thrID = get_local_id(0);\n\
+\n\
+    //Find the block start column and start row.\n\
+"
+"\
+    blkOffset = blkID * HEIGHT;\n\
+    blkColIndx = (blkOffset) + KL;\n\
+    blkStrtCol = (blkColIndx >= bandWidth) ? (bandWidth - 1) : blkColIndx;\n\
+    blkStrtRow = ((blkColIndx - (bandWidth - 1)) < 0) ? 0 : (blkColIndx - (bandWidth - 1));\n\
+    %TYPE thrSum = %MAKEVEC(0.0); //Private sum for each thread\n\
+    %TYPE reg1, reg2;\n\
+\n\
+    if(((blkOffset) + (thrID % HEIGHT)) < N)\n\
+    {\n\
+        thrRow = blkStrtRow + ((int)thrID / (HEIGHT));\n\
+        thrCol = blkStrtCol + ((int)thrID % (HEIGHT)) - ((int)thrID / (HEIGHT));\n\
+        while((thrRow < M) && (thrCol >= 0))\n\
+        {\n\
+            if(thrCol < bandWidth)\n\
+            {\n\
+                reg2 = X[ thrRow * incx];\n\
+                #ifdef UNIT_DIAG\n\
+                    if(thrCol == ((int)KL))\n\
+                    {\n\
+                        thrSum += reg2;\n\
+                    }\n\
+                    else\n\
+                    {\n\
+                        reg1 = A[(thrRow*lda) + thrCol];\n\
+                        #ifdef DO_CONJ\n\
+                            %CONJUGATE(1 , reg1);\n\
+                        #endif\n\
+                        %MAD(thrSum, reg1, reg2);\n\
+                    }\n\
+                #else\n\
+                    reg1 = A[(thrRow*lda) + thrCol];\n\
+                    #ifdef DO_CONJ\n\
+                        %CONJUGATE(1 , reg1);\n\
+                    #endif\n\
+                    %MAD(thrSum, reg1, reg2);\n\
+                #endif\n\
+                //thrSum += A[(thrRow*lda) + thrCol ] * X[ thrRow ];\n\
+            }\n\
+            thrRow += TARGET_ROWS;\n\
+            thrCol -= TARGET_ROWS;\n\
+        }\n\
+    }\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+    //Store the results in a temporary local buffer and accumulate the same.\n\
+    __local %TYPE sum[(TARGET_ROWS * HEIGHT)];\n\
+    sum[thrID] = thrSum;\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+    if((thrID < HEIGHT) && ((blkOffset + (thrID % HEIGHT)) < N))\n\
+"
+"\
+    {\n\
+        int iY = (blkOffset) + thrID;\n\
+        %TYPE tempSum = %MAKEVEC(0.0);\n\
+        for(int i = 0; i < TARGET_ROWS; i++)\n\
+        {\n\
+            reg1 = sum[thrID + (i * HEIGHT)];\n\
+            %ADD(tempSum, tempSum, reg1);\n\
+            //tempSum += sum[thrID + (i * HEIGHT)];\n\
+        }\n\
+        #ifndef TBMV_ONLY\n\
+            %MUL(reg1, alpha, tempSum);\n\
+            %MUL(reg2, beta, Y[iY * incy]);\n\
+            %ADD(Y[iY * incy], reg1, reg2);\n\
+        #else\n\
+            Y[ iY * incy ] = tempSum;\n\
+        #endif\n\
+        //Y[iY] = ((alpha * tempSum) + (beta * Y[iY]));\n\
+    }\n\
+}\n\
+";
+
+
+
+
+

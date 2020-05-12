@@ -1,0 +1,103 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="..\..\library\blas\AutoGemm\AutoGemmTools\ProfileAutoGemm.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\AutoGemmIncludes\AutoGemmClKernels.cpp">
+      <Filter>AutoGemm\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp">
+      <Filter>AutoGemm\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp">
+      <Filter>AutoGemm\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp">
+      <Filter>AutoGemm\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp">
+      <Filter>AutoGemm\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp">
+      <Filter>AutoGemm\src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\include\AutoGemmIncludes\AutoGemmKernelSources.cpp">
+      <Filter>AutoGemm\src</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\include\AutoGemmIncludes\AutoGemmClKernels.h">
+      <Filter>AutoGemm\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h">
+      <Filter>AutoGemm\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\AutoGemmIncludes\AutoGemmKernelBinaries.h">
+      <Filter>AutoGemm\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\AutoGemmIncludes\AutoGemmKernelSelection.h">
+      <Filter>AutoGemm\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h">
+      <Filter>AutoGemm\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h">
+      <Filter>AutoGemm\include</Filter>
+    </ClInclude>
+    <ClInclude Include="..\include\AutoGemmIncludes\AutoGemmKernelSources.h">
+      <Filter>AutoGemm\include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\8fa33127274bd66a159e1a5ef60e6b47\AutoGemmClKernels.h.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemm.py">
+      <Filter>AutoGemm\scripts</Filter>
+    </None>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemmParameters.py">
+      <Filter>AutoGemm\scripts</Filter>
+    </None>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Common.py">
+      <Filter>AutoGemm\scripts</Filter>
+    </None>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Includes.py">
+      <Filter>AutoGemm\scripts</Filter>
+    </None>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelOpenCL.py">
+      <Filter>AutoGemm\scripts</Filter>
+    </None>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelParameters.py">
+      <Filter>AutoGemm\scripts</Filter>
+    </None>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelSelection.py">
+      <Filter>AutoGemm\scripts</Filter>
+    </None>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelsToPreCompile.py">
+      <Filter>AutoGemm\scripts</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="AutoGemm">
+      <UniqueIdentifier>{0781E01A-0830-326B-905C-BAD113525703}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AutoGemm\include">
+      <UniqueIdentifier>{97311C52-EA84-3B2C-847B-6894C835748A}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AutoGemm\scripts">
+      <UniqueIdentifier>{0AA17D91-4B57-3ACD-88CB-D30569D7BD4F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AutoGemm\src">
+      <UniqueIdentifier>{2805B001-8697-3DEF-913D-933D1F9F89EC}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{D280D184-5710-3E47-B4DA-2541397795A9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{DF335895-5972-3DC8-A1AE-B6B233650879}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

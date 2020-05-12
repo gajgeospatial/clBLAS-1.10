@@ -1,0 +1,460 @@
+/* ************************************************************************
+ * Copyright 2013 Advanced Micro Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ************************************************************************/
+
+// TRSV Column-Major Upper Kernel
+//#include <TRSV.h>
+
+
+const char * trsv_CU_SolveTriangle_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+\n\
+#ifdef PACKED\n\
+    #define A( row, col) (*( A + (((col)*((col)+1))/2 + (row))))\n\
+#elif defined(BANDED)\n\
+    #define A( row, col) A[ (row) * lda + (col)]\n\
+#else\n\
+    #define A( row, col) A[ (row) + (col) * lda]\n\
+#endif\n\
+// Only one workgroup of threads launched\n\
+__kernel void %PREFIXtrsv_CU_SolveTriangle_kernel( __global %TYPE const * restrict _A, __global %TYPE* _xnew, uint N, int incx, int isUnity,\n\
+                                                   uint lda, int doConj, int startRow, int startCol, uint offa, uint offx\n\
+#ifdef BANDED\n\
+                                                   , uint KU\n\
+#endif\n\
+                                                 )\n\
+{\n\
+    __global %TYPE* xnew;\n\
+    __global %TYPE const * restrict A = _A + offa;\n\
+\n\
+    if ( incx < 0 ) // Goto end of vector\n\
+    {\n\
+        xnew     = _xnew + offx + ( N - 1) * abs(incx);\n\
+    }\n\
+    else\n\
+    {\n\
+        xnew     = _xnew + offx;\n\
+    }\n\
+\n\
+    __local %TYPE  xShared; // To share solved x value with other threads..\n\
+\n\
+    size_t gIdx     = get_global_id(0);\n\
+    size_t bIdx     = get_group_id(0);\n\
+    size_t threadIdx= get_local_id(0);\n\
+\n\
+    %TYPE sum     = %MAKEVEC(0.0);\n\
+    %TYPE xVal    = %MAKEVEC(0.0);\n\
+    %TYPE loadedA     = %MAKEVEC(0.0);\n\
+\n\
+    int targetCol     = startCol;\n\
+    int targetRow     = startRow + threadIdx;\n\
+    int loops     = (startCol - startRow) + 1;\n\
+\n\
+"
+"\
+#ifdef BANDED\n\
+    int bandCol = (loops - 1) - threadIdx;\n\
+#endif\n\
+\n\
+    for( int i=0; i < loops; i++)\n\
+    {\n\
+        if ( targetRow == targetCol)\n\
+        {\n\
+            xVal = xnew[ targetRow * incx];\n\
+            %SUB(sum, xVal, sum);\n\
+\n\
+            if( isUnity)\n\
+            {\n\
+                xShared = sum;\n\
+            }\n\
+            else // Handle diagonal element\n\
+            {\n\
+#ifdef BANDED\n\
+                loadedA = A((targetRow), (bandCol));\n\
+#else\n\
+                loadedA = A((targetRow), (targetCol));\n\
+#endif\n\
+                %CONJUGATE(doConj, loadedA);\n\
+                %DIV(xShared, sum, loadedA);\n\
+            }\n\
+            xnew[ targetRow * incx ] = xShared;\n\
+        }\n\
+        // Sync so that xShared it available to all threads\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+        if ( targetRow < targetCol)\n\
+        {\n\
+#ifdef BANDED\n\
+            loadedA = A((targetRow), (bandCol));\n\
+#else\n\
+            loadedA = A((targetRow), (targetCol));\n\
+#endif\n\
+            %CONJUGATE(doConj, loadedA);\n\
+            %MAD(sum, loadedA, xShared);\n\
+        }\n\
+\n\
+        // Avoid Race...\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+        targetCol--;\n\
+#ifdef BANDED\n\
+        bandCol--;\n\
+#endif\n\
+    }\n\
+}";
+
+
+
+
+const char * trsv_CL_SolveTriangle_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+#ifdef PACKED\n\
+    #define A(row, col) (*( A + ((( (col) *((2*N) + 1 - (col))) / 2) + ((row) - (col)))))\n\
+#elif defined(BANDED)\n\
+    #define A(row, col) A[ (row) * lda + (col)]\n\
+#else\n\
+    #define A(row, col) A[ (row) + (col) * lda]\n\
+#endif\n\
+#pragma OPENCL EXTENSION cl_amd_printf : enable\n\
+// Only one block of threads launched\n\
+__kernel void %PREFIXtrsv_CL_SolveTriangle_kernel( __global const %TYPE* _A, __global %TYPE* _xnew, uint N, int incx, int isUnity,\n\
+                                                   uint lda, int doConj, int startCol, int endRow, uint offa, uint offx\n\
+#ifdef BANDED\n\
+                                                   , uint KL\n\
+#endif\n\
+                                                            )\n\
+{\n\
+    __global %TYPE* xnew;\n\
+    __global %TYPE* A = _A + offa;\n\
+\n\
+    if ( incx < 0 ) // Goto end of vector\n\
+    {\n\
+        xnew     = _xnew + offx + ( N - 1) * abs(incx);\n\
+    }\n\
+    else\n\
+    {\n\
+        xnew     = _xnew + offx;\n\
+    }\n\
+\n\
+    __local %TYPE  xShared; // To share solved x value with other threads..\n\
+\n\
+    size_t gIdx     = get_global_id(0);\n\
+    size_t bIdx     = get_group_id(0);\n\
+    size_t threadIdx= get_local_id(0);\n\
+\n\
+    %TYPE sum     = %MAKEVEC(0.0);\n\
+    %TYPE xVal    = %MAKEVEC(0.0);\n\
+    %TYPE loadedA     = %MAKEVEC(0.0);\n\
+\n\
+    int targetCol     = startCol;\n\
+    int targetRow     = endRow - threadIdx;\n\
+    int loops     = (endRow - startCol) + 1;\n\
+#ifdef BANDED\n\
+"
+"\
+    int bandCol = (KL + 1) - loops + threadIdx;\n\
+#endif\n\
+\n\
+//    printf(\"%u : bandCol %d targetCol %d targetRow %d loops %d KL %d\\n\", threadIdx, bandCol, targetCol, targetRow, loops, KL);\n\
+\n\
+    for( int i=0; i < loops; i++)\n\
+    {\n\
+        if ( targetRow == targetCol)\n\
+        {\n\
+            xVal = xnew[ targetRow * incx];\n\
+            //printf(\"Before1 %u : xShared %f, sum %f\\n\", threadIdx, xShared, sum);\n\
+            %SUB(sum, xVal, sum);\n\
+            //printf(\"Before2 %u : xShared %f, sum %f XvAL %f, targetRow %d\\n\", threadIdx, xShared, sum, xVal, targetRow);\n\
+\n\
+            if( isUnity)\n\
+            {\n\
+                xShared = sum;\n\
+            }\n\
+            else // Handle diagonal element\n\
+            {\n\
+#ifndef BANDED\n\
+                loadedA = A((targetRow), (targetCol));\n\
+#else\n\
+                loadedA = A((targetRow), (bandCol));\n\
+#endif\n\
+                %CONJUGATE(doConj, loadedA);\n\
+                %DIV(xShared, sum, loadedA);\n\
+            }\n\
+            //printf(\"After %u : xShared %f, sum %f\\n\", threadIdx, xShared, sum);\n\
+            xnew[ targetRow * incx ] = xShared;\n\
+        }\n\
+        // Sync so that xShared it available to all threads\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+        if ( targetRow > targetCol)\n\
+        {\n\
+#ifndef BANDED\n\
+                loadedA = A((targetRow), (targetCol));\n\
+#else\n\
+                loadedA = A((targetRow), (bandCol));\n\
+#endif\n\
+            %CONJUGATE(doConj, loadedA);\n\
+            //printf(\"%u : xShared %f, sum %f loadedA %f\\n\", threadIdx, xShared, sum, loadedA);\n\
+            %MAD(sum, loadedA, xShared);\n\
+        }\n\
+\n\
+        // Avoid Race...\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+        targetCol++;\n\
+#ifdef BANDED\n\
+"
+"\
+        bandCol++;\n\
+#endif\n\
+    }\n\
+}\n\
+";
+
+
+
+const char * trsv_CUT_SolveTriangle_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+#ifdef PACKED\n\
+    #define A( row, col) (*( A + (((col)*((col)+1))/2 + (row))))\n\
+#elif defined(BANDED)\n\
+    #define A(row, col) A[ (row) * lda + (col)]\n\
+#else\n\
+    #define A( row, col) A[ (row) + (col) * lda]\n\
+#endif\n\
+#pragma OPENCL EXTENSION cl_amd_printf : enable\n\
+__kernel void %PREFIXtrsv_CUT_SolveTriangle_kernel(     __global const %TYPE* _A,\n\
+                                                __global %TYPE* _xnew,\n\
+                                                uint N,\n\
+                                                int incx,\n\
+                                                int isUnity,\n\
+                                                uint lda,\n\
+                                                int doConj,\n\
+                                                int startRow, int endRow, uint offa, uint offx\n\
+#ifdef BANDED\n\
+                                                , uint KU\n\
+#endif\n\
+                                                         )\n\
+{\n\
+        __global %TYPE* xnew;\n\
+        __global const %TYPE* A = _A + offa;\n\
+        if ( incx < 0 ) // Goto end of vector\n\
+        {\n\
+            xnew     = _xnew + offx  + ( N - 1) * abs(incx);\n\
+        }\n\
+        else\n\
+        {\n\
+            xnew     = _xnew + offx;\n\
+        }\n\
+\n\
+        int blockSize = get_local_size(0);\n\
+        int threadID = get_local_id(0);\n\
+        int targetRow;\n\
+#ifdef BANDED\n\
+        int bandRow = startRow;\n\
+        int bandCol = threadID;\n\
+//        printf(\"threadID %d, bandRow %d bandCol %d\\n\",threadID, bandRow, bandCol);\n\
+#endif\n\
+        __local volatile %TYPE saccShared[%TRIANGLE_HEIGHT];\n\
+\n\
+"
+"\
+        targetRow = startRow + threadID;\n\
+        //#pragma unroll\n\
+        for( int idx = threadID; (idx < %TRIANGLE_HEIGHT) && ((startRow + idx) < endRow); idx += blockSize)\n\
+        {\n\
+            saccShared[idx] = xnew[ (startRow + idx) * incx];\n\
+        }\n\
+\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+        %TYPE diagA = %INIT(0.0);\n\
+        if(targetRow < endRow)\n\
+        {\n\
+#ifndef BANDED\n\
+            diagA = A((targetRow), (targetRow));\n\
+#else\n\
+            diagA = A((startRow + threadID), (0));\n\
+#endif\n\
+            %CONJUGATE(doConj, diagA);\n\
+        }\n\
+        %TYPE tempA, tempS;\n\
+        for(int i = 0; i < %TRIANGLE_HEIGHT; i++)\n\
+        {\n\
+            if((i <= threadID) && (i > 0) && (targetRow < endRow))\n\
+            {\n\
+#ifndef BANDED\n\
+                tempA = A((startRow + i - 1), (targetRow));\n\
+#else\n\
+                tempA = A((bandRow - 1), (bandCol + 1));\n\
+  //              printf(\"threadID %d, bandRow %d bandCol %d A %f\\n\",threadID, bandRow, bandCol, tempA);\n\
+#endif\n\
+                %CONJUGATE(doConj, tempA);\n\
+                %MUL(tempS, tempA, saccShared[i-1]);\n\
+                %SUB(saccShared[threadID], saccShared[threadID], tempS);\n\
+            }\n\
+            if((i == threadID) && (targetRow < endRow) && (!isUnity))\n\
+            {\n\
+                tempS = saccShared[threadID];\n\
+    //            printf(\"threadID %d, saccShared %f, diagA %f\\n\", threadID, tempS, diagA);\n\
+                %DIV(saccShared[threadID], tempS, diagA);\n\
+            }\n\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+#ifdef BANDED\n\
+            bandRow++; bandCol--;\n\
+#endif\n\
+        }\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+        if(targetRow < endRow)\n\
+        {\n\
+            xnew[(targetRow * incx)] = saccShared[threadID];\n\
+        }\n\
+}\n\
+"
+"\
+";
+
+
+
+const char * trsv_CLT_SolveTriangle_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+#ifdef PACKED\n\
+    #define A(row, col) (*( A + ((( (col) *((2*N) + 1 - (col))) / 2) + ((row) - (col)))))\n\
+#elif defined(BANDED)\n\
+    #define A(row, col) A[ (row) * lda + (col)]\n\
+#else\n\
+    #define A(row, col) A[ (row) + (col) * lda]\n\
+#endif\n\
+#pragma OPENCL EXTENSION cl_amd_printf : enable\n\
+\n\
+// Column-Major Lower Non-Unity case\n\
+// StartRow points to actual Row to start from( absolute Column number)\n\
+// endRow points to actual Row to stop + 1( absolute Column number)\n\
+__kernel void %PREFIXtrsv_CLT_SolveTriangle_kernel(     __global const %TYPE* _A,\n\
+                                                __global %TYPE* _xnew,\n\
+                                                uint N,\n\
+                                                int incx,\n\
+                                                int isUnity,\n\
+                                                uint lda,\n\
+                                                int doConj,\n\
+                                                int startRow, int endRow, uint offa, uint offx\n\
+#ifdef BANDED\n\
+                                                ,uint KL\n\
+#endif\n\
+                    )\n\
+{\n\
+        __global %TYPE* xnew;\n\
+        __global const %TYPE *A = _A + offa;\n\
+        if ( incx < 0 ) // Goto end of vector\n\
+        {\n\
+            xnew     = _xnew  + offx + ( N - 1) * abs(incx);\n\
+        }\n\
+        else\n\
+        {\n\
+            xnew     = _xnew + offx;\n\
+        }\n\
+\n\
+        int blockSize = get_local_size(0);\n\
+        int threadID = get_local_id(0);\n\
+        __local volatile %TYPE saccShared[%TRIANGLE_HEIGHT];\n\
+        int targetRow;\n\
+        targetRow = (endRow - 1) - threadID;\n\
+\n\
+"
+"\
+#ifdef BANDED\n\
+        int bandRow = (endRow - 1);\n\
+        int bandCol = (KL) - threadID;\n\
+#endif\n\
+\n\
+        //#pragma unroll\n\
+        for( int idx = threadID; (idx < %TRIANGLE_HEIGHT) && (((endRow - 1) - idx) >= startRow); idx += blockSize)\n\
+        {\n\
+            saccShared[idx] = xnew[((endRow - 1) - idx) * incx];\n\
+        }\n\
+\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+        %TYPE diagA = %INIT(0.0);\n\
+        if(targetRow >= startRow)\n\
+        {\n\
+#ifndef BANDED\n\
+            diagA = A((targetRow), (targetRow));\n\
+#else\n\
+            diagA = A((bandRow - threadID), (KL));\n\
+//            printf(\"ThreadID %d, bandRow %d bandCol %d\\n\", threadID, bandRow, bandCol);\n\
+#endif\n\
+            %CONJUGATE(doConj, diagA);\n\
+        }\n\
+        %TYPE tempA, tempS;\n\
+\n\
+        for( int i = (endRow - 1); i >= startRow; i--)\n\
+        {\n\
+            if((targetRow == i) && (!isUnity))\n\
+            {\n\
+                tempS = saccShared[threadID];\n\
+                %DIV(saccShared[threadID], tempS, diagA);\n\
+            }\n\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+            if((targetRow < i) && (targetRow >= startRow))\n\
+            {\n\
+#ifndef BANDED\n\
+                tempA = A((i), (targetRow));\n\
+#else\n\
+                tempA = A((bandRow), (bandCol));\n\
+#endif\n\
+                %CONJUGATE(doConj, tempA);\n\
+                %MUL(tempS, tempA, saccShared[(endRow - 1) - i]);\n\
+                %SUB(saccShared[threadID], saccShared[threadID], tempS);\n\
+            }\n\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+#ifdef BANDED\n\
+            bandRow--; bandCol++;\n\
+#endif\n\
+        }\n\
+"
+"\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+        if(targetRow >= startRow)\n\
+        {\n\
+            xnew[(targetRow * incx)] = saccShared[threadID];\n\
+        }\n\
+}\n\
+";
+
+
+
+

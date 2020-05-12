@@ -1,0 +1,495 @@
+/* ************************************************************************
+ * Copyright 2013 Advanced Micro Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ************************************************************************/
+
+/***********************************************/
+//NOTE: THIS FILE IS NOT USED. SEE SYR_HER.CLT
+//      THIS FILE IS FOR LEGACY PURPOSES.
+
+//Column Major Lower
+static const char *syr_CL_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+\n\
+#define TARGET_ROWS_BY_VEC     (%TARGET_ROWS / %V)\n\
+#define TARGET_WIDTH        (%BLOCKSIZE / TARGET_ROWS_BY_VEC )\n\
+#define TARGET_HEIGHT        (%BLOCKSIZE / TARGET_ROWS_BY_VEC )\n\
+\n\
+// Column-Major Lower\n\
+// nBlocks     = (N - 1)/ TR + 1\n\
+// totalBlocks     = (nBlocks * ( nBlocks + 1)) / 2\n\
+__kernel void %PREFIXsyr_CL_kernel( __global %TYPE* _A, __global const %TYPE* _X, int N, int offx, int incx, int offa, int lda, %PTYPE alpha )\n\
+{\n\
+    __global %TYPE* X;\n\
+    __global %TYPE *A;\n\
+    __local %TYPE xShared[%TARGET_ROWS];\n\
+    __local %TYPE yShared[%TARGET_ROWS];\n\
+\n\
+    A = _A + offa;\n\
+    if ( incx < 0 ) // Goto end of vector\n\
+    {\n\
+        X = _X + offx - ( N - 1) * incx;\n\
+    }\n\
+    else\n\
+    {\n\
+        X = _X + offx;\n\
+    }\n\
+\n\
+    int blockID  = get_group_id(0);\n\
+    int threadID = get_local_id(0);\n\
+    int nBlocks  = ((N - 1) / %TARGET_ROWS) + 1;\n\
+\n\
+    __local int iShared;\n\
+    __local int jShared;\n\
+\n\
+    // Get (i,j) of Block\n\
+    if ( threadID == 0)\n\
+    {\n\
+        int _i = 0, _j = 0;\n\
+        //for ( _j = 0; _j < nBlocks; _j++)\n\
+        for ( _j = (blockID / nBlocks); _j < nBlocks; _j++)\n\
+        {\n\
+            _i = blockID - ((_j*((2* nBlocks) + 1 - _j))/2) + _j;\n\
+            if ( _i < nBlocks && ( _i >= 0) )\n\
+            {\n\
+"
+"\
+                break;\n\
+            }\n\
+        }\n\
+\n\
+        iShared = _i;\n\
+        jShared = _j;\n\
+    }\n\
+\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+    int i = iShared;\n\
+    int j = jShared;\n\
+\n\
+\n\
+    int ref_x = i * %TARGET_ROWS;\n\
+    int ref_y = j * %TARGET_ROWS;\n\
+\n\
+    // Load data into xShared and yShared\n\
+    // Not a common task among blocks in the present implementation..\n\
+\n\
+    // Diagonal Blocks : Should handle not reading diagonal element complex value\n\
+    // Diagonal blocks : Should handle the last block as well\n\
+    // Scalar code in Present implementation\n\
+    if ( i == j)\n\
+    {\n\
+         int ncols = ((ref_y + %TARGET_ROWS) < N) ? %TARGET_ROWS : (N-ref_y);\n\
+        int nrows = ((ref_x + %TARGET_ROWS) < N) ? %TARGET_ROWS : (N-ref_x);\n\
+        int nElements = ((nrows) * ((ncols) + 1)) >> 1;\n\
+        nrows -= 1;\n\
+        ncols -= 1;\n\
+        for(i = threadID; i < nElements; i += get_local_size(0))\n\
+        {\n\
+            int r = -1, c = -1;\n\
+            for(int k = 1; (k <= %TARGET_ROWS); k ++)\n\
+            {\n\
+                int temp = ((k - 1) * k) >> 1;\n\
+                r = ((i >= temp) && (i <= (temp + k - 1))) ? k - 1 : r;\n\
+            }\n\
+            c = i - (((r + 1) * r) >> 1);\n\
+\n\
+            r = ref_x + r;\n\
+            c = ref_y + c;\n\
+\n\
+            %TYPE res;\n\
+            res = alpha * X[c * incx];\n\
+            res = res * X[r * incx];\n\
+            A[r + c * lda] += res;\n\
+        }\n\
+    }\n\
+    else if ( i == (nBlocks - 1)) // Last Row Strip blocks ( May not fit into target region)\n\
+"
+"\
+    {\n\
+\n\
+        %TYPE%V loadedA;\n\
+\n\
+        // Populating xShared: May not fit into target region\n\
+        for( int i = (ref_x + threadID); i < N; i += get_local_size(0))\n\
+        {\n\
+            xShared[i - ref_x] = X[ i * incx];\n\
+        }\n\
+\n\
+        // Populating yShared: Always fits well..\n\
+        for( int i = (ref_y  + threadID); (i - ref_y) < %TARGET_ROWS; i += get_local_size(0))\n\
+        {\n\
+            %TYPE loadedX = X[ i * incx];\n\
+            yShared[(i - ref_y) ] = loadedX;\n\
+        }\n\
+\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+        // Loop %TARGET_ROWS / TARGET_WIDTH times\n\
+        int nLoops = ((%TARGET_ROWS - 1)/ TARGET_WIDTH)  + 1;\n\
+\n\
+        int colShift = threadID / TARGET_ROWS_BY_VEC;\n\
+        int rowShift = (threadID & ( TARGET_ROWS_BY_VEC - 1)) * %V;\n\
+\n\
+\n\
+        int startRow = ref_x + rowShift;\n\
+        %TYPE%V  loadedX;\n\
+\n\
+        if ( startRow  < (N - (%V - 1)) )\n\
+        {\n\
+            loadedX=  *((__local %TYPE%V*)( xShared + rowShift));\n\
+        }\n\
+\n\
+        for( int i= 1; i <=  nLoops; i++)\n\
+        {\n\
+            int startCol = ref_y + colShift + ( i - 1 ) * TARGET_WIDTH;\n\
+\n\
+            if ( ( startRow  < N ) && ( startCol  < (ref_y + %TARGET_ROWS ) ) )// threads that fall into target region\n\
+            {\n\
+                if(( startRow + %V) > N )// Loop serially as can't do VLOAD\n\
+                {\n\
+                    %TYPE yValue = yShared[ startCol - ref_y];\n\
+\n\
+                    for(int row = startRow; row < N; row++)\n\
+                    {\n\
+                        %TYPE xValue = xShared[ row - ref_x];\n\
+                        %TYPE res1, res2;\n\
+                        res1 = alpha * yValue;\n\
+                        %MUL( res2, res1,  xValue);\n\
+"
+"\
+                        A[ row + startCol * lda] += res2;\n\
+                    }\n\
+                }\n\
+                else\n\
+                {\n\
+                    loadedA      = %VLOAD( 0, (&A[ startRow + startCol * lda]));\n\
+\n\
+                    %TYPE      loadedY= yShared[ startCol - ref_y];\n\
+                    %TYPE      res;\n\
+                    res =  loadedY * alpha;\n\
+                    %TYPE%V  resVec;\n\
+                    resVec = %VMAKEVEC(res);\n\
+                    %VMAD( loadedA, loadedX, resVec);\n\
+                    %VSTORE(  loadedA, 0, (&A[ startRow + startCol * lda]));\n\
+                }\n\
+            }\n\
+        }\n\
+    }\n\
+    else // blocks that fit exactly.\n\
+    {\n\
+\n\
+        %TYPE%V loadedA;\n\
+\n\
+        // Populating xShared\n\
+        for( int i = (ref_x + threadID); (i - ref_x) < %TARGET_ROWS; i += get_local_size(0))\n\
+        {\n\
+            xShared[i - ref_x] = X[ i * incx];\n\
+        }\n\
+\n\
+        // Populating yShared\n\
+        for( int i = (ref_y + threadID); (i - ref_y) < %TARGET_ROWS; i += get_local_size(0))\n\
+        {\n\
+            %TYPE loadedX = X[ i * incx];\n\
+            yShared[i - ref_y] = loadedX;\n\
+        }\n\
+\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+        // Loop %TARGET_ROWS / TARGET_WIDTH times\n\
+        int nLoops = ((%TARGET_ROWS - 1)/ TARGET_WIDTH)  + 1;\n\
+\n\
+        int colShift = threadID / TARGET_ROWS_BY_VEC;\n\
+        int rowShift = (threadID & ( TARGET_ROWS_BY_VEC - 1)) * %V;\n\
+\n\
+        int startRow = ref_x + rowShift;\n\
+        int startCol = ref_y + colShift;\n\
+        %TYPE%V  loadedX;\n\
+\n\
+        if ( startCol < ( ref_y + %TARGET_ROWS) ) // threads that fall into target region\n\
+        {\n\
+"
+"\
+            loadedX     =  *((__local %TYPE%V*)( xShared + rowShift));\n\
+        }\n\
+\n\
+        //#pragma unroll\n\
+        for( int i= 1; i <= nLoops; i++)\n\
+        {\n\
+            startCol = ref_y + colShift + ( i - 1 ) * TARGET_WIDTH;\n\
+\n\
+            if ( startCol < ( ref_y + %TARGET_ROWS) ) // threads that fall into target region\n\
+            {\n\
+                loadedA      = %VLOAD( 0, (&A[ startRow + startCol * lda]));\n\
+                %TYPE      loadedY= yShared[ startCol - ref_y];\n\
+                %TYPE      res;\n\
+                res =  loadedY * alpha;\n\
+                %TYPE%V  resVec;\n\
+                resVec = %VMAKEVEC(res);\n\
+                %VMAD( loadedA, loadedX, resVec);\n\
+                %VSTORE(  loadedA, 0, (&A[ startRow + startCol * lda]));\n\
+            }\n\
+        }\n\
+    }\n\
+}\n\
+\n";
+
+
+
+// Column-Major Upper
+static const char *syr_CU_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+\n\
+#define TARGET_ROWS_BY_VEC       (%TARGET_ROWS / %V)\n\
+#define TARGET_WIDTH             (%BLOCKSIZE / TARGET_ROWS_BY_VEC )\n\
+#define TARGET_HEIGHT            (%BLOCKSIZE / TARGET_ROWS_BY_VEC )\n\
+\n\
+// Column-Major Upper\n\
+// nBlocks     = (N - 1)/ TR + 1\n\
+// totalBlocks     = (nBlocks * ( nBlocks + 1)) / 2\n\
+__kernel void %PREFIXsyr_CU_kernel( __global %TYPE* _A, __global const %TYPE* _X, int N, int offx, int incx, int offa, int lda, %PTYPE alpha )\n\
+{\n\
+    __global %TYPE* X;\n\
+    __global %TYPE *A;\n\
+\n\
+    __local %TYPE xShared[%TARGET_ROWS];\n\
+    __local %TYPE yShared[%TARGET_ROWS];\n\
+\n\
+    A = _A + offa;\n\
+    if ( incx < 0 ) // Goto end of vector\n\
+    {\n\
+        X = _X + offx - ( N - 1) * incx;\n\
+    }\n\
+    else\n\
+    {\n\
+        X = _X + offx;\n\
+    }\n\
+\n\
+    int blockID  = get_group_id(0);\n\
+    int threadID = get_local_id(0);\n\
+    int nBlocks  = ((N - 1) / %TARGET_ROWS) + 1;\n\
+\n\
+    __local int iShared;\n\
+    __local int jShared;\n\
+\n\
+    // Get (i,j) of Block\n\
+    if ( threadID == 0)\n\
+    {\n\
+        int _i = 0, _j = 0;\n\
+        //for ( _j = 0; _j < nBlocks; _j++)\n\
+        for ( _j = (blockID / nBlocks); _j < nBlocks; _j++)\n\
+        {\n\
+            _i = blockID - ((_j*((2* nBlocks) + 1 - _j))/2) + _j;\n\
+            if ( _i < nBlocks && ( _i >= 0) )\n\
+"
+"\
+            {\n\
+                break;\n\
+            }\n\
+        }\n\
+\n\
+        iShared = _i;\n\
+        jShared = _j;\n\
+    }\n\
+\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+    int i = iShared;\n\
+    int j = jShared;\n\
+\n\
+    int ref_x = (N- 1) - i * %TARGET_ROWS;\n\
+    int ref_y = (N- 1) - j * %TARGET_ROWS;\n\
+\n\
+    // Load data into xShared and yShared\n\
+    // Not a common task among blocks in the present implementation..\n\
+\n\
+    // Diagonal Blocks : Should handle not reading diagonal element complex value\n\
+    // Diagonal blocks : Should handle the last block as well\n\
+    // Scalar code in Present implementation\n\
+    if ( i == j)\n\
+    {\n\
+        int ncols = ((ref_y - %TARGET_ROWS) >= 0) ? %TARGET_ROWS : (ref_y+1);\n\
+        int nrows = ((ref_x - %TARGET_ROWS) >= 0) ? %TARGET_ROWS : (ref_x+1);\n\
+        int nElements = ((nrows) * ((ncols) + 1)) >> 1;\n\
+        nrows -= 1;\n\
+        ncols -= 1;\n\
+        for(i = threadID; i < nElements; i += get_local_size(0))\n\
+        {\n\
+            int r, c = -1;\n\
+            for(int k = 1; (k <= %TARGET_ROWS); k ++)\n\
+            {\n\
+                int temp = ((k - 1) * k) >> 1;\n\
+                c = ((i >= temp) && (i <= (temp + k - 1))) ? k - 1 : c;\n\
+            }\n\
+            r = i - (((c + 1) * c) >> 1);\n\
+\n\
+            r = ref_x - (nrows) + r;\n\
+            c = ref_y - (ncols) + c;\n\
+\n\
+            %TYPE res;\n\
+            res = alpha * X[c * incx];\n\
+            res = res * X[r * incx];\n\
+            A[r + c * lda] += res;\n\
+        }\n\
+    }\n\
+    else if ( i == (nBlocks - 1)) // Last Row Strip blocks ( May not fit into target region)\n\
+"
+"\
+    {\n\
+\n\
+        %TYPE%V loadedA;\n\
+\n\
+        // Populating xShared: May not fit into target region\n\
+        for( int i = (ref_x - threadID); i >= 0; i -= get_local_size(0))\n\
+        {\n\
+            // FIXME: Assumes BLOCKSIZE >= TARGET_ROWS\n\
+            // FIXME: Works correctly only for 1 ITERATION\n\
+            //xShared[(%TARGET_ROWS - 1) - threadID] = X[ i * incx];\n\
+            xShared[(%TARGET_ROWS - 1) -(ref_x - i)] = X[ i * incx];\n\
+        }\n\
+\n\
+        // Populating yShared: Always fits well..\n\
+        for( int i = (ref_y - threadID); (ref_y - i) < %TARGET_ROWS; i -= get_local_size(0))\n\
+        {\n\
+            %TYPE loadedX = X[ i * incx];\n\
+            yShared[(ref_y - i)] = loadedX;\n\
+        }\n\
+\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+        // Loop\n\
+        int nLoops = ((%TARGET_ROWS - 1)/ TARGET_WIDTH)  + 1;\n\
+\n\
+        int colShift = threadID / TARGET_ROWS_BY_VEC;\n\
+        int rowShift = ((threadID & ( TARGET_ROWS_BY_VEC - 1)) * %V) + (%V - 1);\n\
+\n\
+        int startRow = ref_x - rowShift;\n\
+        %TYPE%V  loadedX;\n\
+\n\
+        if ( startRow  >= 0 )\n\
+        {\n\
+            loadedX=  *((__local %TYPE%V*)( &xShared[ (%TARGET_ROWS - 1) - rowShift]));\n\
+        }\n\
+\n\
+        for( int i= 1; i <=  nLoops; i++)\n\
+        {\n\
+            int startCol = ref_y - colShift - ( i - 1 ) * TARGET_WIDTH;\n\
+\n\
+            // threads that fall into target region\n\
+            if( ( startRow  > -(%V) ) && (startCol > (ref_y - %TARGET_ROWS)) )\n\
+            {\n\
+                if( startRow  < 0 )// Loop serially as can't do VLOAD\n\
+                {\n\
+                    %TYPE yValue = yShared[ ref_y - startCol];\n\
+\n\
+                    for(int row = startRow + (%V - 1); row >= 0; row--)\n\
+                    {\n\
+                        %TYPE xValue = xShared[ %TARGET_ROWS - 1 - (ref_x - row)];\n\
+"
+"\
+                        %TYPE res1, res2;\n\
+                        res1 = alpha * yValue;\n\
+                        %MUL( res2, res1,  xValue);\n\
+                        A[ row + startCol * lda] += res2;\n\
+                    }\n\
+                }\n\
+                else\n\
+                {\n\
+                    loadedA  = %VLOAD( 0, (&A[ startRow + startCol * lda]));\n\
+\n\
+                    %TYPE      loadedY= yShared[ ref_y - startCol];\n\
+                    %TYPE      res;\n\
+                    res =  loadedY * alpha;\n\
+                    %TYPE%V  resVec;\n\
+                    resVec = %VMAKEVEC(res);\n\
+                    %VMAD( loadedA, loadedX, resVec);\n\
+                    %VSTORE(  loadedA, 0, (&A[ startRow + startCol * lda]));\n\
+                }\n\
+            }\n\
+        }\n\
+    }\n\
+    else // blocks that fit exactly.\n\
+    {\n\
+        %TYPE%V loadedA;\n\
+\n\
+        // Populating xShared\n\
+        for( int i = (ref_x - threadID); ((ref_x - i) < %TARGET_ROWS); i -= get_local_size(0))\n\
+        {\n\
+            xShared[ (%TARGET_ROWS - 1) - (ref_x - i)] = X[ i * incx];\n\
+        }\n\
+\n\
+        // Populating yShared\n\
+        for( int i = (ref_y - threadID); (ref_y - i) < %TARGET_ROWS; i -= get_local_size(0))\n\
+        {\n\
+            %TYPE loadedX = X[ i * incx];\n\
+            yShared[(ref_y - i)] = loadedX;\n\
+        }\n\
+\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+        // Loop %TARGET_ROWS / TARGET_WIDTH times\n\
+        int nLoops = ((%TARGET_ROWS - 1)/ TARGET_WIDTH)  + 1;\n\
+\n\
+        int colShift = threadID / TARGET_ROWS_BY_VEC;\n\
+        int rowShift = ((threadID & ( TARGET_ROWS_BY_VEC - 1)) * %V) + (%V - 1);\n\
+\n\
+\n\
+        int startRow = ref_x - rowShift;\n\
+        int startCol = ref_y - colShift;\n\
+        %TYPE%V  loadedX;\n\
+"
+"\
+        // Not all threads should do this..\n\
+        // Depends on whether blocksize width is > target_rows\n\
+        if ( startCol > ( ref_y - %TARGET_ROWS) ) // threads that fall into target region\n\
+        {\n\
+            loadedX=  *((__local %TYPE%V*)( &xShared[ (%TARGET_ROWS - 1)- rowShift]));\n\
+        }\n\
+\n\
+        for( int i = 1; i <= nLoops; i++)\n\
+        {\n\
+            startCol = ref_y - colShift - ( i - 1 ) * TARGET_WIDTH;\n\
+\n\
+            if ( startCol > ( ref_y - %TARGET_ROWS) ) // threads that fall into target region\n\
+            {\n\
+                loadedA = %VLOAD( 0, (&A[ startRow + startCol * lda]));\n\
+                %TYPE  loadedY = yShared[ ref_y - startCol];\n\
+                %TYPE  res;\n\
+                res = loadedY * alpha;\n\
+                %TYPE%V  resVec;\n\
+                resVec = %VMAKEVEC(res);\n\
+                %VMAD( loadedA, loadedX, resVec);\n\
+                %VSTORE(  loadedA, 0, (&A[ startRow + startCol * lda]));\n\
+            }\n\
+        }\n\
+\n\
+    }\n\
+}\n\
+\n";
+
+
+
+

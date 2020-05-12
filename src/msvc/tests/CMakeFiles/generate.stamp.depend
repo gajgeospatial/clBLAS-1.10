@@ -1,0 +1,8 @@
+# CMake generation dependency list for this directory.
+C:/Development/op3d_active/clBLAS-1.10/src/msvc/tests/gtest-external-prefix/tmp/gtest-external-cfgcmd.txt.in
+C:/Development/op3d_active/clBLAS-1.10/src/tests/CMakeLists.txt
+C:/Development/op3d_active/clBLAS-1.10/src/tests/copyTestDependencies.cmake.in
+C:/Development/op3d_active/clBLAS-1.10/src/tests/gtest.cmake
+C:/Program Files/CMake/share/cmake-3.14/Modules/ExternalProject-download.cmake.in
+C:/Program Files/CMake/share/cmake-3.14/Modules/ExternalProject.cmake
+C:/Program Files/CMake/share/cmake-3.14/Modules/RepositoryInfo.txt.in

@@ -1,0 +1,684 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vs2017_Debug|Win32">
+      <Configuration>vs2017_Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vs2017_Debug|x64">
+      <Configuration>vs2017_Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vs2017_Release|Win32">
+      <Configuration>vs2017_Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="vs2017_Release|x64">
+      <Configuration>vs2017_Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8C8CF27E-8FE4-3376-9206-0DDEDE3883A9}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.18362.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>Win32</Platform>
+    <ProjectName>AutoGemm_Tools_Profile</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v120</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v141</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(SolutionDir)vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|Win32'">$(SolutionDir)vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|x64'">$(SolutionDir)vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(ProjectName).dir\vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|Win32'">$(ProjectName).dir\vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(ProjectName).dir\vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|x64'">$(ProjectName).dir\vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AutoGemm_Tools_Profile</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|Win32'">AutoGemm_Tools_Profile</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">AutoGemm_Tools_Profile</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|x64'">AutoGemm_Tools_Profile</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.exe</TargetExt>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|Win32'">.exe</TargetExt>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|Win32'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</GenerateManifest>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|Win32'">true</GenerateManifest>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(SolutionDir)vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|Win32'">$(SolutionDir)vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(SolutionDir)vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|x64'">$(SolutionDir)vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration)\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(ProjectName).dir\vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|Win32'">$(ProjectName).dir\vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(ProjectName).dir\vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|x64'">$(ProjectName).dir\vc$(PlatformToolsetVersion)\$(Platform)\$(Configuration)\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AutoGemm_Tools_Profile</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|Win32'">AutoGemm_Tools_Profile</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AutoGemm_Tools_Profile</TargetName>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|x64'">AutoGemm_Tools_Profile</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.exe</TargetExt>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|Win32'">.exe</TargetExt>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|Win32'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</GenerateManifest>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|Win32'">true</GenerateManifest>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CUDA_PATH)\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION="1.2";CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION=\"1.2\";CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CUDA_LIB_PATH)\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(OutDir)AutoGemm_Tools_Profile.lib</ImportLibrary>
+      <ProgramDataBaseFile>$(OutDir)$(TargetName).pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CUDA_PATH)\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION="1.2";CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION=\"1.2\";CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CUDA_LIB_PATH)\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(OutDir)AutoGemm_Tools_Profile.lib</ImportLibrary>
+      <ProgramDataBaseFile>$(OutDir)$(TargetName).pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CUDA_PATH)\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION="1.2";CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION=\"1.2\";CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CUDA_LIB_PATH)\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) </AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(OutDir)AutoGemm_Tools_Profile.lib</ImportLibrary>
+      <ProgramDataBaseFile>$(OutDir)$(TargetName).pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CUDA_PATH)\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION="1.2";CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_DEBUG;_WINDOWS;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION=\"1.2\";CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CUDA_LIB_PATH)\$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) </AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(OutDir)AutoGemm_Tools_Profile.lib</ImportLibrary>
+      <ProgramDataBaseFile>$(OutDir)$(TargetName).pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CUDA_PATH)\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION="1.2";CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION=\"1.2\";CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CUDA_LIB_PATH)\$(Platform);..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(OutDir)AutoGemm_Tools_Profile.lib</ImportLibrary>
+      <ProgramDataBaseFile>$(OutDir)$(TargetName).pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|Win32'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CUDA_PATH)\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION="1.2";CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION=\"1.2\";CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CUDA_LIB_PATH)\$(Platform);..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:X86</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(OutDir)AutoGemm_Tools_Profile.lib</ImportLibrary>
+      <ProgramDataBaseFile>$(OutDir)$(TargetName).pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CUDA_PATH)\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION="1.2";CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION=\"1.2\";CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CUDA_LIB_PATH)\$(Platform);..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) </AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(OutDir)AutoGemm_Tools_Profile.lib</ImportLibrary>
+      <ProgramDataBaseFile>$(OutDir)$(TargetName).pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>$(CUDA_PATH)\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION="1.2";CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;CLBLAS_HAWAII_DYNAMIC_KERNEL;CLBLAS_BONAIRE_DYNAMIC_KERNEL;CLBLAS_TAHITI_DYNAMIC_KERNEL;_CRT_SECURE_NO_WARNINGS;CL_USE_DEPRECATED_OPENCL_1_1_APIS;KEEP_CLBLAS_KERNEL_SOURCES;PRINT_BUILD_ERRORS;OPENCL_VERSION=\"1.2\";CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\include;..\..\;..\include;..\..\library\.;..\..\include;..\..\library\blas\include;..\..\library\blas\functor\include;..\..\library\tools\tune;..\..\library\blas\AutoGemm;..\..\library\blas\AutoGemm\UserGemmKernelSources;..\..\library\blas\specialCases\include;..\..\library\blas\trtri;%(AdditionalIncludeDirectories);</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalDependencies>OpenCL.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(CUDA_LIB_PATH)\$(Platform);..\..\..\..\..\..\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v10.2\lib\Win32;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) </AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>$(OutDir)AutoGemm_Tools_Profile.lib</ImportLibrary>
+      <ProgramDataBaseFile>$(OutDir)$(TargetName).pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc\CMakeFiles\8fa33127274bd66a159e1a5ef60e6b47\AutoGemmClKernels.h.rule">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Generating ../include/AutoGemmIncludes/AutoGemmClKernels.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.h, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.h, ../include/AutoGemmIncludes/AutoGemmKernelSelection.h, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.h, ../include/AutoGemmIncludes/AutoGemmKernelSources.h, ../include/AutoGemmIncludes/AutoGemmClKernels.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelection.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSources.cpp</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|Win32'">Generating ../include/AutoGemmIncludes/AutoGemmClKernels.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.h, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.h, ../include/AutoGemmIncludes/AutoGemmKernelSelection.h, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.h, ../include/AutoGemmIncludes/AutoGemmKernelSources.h, ../include/AutoGemmIncludes/AutoGemmClKernels.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelection.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSources.cpp</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Generating ../include/AutoGemmIncludes/AutoGemmClKernels.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.h, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.h, ../include/AutoGemmIncludes/AutoGemmKernelSelection.h, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.h, ../include/AutoGemmIncludes/AutoGemmKernelSources.h, ../include/AutoGemmIncludes/AutoGemmClKernels.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelection.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSources.cpp</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|x64'">Generating ../include/AutoGemmIncludes/AutoGemmClKernels.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.h, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.h, ../include/AutoGemmIncludes/AutoGemmKernelSelection.h, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.h, ../include/AutoGemmIncludes/AutoGemmKernelSources.h, ../include/AutoGemmIncludes/AutoGemmClKernels.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelection.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSources.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">setlocal
+"C:\Program Files (x86)\Python38-32\python.exe" ..\..\library\blas\AutoGemm\AutoGemm.py --output-path ..\include --opencl-compiler-version 1.2 --architecture Hawaii
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|Win32'">setlocal
+"C:\Program Files (x86)\Python38-32\python.exe" ..\..\library\blas\AutoGemm\AutoGemm.py --output-path ..\include --opencl-compiler-version 1.2 --architecture Hawaii
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"C:\Program Files (x86)\Python38-32\python.exe" ..\..\library\blas\AutoGemm\AutoGemm.py --output-path ..\include --opencl-compiler-version 1.2 --architecture Hawaii
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|x64'">setlocal
+"C:\Program Files (x86)\Python38-32\python.exe" ..\..\library\blas\AutoGemm\AutoGemm.py --output-path ..\include --opencl-compiler-version 1.2 --architecture Hawaii
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\CMakeFiles\8fa33127274bd66a159e1a5ef60e6b47\AutoGemmClKernels.h.rule;..\..\library\blas\AutoGemm\AutoGemm.py;..\..\library\blas\AutoGemm\AutoGemmParameters.py;..\..\library\blas\AutoGemm\Common.py;..\..\library\blas\AutoGemm\Includes.py;..\..\library\blas\AutoGemm\KernelOpenCL.py;..\..\library\blas\AutoGemm\KernelParameters.py;..\..\library\blas\AutoGemm\KernelSelection.py;..\..\library\blas\AutoGemm\KernelsToPreCompile.py;%(AdditionalInputs);</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|Win32'">..\CMakeFiles\8fa33127274bd66a159e1a5ef60e6b47\AutoGemmClKernels.h.rule;..\..\library\blas\AutoGemm\AutoGemm.py;..\..\library\blas\AutoGemm\AutoGemmParameters.py;..\..\library\blas\AutoGemm\Common.py;..\..\library\blas\AutoGemm\Includes.py;..\..\library\blas\AutoGemm\KernelOpenCL.py;..\..\library\blas\AutoGemm\KernelParameters.py;..\..\library\blas\AutoGemm\KernelSelection.py;..\..\library\blas\AutoGemm\KernelsToPreCompile.py;%(AdditionalInputs);</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\CMakeFiles\8fa33127274bd66a159e1a5ef60e6b47\AutoGemmClKernels.h.rule;..\..\library\blas\AutoGemm\AutoGemm.py;..\..\library\blas\AutoGemm\AutoGemmParameters.py;..\..\library\blas\AutoGemm\Common.py;..\..\library\blas\AutoGemm\Includes.py;..\..\library\blas\AutoGemm\KernelOpenCL.py;..\..\library\blas\AutoGemm\KernelParameters.py;..\..\library\blas\AutoGemm\KernelSelection.py;..\..\library\blas\AutoGemm\KernelsToPreCompile.py;%(AdditionalInputs);</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|x64'">..\CMakeFiles\8fa33127274bd66a159e1a5ef60e6b47\AutoGemmClKernels.h.rule;..\..\library\blas\AutoGemm\AutoGemm.py;..\..\library\blas\AutoGemm\AutoGemmParameters.py;..\..\library\blas\AutoGemm\Common.py;..\..\library\blas\AutoGemm\Includes.py;..\..\library\blas\AutoGemm\KernelOpenCL.py;..\..\library\blas\AutoGemm\KernelParameters.py;..\..\library\blas\AutoGemm\KernelSelection.py;..\..\library\blas\AutoGemm\KernelsToPreCompile.py;%(AdditionalInputs);</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">..\include\AutoGemmIncludes\AutoGemmClKernels.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.h;..\include\AutoGemmIncludes\AutoGemmKernelSelection.h;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h;..\include\AutoGemmIncludes\AutoGemmKernelSources.h;..\include\AutoGemmIncludes\AutoGemmClKernels.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSources.cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|Win32'">..\include\AutoGemmIncludes\AutoGemmClKernels.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.h;..\include\AutoGemmIncludes\AutoGemmKernelSelection.h;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h;..\include\AutoGemmIncludes\AutoGemmKernelSources.h;..\include\AutoGemmIncludes\AutoGemmClKernels.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSources.cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">..\include\AutoGemmIncludes\AutoGemmClKernels.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.h;..\include\AutoGemmIncludes\AutoGemmKernelSelection.h;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h;..\include\AutoGemmIncludes\AutoGemmKernelSources.h;..\include\AutoGemmIncludes\AutoGemmClKernels.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSources.cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|x64'">..\include\AutoGemmIncludes\AutoGemmClKernels.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.h;..\include\AutoGemmIncludes\AutoGemmKernelSelection.h;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h;..\include\AutoGemmIncludes\AutoGemmKernelSources.h;..\include\AutoGemmIncludes\AutoGemmClKernels.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSources.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</LinkObjects>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|Win32'">false</LinkObjects>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='vs2017_Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Generating ../include/AutoGemmIncludes/AutoGemmClKernels.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.h, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.h, ../include/AutoGemmIncludes/AutoGemmKernelSelection.h, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.h, ../include/AutoGemmIncludes/AutoGemmKernelSources.h, ../include/AutoGemmIncludes/AutoGemmClKernels.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelection.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSources.cpp</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|Win32'">Generating ../include/AutoGemmIncludes/AutoGemmClKernels.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.h, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.h, ../include/AutoGemmIncludes/AutoGemmKernelSelection.h, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.h, ../include/AutoGemmIncludes/AutoGemmKernelSources.h, ../include/AutoGemmIncludes/AutoGemmClKernels.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelection.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSources.cpp</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Generating ../include/AutoGemmIncludes/AutoGemmClKernels.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.h, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.h, ../include/AutoGemmIncludes/AutoGemmKernelSelection.h, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.h, ../include/AutoGemmIncludes/AutoGemmKernelSources.h, ../include/AutoGemmIncludes/AutoGemmClKernels.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelection.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSources.cpp</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|x64'">Generating ../include/AutoGemmIncludes/AutoGemmClKernels.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.h, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.h, ../include/AutoGemmIncludes/AutoGemmKernelSelection.h, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.h, ../include/AutoGemmIncludes/AutoGemmKernelSources.h, ../include/AutoGemmIncludes/AutoGemmClKernels.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelection.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSources.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">setlocal
+"C:\Program Files (x86)\Python38-32\python.exe" ..\..\library\blas\AutoGemm\AutoGemm.py --output-path ..\include --opencl-compiler-version 1.2 --architecture Hawaii
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|Win32'">setlocal
+"C:\Program Files (x86)\Python38-32\python.exe" ..\..\library\blas\AutoGemm\AutoGemm.py --output-path ..\include --opencl-compiler-version 1.2 --architecture Hawaii
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"C:\Program Files (x86)\Python38-32\python.exe" ..\..\library\blas\AutoGemm\AutoGemm.py --output-path ..\include --opencl-compiler-version 1.2 --architecture Hawaii
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|x64'">setlocal
+"C:\Program Files (x86)\Python38-32\python.exe" ..\..\library\blas\AutoGemm\AutoGemm.py --output-path ..\include --opencl-compiler-version 1.2 --architecture Hawaii
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\CMakeFiles\8fa33127274bd66a159e1a5ef60e6b47\AutoGemmClKernels.h.rule;..\..\library\blas\AutoGemm\AutoGemm.py;..\..\library\blas\AutoGemm\AutoGemmParameters.py;..\..\library\blas\AutoGemm\Common.py;..\..\library\blas\AutoGemm\Includes.py;..\..\library\blas\AutoGemm\KernelOpenCL.py;..\..\library\blas\AutoGemm\KernelParameters.py;..\..\library\blas\AutoGemm\KernelSelection.py;..\..\library\blas\AutoGemm\KernelsToPreCompile.py;%(AdditionalInputs);</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|Win32'">..\CMakeFiles\8fa33127274bd66a159e1a5ef60e6b47\AutoGemmClKernels.h.rule;..\..\library\blas\AutoGemm\AutoGemm.py;..\..\library\blas\AutoGemm\AutoGemmParameters.py;..\..\library\blas\AutoGemm\Common.py;..\..\library\blas\AutoGemm\Includes.py;..\..\library\blas\AutoGemm\KernelOpenCL.py;..\..\library\blas\AutoGemm\KernelParameters.py;..\..\library\blas\AutoGemm\KernelSelection.py;..\..\library\blas\AutoGemm\KernelsToPreCompile.py;%(AdditionalInputs);</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\CMakeFiles\8fa33127274bd66a159e1a5ef60e6b47\AutoGemmClKernels.h.rule;..\..\library\blas\AutoGemm\AutoGemm.py;..\..\library\blas\AutoGemm\AutoGemmParameters.py;..\..\library\blas\AutoGemm\Common.py;..\..\library\blas\AutoGemm\Includes.py;..\..\library\blas\AutoGemm\KernelOpenCL.py;..\..\library\blas\AutoGemm\KernelParameters.py;..\..\library\blas\AutoGemm\KernelSelection.py;..\..\library\blas\AutoGemm\KernelsToPreCompile.py;%(AdditionalInputs);</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|x64'">..\CMakeFiles\8fa33127274bd66a159e1a5ef60e6b47\AutoGemmClKernels.h.rule;..\..\library\blas\AutoGemm\AutoGemm.py;..\..\library\blas\AutoGemm\AutoGemmParameters.py;..\..\library\blas\AutoGemm\Common.py;..\..\library\blas\AutoGemm\Includes.py;..\..\library\blas\AutoGemm\KernelOpenCL.py;..\..\library\blas\AutoGemm\KernelParameters.py;..\..\library\blas\AutoGemm\KernelSelection.py;..\..\library\blas\AutoGemm\KernelsToPreCompile.py;%(AdditionalInputs);</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">..\include\AutoGemmIncludes\AutoGemmClKernels.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.h;..\include\AutoGemmIncludes\AutoGemmKernelSelection.h;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h;..\include\AutoGemmIncludes\AutoGemmKernelSources.h;..\include\AutoGemmIncludes\AutoGemmClKernels.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSources.cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|Win32'">..\include\AutoGemmIncludes\AutoGemmClKernels.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.h;..\include\AutoGemmIncludes\AutoGemmKernelSelection.h;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h;..\include\AutoGemmIncludes\AutoGemmKernelSources.h;..\include\AutoGemmIncludes\AutoGemmClKernels.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSources.cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">..\include\AutoGemmIncludes\AutoGemmClKernels.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.h;..\include\AutoGemmIncludes\AutoGemmKernelSelection.h;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h;..\include\AutoGemmIncludes\AutoGemmKernelSources.h;..\include\AutoGemmIncludes\AutoGemmClKernels.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSources.cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|x64'">..\include\AutoGemmIncludes\AutoGemmClKernels.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.h;..\include\AutoGemmIncludes\AutoGemmKernelSelection.h;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h;..\include\AutoGemmIncludes\AutoGemmKernelSources.h;..\include\AutoGemmIncludes\AutoGemmClKernels.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSources.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</LinkObjects>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|Win32'">false</LinkObjects>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='vs2017_Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">Generating ../include/AutoGemmIncludes/AutoGemmClKernels.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.h, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.h, ../include/AutoGemmIncludes/AutoGemmKernelSelection.h, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.h, ../include/AutoGemmIncludes/AutoGemmKernelSources.h, ../include/AutoGemmIncludes/AutoGemmClKernels.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelection.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSources.cpp</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Generating ../include/AutoGemmIncludes/AutoGemmClKernels.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.h, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.h, ../include/AutoGemmIncludes/AutoGemmKernelSelection.h, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.h, ../include/AutoGemmIncludes/AutoGemmKernelSources.h, ../include/AutoGemmIncludes/AutoGemmClKernels.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelection.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSources.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">setlocal
+"C:\Program Files (x86)\Python38-32\python.exe" ..\..\library\blas\AutoGemm\AutoGemm.py --output-path ..\include --opencl-compiler-version 1.2 --architecture Hawaii
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"C:\Program Files (x86)\Python38-32\python.exe" ..\..\library\blas\AutoGemm\AutoGemm.py --output-path ..\include --opencl-compiler-version 1.2 --architecture Hawaii
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">..\CMakeFiles\8fa33127274bd66a159e1a5ef60e6b47\AutoGemmClKernels.h.rule;..\..\library\blas\AutoGemm\AutoGemm.py;..\..\library\blas\AutoGemm\AutoGemmParameters.py;..\..\library\blas\AutoGemm\Common.py;..\..\library\blas\AutoGemm\Includes.py;..\..\library\blas\AutoGemm\KernelOpenCL.py;..\..\library\blas\AutoGemm\KernelParameters.py;..\..\library\blas\AutoGemm\KernelSelection.py;..\..\library\blas\AutoGemm\KernelsToPreCompile.py;%(AdditionalInputs);</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">..\CMakeFiles\8fa33127274bd66a159e1a5ef60e6b47\AutoGemmClKernels.h.rule;..\..\library\blas\AutoGemm\AutoGemm.py;..\..\library\blas\AutoGemm\AutoGemmParameters.py;..\..\library\blas\AutoGemm\Common.py;..\..\library\blas\AutoGemm\Includes.py;..\..\library\blas\AutoGemm\KernelOpenCL.py;..\..\library\blas\AutoGemm\KernelParameters.py;..\..\library\blas\AutoGemm\KernelSelection.py;..\..\library\blas\AutoGemm\KernelsToPreCompile.py;%(AdditionalInputs);</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">..\include\AutoGemmIncludes\AutoGemmClKernels.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.h;..\include\AutoGemmIncludes\AutoGemmKernelSelection.h;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h;..\include\AutoGemmIncludes\AutoGemmKernelSources.h;..\include\AutoGemmIncludes\AutoGemmClKernels.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSources.cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">..\include\AutoGemmIncludes\AutoGemmClKernels.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.h;..\include\AutoGemmIncludes\AutoGemmKernelSelection.h;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h;..\include\AutoGemmIncludes\AutoGemmKernelSources.h;..\include\AutoGemmIncludes\AutoGemmClKernels.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSources.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|Win32'">false</LinkObjects>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">Generating ../include/AutoGemmIncludes/AutoGemmClKernels.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.h, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.h, ../include/AutoGemmIncludes/AutoGemmKernelSelection.h, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.h, ../include/AutoGemmIncludes/AutoGemmKernelSources.h, ../include/AutoGemmIncludes/AutoGemmClKernels.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelection.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSources.cpp</Message>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Generating ../include/AutoGemmIncludes/AutoGemmClKernels.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.h, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.h, ../include/AutoGemmIncludes/AutoGemmKernelSelection.h, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.h, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.h, ../include/AutoGemmIncludes/AutoGemmKernelSources.h, ../include/AutoGemmIncludes/AutoGemmClKernels.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsBinary.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBinaries.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelection.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSelectionSpecific.cpp, ../include/AutoGemmIncludes/AutoGemmKernelBuildOptionsSource.cpp, ../include/AutoGemmIncludes/AutoGemmKernelSources.cpp</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">setlocal
+"C:\Program Files (x86)\Python38-32\python.exe" ..\..\library\blas\AutoGemm\AutoGemm.py --output-path ..\include --opencl-compiler-version 1.2 --architecture Hawaii
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"C:\Program Files (x86)\Python38-32\python.exe" ..\..\library\blas\AutoGemm\AutoGemm.py --output-path ..\include --opencl-compiler-version 1.2 --architecture Hawaii
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">..\CMakeFiles\8fa33127274bd66a159e1a5ef60e6b47\AutoGemmClKernels.h.rule;..\..\library\blas\AutoGemm\AutoGemm.py;..\..\library\blas\AutoGemm\AutoGemmParameters.py;..\..\library\blas\AutoGemm\Common.py;..\..\library\blas\AutoGemm\Includes.py;..\..\library\blas\AutoGemm\KernelOpenCL.py;..\..\library\blas\AutoGemm\KernelParameters.py;..\..\library\blas\AutoGemm\KernelSelection.py;..\..\library\blas\AutoGemm\KernelsToPreCompile.py;%(AdditionalInputs);</AdditionalInputs>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">..\CMakeFiles\8fa33127274bd66a159e1a5ef60e6b47\AutoGemmClKernels.h.rule;..\..\library\blas\AutoGemm\AutoGemm.py;..\..\library\blas\AutoGemm\AutoGemmParameters.py;..\..\library\blas\AutoGemm\Common.py;..\..\library\blas\AutoGemm\Includes.py;..\..\library\blas\AutoGemm\KernelOpenCL.py;..\..\library\blas\AutoGemm\KernelParameters.py;..\..\library\blas\AutoGemm\KernelSelection.py;..\..\library\blas\AutoGemm\KernelsToPreCompile.py;%(AdditionalInputs);</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">..\include\AutoGemmIncludes\AutoGemmClKernels.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.h;..\include\AutoGemmIncludes\AutoGemmKernelSelection.h;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h;..\include\AutoGemmIncludes\AutoGemmKernelSources.h;..\include\AutoGemmIncludes\AutoGemmClKernels.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSources.cpp</Outputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">..\include\AutoGemmIncludes\AutoGemmClKernels.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.h;..\include\AutoGemmIncludes\AutoGemmKernelSelection.h;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h;..\include\AutoGemmIncludes\AutoGemmKernelSources.h;..\include\AutoGemmIncludes\AutoGemmClKernels.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp;..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp;..\include\AutoGemmIncludes\AutoGemmKernelSources.cpp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|Win32'">false</LinkObjects>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\library\blas\AutoGemm\AutoGemmTools\ProfileAutoGemm.cpp" />
+    <ClCompile Include="..\include\AutoGemmIncludes\AutoGemmClKernels.cpp" />
+    <ClCompile Include="..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp" />
+    <ClCompile Include="..\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp" />
+    <ClCompile Include="..\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp" />
+    <ClCompile Include="..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp" />
+    <ClCompile Include="..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp" />
+    <ClCompile Include="..\include\AutoGemmIncludes\AutoGemmKernelSources.cpp" />
+    <ClInclude Include="..\include\AutoGemmIncludes\AutoGemmClKernels.h" />
+    <ClInclude Include="..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h" />
+    <ClInclude Include="..\include\AutoGemmIncludes\AutoGemmKernelBinaries.h" />
+    <ClInclude Include="..\include\AutoGemmIncludes\AutoGemmKernelSelection.h" />
+    <ClInclude Include="..\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h" />
+    <ClInclude Include="..\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h" />
+    <ClInclude Include="..\include\AutoGemmIncludes\AutoGemmKernelSources.h" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemm.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemmParameters.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Common.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Includes.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelOpenCL.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelParameters.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelSelection.py" />
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelsToPreCompile.py" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,797 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\list.c">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\clkern.c">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\kern_cache.c">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\kerngen_core.c">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\kgen_basic.c">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\kgen_loop_helper.c">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\kgen_guard.c">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\misc.c">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\devinfo.c">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\devinfo-cache.c">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\mutex.c">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\rwlock.c">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\trace_malloc.c">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\md5sum.c">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\common\gens\dblock_kgen.c">
+      <Filter>common\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\init.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\impl.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\scimage.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xgemv.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xsymv.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xgemm.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xtrmm.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xtrsm.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xsyrk.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xsyr2k.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xtrmv.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xtrsv.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xsymm.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xgemm2.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xger.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xsyr.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xsyr2.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xher.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xher2.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xhemv.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xhemm.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xherk.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xhpmv.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xspmv.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xgbmv.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xtbmv.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xshbmv.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xtbsv.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xher2k.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xswap.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xscal.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xcopy.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xaxpy.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xdot.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xrotg.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xrotmg.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xrot.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xrotm.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\ixamax.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xnrm2.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\xasum.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\matrix.c">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\fill.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\functor.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\functor_selector.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\functor_xgemm.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\functor_xscal.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\functor_xtrsm.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\functor_xscal_generic.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\tahiti.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\hawaii.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\bonaire.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\gcn_dgemm.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\gpu_dtrsm.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\gpu_dtrsm192.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\functor_fill.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\hawaii_dgemmChannelConflict.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\hawaii_dgemmSplitKernel.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\hawaii_sgemmSplitKernel.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\hawaii_sgemmSplit64_32.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\gcn_dgemmCommon.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\gcn_sgemm.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\gcn_zgemm.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\gcn_dgemmSmallMatrices.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\gcn_sgemmSmallMatrices.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\hawaii_sgemmBranchKernel.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\hawaii_sgemmBig1024Kernel.cc">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\specialCases\GemmSpecialCases.cpp">
+      <Filter>blas</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\common.c">
+      <Filter>blas\generic</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\common2.cc">
+      <Filter>blas\generic</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\blas_funcs.c">
+      <Filter>blas\generic</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\events.c">
+      <Filter>blas\generic</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\matrix_props.c">
+      <Filter>blas\generic</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\matrix_dims.c">
+      <Filter>blas\generic</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\kdump.c">
+      <Filter>blas\generic</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\solution_assert.c">
+      <Filter>blas\generic</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\solution_seq.c">
+      <Filter>blas\generic</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\solution_seq_make.c">
+      <Filter>blas\generic</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\problem_iter.c">
+      <Filter>blas\generic</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\kernel_extra.c">
+      <Filter>blas\generic</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\binary_lookup.cc">
+      <Filter>blas\generic</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\generic\functor_cache.cc">
+      <Filter>blas\generic</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\gen_init.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\blas_kgen.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\blas_subgroup.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\gen_helper.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\tilemul.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\fetch.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\tile.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\tile_iter.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\decomposition.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\gemv.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\symv.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\gemm.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\trmm.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\trsm.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\syrxk.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\trxm_common.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\trsm_kgen.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\xxmv_common.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\blas_kgen_legacy.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\gen_helper_legacy.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\trxm_common_legacy.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\trsm_kgen_legacy.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\blkmul.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\gemm_lds.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\gemm_img.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\trmm_lds.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\trmm_img.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\trsm_lds.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\trsm_img.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\legacy\trsm_cached_lds.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\trmv_reg.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\ger_lds.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\trsv_trtri.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\trsv_gemv.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\kprintf.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\syr_lds.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\her_lds.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\syr2_lds.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\her2_lds.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\symm_cached.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\gemm_cached.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\gemm_tail_cached.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\gbmv.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\tuned_numbers.c">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\swap_reg.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\scal_reg.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\copy_reg.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\axpy_reg.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\dot.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\reduction.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\rotg_reg.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\rotmg_reg.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\rotm_reg.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\iamax.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\nrm2.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\asum.cpp">
+      <Filter>blas\gens</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune\toolslib.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune\fileio.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune\dimension.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune\storage_init.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune\storage_io.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\tools\tune\storage_data.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.cpp">
+      <Filter>AutoGemm\src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.cpp">
+      <Filter>AutoGemm\src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.cpp">
+      <Filter>AutoGemm\src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.cpp">
+      <Filter>AutoGemm\src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.cpp">
+      <Filter>AutoGemm\src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.cpp">
+      <Filter>AutoGemm\src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.cpp">
+      <Filter>AutoGemm\src</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources\UserGemmClKernels.cc">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\clBLAS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\clBLAS-complex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\clkern.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\cltypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\dblock_kgen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\defbool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\devinfo.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\dis_warning.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\kern_cache.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\kernel_extra.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\kerngen.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\list.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\mempat.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\msvc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\mutex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\rwlock.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\solver.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\md5sum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\binary_lookup.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include\blas_funcs.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include\matrix_dims.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include\matrix_props.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include\blas_mempat.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include\clblas-internal.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include\solution_seq.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include\events.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\include\xgemm.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\functor.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\functor_xgemm.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\functor_xscal.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\functor_xtrsm.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\functor_xscal_generic.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\functor_selector.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\tahiti.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\hawaii.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\bonaire.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\gcn_dgemm.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\gpu_dtrsm.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\gpu_dtrsm192.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\BinaryBuild.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\hawaii_dgemmChannelConflict.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\hawaii_dgemmSplitKernel.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\hawaii_sgemmSplitKernel.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\hawaii_sgemmSplit64_32.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\gcn_dgemmCommon.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\gcn_sgemm.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\gcn_zgemm.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\gcn_dgemmSmallMatrices.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\gcn_sgemmSmallMatrices.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\hawaii_sgemmBranchKernel.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\functor\include\hawaii_sgemmBig1024Kernel.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources\UserGemmClKernels.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\UserGemmKernelSources\UserGemmKernelSourceIncludes.h">
+      <Filter>blas\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\fetch.h">
+      <Filter>blas\gens</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\blas_kgen.h">
+      <Filter>blas\gens</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\blas_subgroup.h">
+      <Filter>blas\gens</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\gen_helper.h">
+      <Filter>blas\gens</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\init.h">
+      <Filter>blas\gens</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\trxm_common.h">
+      <Filter>blas\gens</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\trsm_kgen.h">
+      <Filter>blas\gens</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\xxmv_common.h">
+      <Filter>blas\gens</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\tile.h">
+      <Filter>blas\gens</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\tile_iter.h">
+      <Filter>blas\gens</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\gens\tuned_numbers.h">
+      <Filter>blas\gens</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmClKernels.h">
+      <Filter>AutoGemm\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsBinary.h">
+      <Filter>AutoGemm\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBinaries.h">
+      <Filter>AutoGemm\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelection.h">
+      <Filter>AutoGemm\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSelectionSpecific.h">
+      <Filter>AutoGemm\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelBuildOptionsSource.h">
+      <Filter>AutoGemm\include</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\include\AutoGemmIncludes\AutoGemmKernelSources.h">
+      <Filter>AutoGemm\include</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\msvc1\CMakeFiles\2b04de99f48f996a565bc3c6911092e2\AutoGemmClKernels.h.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\library\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\clBLAS.def">
+      <Filter>Source Files</Filter>
+    </None>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemm.py">
+      <Filter>AutoGemm\scripts</Filter>
+    </None>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\AutoGemmParameters.py">
+      <Filter>AutoGemm\scripts</Filter>
+    </None>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Common.py">
+      <Filter>AutoGemm\scripts</Filter>
+    </None>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\Includes.py">
+      <Filter>AutoGemm\scripts</Filter>
+    </None>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelOpenCL.py">
+      <Filter>AutoGemm\scripts</Filter>
+    </None>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelParameters.py">
+      <Filter>AutoGemm\scripts</Filter>
+    </None>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelSelection.py">
+      <Filter>AutoGemm\scripts</Filter>
+    </None>
+    <None Include="C:\Development\op3d_active\clBLAS-1.10\src\library\blas\AutoGemm\KernelsToPreCompile.py">
+      <Filter>AutoGemm\scripts</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="AutoGemm">
+      <UniqueIdentifier>{DF5C1BB7-774E-3065-8D0C-F067F44B010E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AutoGemm\include">
+      <UniqueIdentifier>{03BB7B2B-D244-37D6-8A8E-ACF21211B3B8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AutoGemm\scripts">
+      <UniqueIdentifier>{339617AD-D106-32C0-B934-2F90CF16057C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AutoGemm\src">
+      <UniqueIdentifier>{72E40CB8-4F73-3EC2-AD8A-95FE2E1FB819}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{87DAF2FA-030E-3A06-892E-BBB20244AE08}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{DB2DF0D3-0FAB-35DF-9FBC-6C8340AB8960}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{E8C67862-4258-3E8B-BBCC-6C972492BF3E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="blas">
+      <UniqueIdentifier>{C733D460-FB5A-37A7-8E1D-AF8532677F18}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="blas\generic">
+      <UniqueIdentifier>{708F6BD1-719B-36C9-AC57-C64D6FDA439D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="blas\gens">
+      <UniqueIdentifier>{749762CA-96C6-302F-9AF4-FDA16EDED213}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="blas\include">
+      <UniqueIdentifier>{A7FAAD9F-9D28-3462-B001-99E11244EA01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common">
+      <UniqueIdentifier>{EF53928E-E412-3DE3-8263-078AD19474A7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="common\gens">
+      <UniqueIdentifier>{97E64AD2-10E5-3F89-AA75-A7CCE77CD593}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

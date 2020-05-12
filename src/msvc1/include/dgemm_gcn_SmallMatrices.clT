@@ -1,0 +1,1208 @@
+
+// DGEMM kernels for Hawai & Tahiti 
+//
+// All kernels are ColumnMajor. The case RowMajor is handled by an earlier transformation 
+// into an equivalent ColumnMajor (using the property that (A*B)' is equal to B'A' that the 
+// conversion from Row to Column major is basically a transpose) 
+//
+// The naming scheme for the kernels is dgemm_<ta><tb>_<divn>_<divm>_<divk>_<bs0>x<bs1>_<nv0>x<nv1> where 
+//    - <ta> is N or T representing the transpose operation on A
+//    - <tb> is N or T representing the transpose operation on B
+//    - <divn> is a required divisor of N (1 for any value)
+//    - <divm> is a required divisor of M (1 for any value)
+//    - <divk> is a required divisor of K (1 for any value)
+//    - <bs0>x<bs1> is the block size
+//    - <nv0>x<nv1> is the number of points computed per work-item
+//
+// For instance a kernel named 'dgemm_NT_16_32_1_8x8_2x4' 
+//    - would implement C = C + A * B' 
+//    - for N multiple of 16
+//    - for M multiple of 32 
+//    - for any value of K
+//    - using work-groups of size (8,8)
+//    - with each thread computing 2x4 points of C 
+//
+//
+// The kernel prototype shall be compatible with
+//
+//    __kernel void dgemm( __global double const * restrict A, 
+//                         __global double const * restrict B, 
+//                         __global double * C,
+//                         uint   M, 
+//                         uint   N, 
+//                         uint   K,
+//                         double alpha,  
+//                         double beta,   
+//                         uint   lda,
+//                         uint   ldb, 
+//                         uint   ldc, 
+//                         uint   offsetA, 
+//                         uint   offsetB , 
+//                         uint   offsetC 
+//                       )
+//
+//
+//
+//
+//
+
+
+// =====  dgemm_NT_MN48.cl
+
+
+
+
+static const char * dgemm_NT_24_24_8_8x8_3x3__ALPHABETA = "\
+\n\
+__attribute__((reqd_work_group_size(8,8,1)))\n\
+  __kernel void dgemm_NT_24_24_8_8x8_3x3__ALPHABETA( __global double const * restrict A, \n\
+  __global double const * restrict B,\n\
+  __global double * C,  \n\
+  uint const M, \n\
+  uint const N, \n\
+  uint const K,\n\
+  double const alpha,  \n\
+  double const beta,   \n\
+  uint lda,\n\
+  uint ldb, \n\
+  uint ldc, \n\
+  uint const offsetA,\n\
+  uint const offsetB,\n\
+  uint const offsetC)\n\
+{\n\
+  double rC[3][3]  = {(double)0};\n\
+  double rA[1][3];\n\
+  double rB[1][3];\n\
+\n\
+  double PreFetchA[3];\n\
+  double PreFetchB[3];\n\
+\n\
+  A += offsetA;\n\
+  B += offsetB;\n\
+  C+=offsetC;\n\
+\n\
+  __local double lA[192];\n\
+  __local double lB[192];\n\
+\n\
+  int gidx = get_group_id(0);\n\
+  int gidy = get_group_id(1);\n\
+  int idx = get_local_id(0);\n\
+  int idy = get_local_id(1);\n\
+\n\
+  int idt = 8*idy + idx;\n\
+  int idxT = idt % 8;\n\
+  int idyT = idt / 8;\n\
+\n\
+  A +=  gidx*24+ idxT + idyT*lda;\n\
+  B +=  gidy*24+ idxT + idyT*ldb;\n\
+\n\
+  __local double* plA = lA + idyT*24+idxT;\n\
+  __local double* plB = lB + idyT*24+idxT;\n\
+\n\
+  plA[0] = A[0];\n\
+  plA[8] = A[8];\n\
+  plA[16] = A[16];\n\
+"
+"\
+  \n\
+  plB[0] = B[0];\n\
+    plB[8] = B[8];\n\
+  plB[16] = B[16];\n\
+  \n\
+ \n\
+    \n\
+  barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+\n\
+  //for( int block_k=0 ; block_k< K ; block_k+=8)\n\
+  uint block_k = K >> 3;\n\
+  do\n\
+  {\n\
+    //barrier(CLK_LOCAL_MEM_FENCE);\n\
+    A += 8*lda;\n\
+    B += 8*ldb;\n\
+\n\
+    PreFetchA[0] = A[0];\n\
+    PreFetchA[1] = A[8];\n\
+    PreFetchA[2] = A[16];\n\
+   \n\
+    PreFetchB[0] = B[0];\n\
+    PreFetchB[1] = B[8];\n\
+    PreFetchB[2] = B[16];\n\
+    \n\
+    int offA = idx;\n\
+    int offB = idy;\n\
+\n\
+\n\
+\n\
+    for( int k = 0 ; k < 8; k+=1)\n\
+    {\n\
+      rA[0][0] = lA[offA + 0];\n\
+      rA[0][1] = lA[offA + 8];\n\
+      rA[0][2] = lA[offA + 16];\n\
+     \n\
+      rB[0][0] = lB[offB + 0];\n\
+      rB[0][1] = lB[offB + 8];\n\
+      rB[0][2] = lB[offB + 16];\n\
+      \n\
+      offA += 24;\n\
+      offB += 24;\n\
+            \n\
+      rC[0][0]=mad(rA[0][0],rB[0][0],rC[0][0]);\n\
+      rC[1][0]=mad(rA[0][1],rB[0][0],rC[1][0]);\n\
+      rC[2][0]=mad(rA[0][2],rB[0][0],rC[2][0]);\n\
+  \n\
+      rC[0][1]=mad(rA[0][0],rB[0][1],rC[0][1]);\n\
+      rC[1][1]=mad(rA[0][1],rB[0][1],rC[1][1]);\n\
+"
+"\
+      rC[2][1]=mad(rA[0][2],rB[0][1],rC[2][1]);\n\
+  \n\
+      rC[0][2]=mad(rA[0][0],rB[0][2],rC[0][2]);\n\
+      rC[1][2]=mad(rA[0][1],rB[0][2],rC[1][2]);\n\
+      rC[2][2]=mad(rA[0][2],rB[0][2],rC[2][2]);\n\
+     \n\
+    }\n\
+\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+    plA[0]   = PreFetchA[0];\n\
+    plA[8]  = PreFetchA[1];\n\
+    plA[16] = PreFetchA[2];\n\
+    \n\
+    plB[0]   = PreFetchB[0];\n\
+    plB[8]  = PreFetchB[1];\n\
+    plB[16] = PreFetchB[2];\n\
+    \n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+    //  A += 8*lda;\n\
+    //  B += 8*ldb;\n\
+  }\n\
+  while (--block_k > 0);\n\
+\n\
+  C+= gidx*24;\n\
+  C+= idx;\n\
+  C+= gidy*24*ldc;\n\
+  C+= idy*ldc;\n\
+    \n\
+  C[0*ldc] = alpha*rC[0][0] + beta*C[0*ldc];\n\
+  C[8*ldc] = alpha*rC[0][1] + beta*C[8*ldc];\n\
+  C[16*ldc] = alpha*rC[0][2] + beta*C[16*ldc];\n\
+  \n\
+  C+=8;\n\
+  C[0*ldc] = alpha*rC[1][0] + beta*C[0*ldc];\n\
+  C[8*ldc] = alpha*rC[1][1] + beta*C[8*ldc];\n\
+  C[16*ldc] = alpha*rC[1][2] + beta*C[16*ldc];\n\
+  \n\
+  C+=8;\n\
+  C[0*ldc] = alpha*rC[2][0] + beta*C[0*ldc];\n\
+  C[8*ldc] = alpha*rC[2][1] + beta*C[8*ldc];\n\
+  C[16*ldc] = alpha*rC[2][2] + beta*C[16*ldc];\n\
+  \n\
+\n\
+}\n\
+\n\
+";
+
+
+
+
+
+static const char * dgemm_NT_16_16_8_8x8_2x2__ALPHABETA = "\
+__attribute__((reqd_work_group_size(8,8,1)))\n\
+  __kernel void dgemm_NT_16_16_8_8x8_2x2__ALPHABETA( __global double const * restrict A, \n\
+  __global double const * restrict B,\n\
+  __global double * C,  \n\
+  uint const M, \n\
+  uint const N, \n\
+  uint const K,\n\
+  double const alpha,  \n\
+  double const beta,   \n\
+  uint lda,\n\
+  uint ldb, \n\
+  uint ldc, \n\
+  uint const offsetA,\n\
+  uint const offsetB,\n\
+  uint const offsetC)\n\
+{\n\
+  double rC[2][2]  = {(double)0};\n\
+  double rA[1][2];\n\
+  double rB[1][2];\n\
+\n\
+  double PreFetchA[2];\n\
+  double PreFetchB[2];\n\
+\n\
+  A += offsetA;\n\
+  B += offsetB;\n\
+  C+=offsetC;\n\
+\n\
+  __local double lA[128];\n\
+  __local double lB[128];\n\
+\n\
+  int gidx = get_group_id(0);\n\
+  int gidy = get_group_id(1);\n\
+  int idx = get_local_id(0);\n\
+  int idy = get_local_id(1);\n\
+\n\
+  int idt = 8*idy + idx;\n\
+  int idxT = idt % 8;\n\
+  int idyT = idt / 8;\n\
+\n\
+  A +=  gidx*16+ idxT + idyT*lda;\n\
+  B +=  gidy*16+ idxT + idyT*ldb;\n\
+\n\
+  __local double* plA = lA + idyT*16+idxT;\n\
+  __local double* plB = lB + idyT*16+idxT;\n\
+\n\
+  plA[0] = A[0];\n\
+  plA[8] = A[8];\n\
+  \n\
+  plB[0] = B[0];\n\
+"
+"\
+  plB[8] = B[8];\n\
+  \n\
+ \n\
+    \n\
+  barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+\n\
+  //for( int block_k=0 ; block_k< K ; block_k+=8)\n\
+  uint block_k = K >> 3;\n\
+  do\n\
+  {\n\
+    //barrier(CLK_LOCAL_MEM_FENCE);\n\
+    A += 8*lda;\n\
+    B += 8*ldb;\n\
+\n\
+    PreFetchA[0] = A[0];\n\
+    PreFetchA[1] = A[8];\n\
+   \n\
+    PreFetchB[0] = B[0];\n\
+    PreFetchB[1] = B[8];\n\
+    \n\
+    int offA = idx;\n\
+    int offB = idy;\n\
+\n\
+\n\
+\n\
+    for( int k = 0 ; k < 8; k+=1)\n\
+    {\n\
+      rA[0][0] = lA[offA + 0];\n\
+      rA[0][1] = lA[offA + 8];\n\
+     \n\
+      rB[0][0] = lB[offB + 0];\n\
+      rB[0][1] = lB[offB + 8];\n\
+      \n\
+      offA += 16;\n\
+      offB += 16;\n\
+            \n\
+      rC[0][0]=mad(rA[0][0],rB[0][0],rC[0][0]);\n\
+      rC[1][0]=mad(rA[0][1],rB[0][0],rC[1][0]);\n\
+  \n\
+      rC[0][1]=mad(rA[0][0],rB[0][1],rC[0][1]);\n\
+      rC[1][1]=mad(rA[0][1],rB[0][1],rC[1][1]);\n\
+       \n\
+    }\n\
+\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+    plA[0]   = PreFetchA[0];\n\
+    plA[8]  = PreFetchA[1];\n\
+    \n\
+    plB[0]   = PreFetchB[0];\n\
+"
+"\
+    plB[8]  = PreFetchB[1];\n\
+    \n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+    //  A += 8*lda;\n\
+    //  B += 8*ldb;\n\
+  }\n\
+  while (--block_k > 0);\n\
+\n\
+  C+= gidx*16;\n\
+  C+= idx;\n\
+  C+= gidy*16*ldc;\n\
+  C+= idy*ldc;\n\
+    \n\
+  C[0*ldc] = alpha*rC[0][0] + beta*C[0*ldc];\n\
+  C[8*ldc] = alpha*rC[0][1] + beta*C[8*ldc];\n\
+  \n\
+  C+=8;\n\
+  C[0*ldc] = alpha*rC[1][0] + beta*C[0*ldc];\n\
+  C[8*ldc] = alpha*rC[1][1] + beta*C[8*ldc]; \n\
+\n\
+}\n\
+";
+
+
+
+
+
+static const char * dgemm_NT_24_24_8_8x8_3x3__ALPHA = "\
+\n\
+__attribute__((reqd_work_group_size(8,8,1)))\n\
+  __kernel void dgemm_NT_24_24_8_8x8_3x3__ALPHA( __global double const * restrict A, \n\
+  __global double const * restrict B,\n\
+  __global double * C,  \n\
+  uint const M, \n\
+  uint const N, \n\
+  uint const K,\n\
+  double const alpha, \n\
+  uint lda,\n\
+  uint ldb, \n\
+  uint ldc, \n\
+  uint const offsetA,\n\
+  uint const offsetB,\n\
+  uint const offsetC)\n\
+{\n\
+  double rC[3][3]  = {(double)0};\n\
+  double rA[1][3];\n\
+  double rB[1][3];\n\
+\n\
+  double PreFetchA[3];\n\
+  double PreFetchB[3];\n\
+\n\
+  A += offsetA;\n\
+  B += offsetB;\n\
+  C+=offsetC;\n\
+\n\
+  __local double lA[192];\n\
+  __local double lB[192];\n\
+\n\
+  int gidx = get_group_id(0);\n\
+  int gidy = get_group_id(1);\n\
+  int idx = get_local_id(0);\n\
+  int idy = get_local_id(1);\n\
+\n\
+  int idt = 8*idy + idx;\n\
+  int idxT = idt % 8;\n\
+  int idyT = idt / 8;\n\
+\n\
+  A +=  gidx*24+ idxT + idyT*lda;\n\
+  B +=  gidy*24+ idxT + idyT*ldb;\n\
+\n\
+  __local double* plA = lA + idyT*24+idxT;\n\
+  __local double* plB = lB + idyT*24+idxT;\n\
+\n\
+  plA[0] = A[0];\n\
+  plA[8] = A[8];\n\
+  plA[16] = A[16];\n\
+  \n\
+"
+"\
+  plB[0] = B[0];\n\
+    plB[8] = B[8];\n\
+  plB[16] = B[16];\n\
+  \n\
+ \n\
+    \n\
+  barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+\n\
+  //for( int block_k=0 ; block_k< K ; block_k+=8)\n\
+  uint block_k = K >> 3;\n\
+  do\n\
+  {\n\
+    //barrier(CLK_LOCAL_MEM_FENCE);\n\
+    A += 8*lda;\n\
+    B += 8*ldb;\n\
+\n\
+    PreFetchA[0] = A[0];\n\
+    PreFetchA[1] = A[8];\n\
+    PreFetchA[2] = A[16];\n\
+   \n\
+    PreFetchB[0] = B[0];\n\
+    PreFetchB[1] = B[8];\n\
+    PreFetchB[2] = B[16];\n\
+    \n\
+    int offA = idx;\n\
+    int offB = idy;\n\
+\n\
+\n\
+\n\
+    for( int k = 0 ; k < 8; k+=1)\n\
+    {\n\
+      rA[0][0] = lA[offA + 0];\n\
+      rA[0][1] = lA[offA + 8];\n\
+      rA[0][2] = lA[offA + 16];\n\
+     \n\
+      rB[0][0] = lB[offB + 0];\n\
+      rB[0][1] = lB[offB + 8];\n\
+      rB[0][2] = lB[offB + 16];\n\
+      \n\
+      offA += 24;\n\
+      offB += 24;\n\
+            \n\
+      rC[0][0]=mad(rA[0][0],rB[0][0],rC[0][0]);\n\
+      rC[1][0]=mad(rA[0][1],rB[0][0],rC[1][0]);\n\
+      rC[2][0]=mad(rA[0][2],rB[0][0],rC[2][0]);\n\
+  \n\
+      rC[0][1]=mad(rA[0][0],rB[0][1],rC[0][1]);\n\
+      rC[1][1]=mad(rA[0][1],rB[0][1],rC[1][1]);\n\
+      rC[2][1]=mad(rA[0][2],rB[0][1],rC[2][1]);\n\
+"
+"\
+  \n\
+      rC[0][2]=mad(rA[0][0],rB[0][2],rC[0][2]);\n\
+      rC[1][2]=mad(rA[0][1],rB[0][2],rC[1][2]);\n\
+      rC[2][2]=mad(rA[0][2],rB[0][2],rC[2][2]);\n\
+     \n\
+    }\n\
+\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+    plA[0]   = PreFetchA[0];\n\
+    plA[8]  = PreFetchA[1];\n\
+    plA[16] = PreFetchA[2];\n\
+    \n\
+    plB[0]   = PreFetchB[0];\n\
+    plB[8]  = PreFetchB[1];\n\
+    plB[16] = PreFetchB[2];\n\
+    \n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+    //  A += 8*lda;\n\
+    //  B += 8*ldb;\n\
+  }\n\
+  while (--block_k > 0);\n\
+\n\
+  C+= gidx*24;\n\
+  C+= idx;\n\
+  C+= gidy*24*ldc;\n\
+  C+= idy*ldc;\n\
+    \n\
+  C[0*ldc] = alpha*rC[0][0] ;\n\
+  C[8*ldc] = alpha*rC[0][1] ;\n\
+  C[16*ldc] = alpha*rC[0][2];\n\
+                              \n\
+  C+=8;                        \n\
+  C[0*ldc] = alpha*rC[1][0] ;\n\
+  C[8*ldc] = alpha*rC[1][1] ;\n\
+  C[16*ldc] = alpha*rC[1][2];\n\
+                              \n\
+  C+=8;                        \n\
+  C[0*ldc] = alpha*rC[2][0] ;\n\
+  C[8*ldc] = alpha*rC[2][1] ;\n\
+  C[16*ldc] = alpha*rC[2][2];\n\
+  \n\
+\n\
+}\n\
+";
+
+
+
+
+static const char * dgemm_NT_16_16_8_8x8_2x2__ALPHA = "\
+\n\
+\n\
+__attribute__((reqd_work_group_size(8,8,1)))\n\
+  __kernel void dgemm_NT_16_16_8_8x8_2x2__ALPHA( __global double const * restrict A, \n\
+  __global double const * restrict B,\n\
+  __global double * C,  \n\
+  uint const M, \n\
+  uint const N, \n\
+  uint const K,\n\
+  double const alpha, \n\
+  uint lda,\n\
+  uint ldb, \n\
+  uint ldc, \n\
+  uint const offsetA,\n\
+  uint const offsetB,\n\
+  uint const offsetC)\n\
+{\n\
+  double rC[2][2]  = {(double)0};\n\
+  double rA[1][2];\n\
+  double rB[1][2];\n\
+\n\
+  double PreFetchA[2];\n\
+  double PreFetchB[2];\n\
+\n\
+  A += offsetA;\n\
+  B += offsetB;\n\
+  C+=offsetC;\n\
+\n\
+  __local double lA[128];\n\
+  __local double lB[128];\n\
+\n\
+  int gidx = get_group_id(0);\n\
+  int gidy = get_group_id(1);\n\
+  int idx = get_local_id(0);\n\
+  int idy = get_local_id(1);\n\
+\n\
+  int idt = 8*idy + idx;\n\
+  int idxT = idt % 8;\n\
+  int idyT = idt / 8;\n\
+\n\
+  A +=  gidx*16+ idxT + idyT*lda;\n\
+  B +=  gidy*16+ idxT + idyT*ldb;\n\
+\n\
+  __local double* plA = lA + idyT*16+idxT;\n\
+  __local double* plB = lB + idyT*16+idxT;\n\
+\n\
+  plA[0] = A[0];\n\
+  plA[8] = A[8];\n\
+  \n\
+"
+"\
+  plB[0] = B[0];\n\
+  plB[8] = B[8];\n\
+  \n\
+ \n\
+    \n\
+  barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+\n\
+  //for( int block_k=0 ; block_k< K ; block_k+=8)\n\
+  uint block_k = K >> 3;\n\
+  do\n\
+  {\n\
+    //barrier(CLK_LOCAL_MEM_FENCE);\n\
+    A += 8*lda;\n\
+    B += 8*ldb;\n\
+\n\
+    PreFetchA[0] = A[0];\n\
+    PreFetchA[1] = A[8];\n\
+   \n\
+    PreFetchB[0] = B[0];\n\
+    PreFetchB[1] = B[8];\n\
+    \n\
+    int offA = idx;\n\
+    int offB = idy;\n\
+\n\
+\n\
+\n\
+    for( int k = 0 ; k < 8; k+=1)\n\
+    {\n\
+      rA[0][0] = lA[offA + 0];\n\
+      rA[0][1] = lA[offA + 8];\n\
+     \n\
+      rB[0][0] = lB[offB + 0];\n\
+      rB[0][1] = lB[offB + 8];\n\
+      \n\
+      offA += 16;\n\
+      offB += 16;\n\
+            \n\
+      rC[0][0]=mad(rA[0][0],rB[0][0],rC[0][0]);\n\
+      rC[1][0]=mad(rA[0][1],rB[0][0],rC[1][0]);\n\
+  \n\
+      rC[0][1]=mad(rA[0][0],rB[0][1],rC[0][1]);\n\
+      rC[1][1]=mad(rA[0][1],rB[0][1],rC[1][1]);\n\
+       \n\
+    }\n\
+\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+    plA[0]   = PreFetchA[0];\n\
+    plA[8]  = PreFetchA[1];\n\
+    \n\
+"
+"\
+    plB[0]   = PreFetchB[0];\n\
+    plB[8]  = PreFetchB[1];\n\
+    \n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+    //  A += 8*lda;\n\
+    //  B += 8*ldb;\n\
+  }\n\
+  while (--block_k > 0);\n\
+\n\
+  C+= gidx*16;\n\
+  C+= idx;\n\
+  C+= gidy*16*ldc;\n\
+  C+= idy*ldc;\n\
+    \n\
+  C[0*ldc] = alpha*rC[0][0];\n\
+  C[8*ldc] = alpha*rC[0][1];\n\
+  \n\
+  C+=8;\n\
+  C[0*ldc] = alpha*rC[1][0];\n\
+  C[8*ldc] = alpha*rC[1][1]; \n\
+\n\
+}\n\
+";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+static const char * dgemm_NN_24_24_8_8x8_3x3__ALPHABETA = "\
+\n\
+__attribute__((reqd_work_group_size(8,8,1)))\n\
+  __kernel void dgemm_NN_24_24_8_8x8_3x3__ALPHABETA( __global double const * restrict A, \n\
+  __global double const * restrict B,\n\
+  __global double * C,  \n\
+  uint const M, \n\
+  uint const N, \n\
+  uint const K,\n\
+  double const alpha,  \n\
+  double const beta,   \n\
+  uint lda,\n\
+  uint ldb, \n\
+  uint ldc, \n\
+  uint const offsetA,\n\
+  uint const offsetB,\n\
+  uint const offsetC)\n\
+{\n\
+  double rC[3][3]  = {(double)0};\n\
+  double rA[1][3];\n\
+  double rB[1][3];\n\
+\n\
+  double PreFetchA[3];\n\
+  double PreFetchB[3];\n\
+\n\
+  A += offsetA;\n\
+  B += offsetB;\n\
+  C+=offsetC;\n\
+\n\
+  __local double lA[192];\n\
+  __local double lB[192];\n\
+\n\
+  int gidx = get_group_id(0);\n\
+  int gidy = get_group_id(1);\n\
+  int idx = get_local_id(0);\n\
+  int idy = get_local_id(1);\n\
+\n\
+  int idt = 8*idy + idx;\n\
+  int idxT = idt % 8;\n\
+  int idyT = idt / 8;\n\
+\n\
+  A +=  gidx*24+ idxT + idyT*lda;\n\
+  B +=  gidy*24*ldb+ idxT + idyT*ldb;\n\
+\n\
+  __local double* plA = lA + idyT*24+idxT;\n\
+  __local double* plB = lB + idxT*24+idyT;\n\
+\n\
+  plA[0] = A[0];\n\
+  plA[8] = A[8];\n\
+  plA[16] = A[16];\n\
+"
+"\
+  \n\
+  plB[0] = B[0];\n\
+  plB[8] = B[8*ldb];\n\
+  plB[16] = B[16*ldb];\n\
+  \n\
+ \n\
+    \n\
+  barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+\n\
+  //for( int block_k=0 ; block_k< K ; block_k+=8)\n\
+  uint block_k = K >> 3;\n\
+  do\n\
+  {\n\
+    //barrier(CLK_LOCAL_MEM_FENCE);\n\
+    A += 8*lda;\n\
+    B += 8;\n\
+\n\
+    PreFetchA[0] = A[0];\n\
+    PreFetchA[1] = A[8];\n\
+    PreFetchA[2] = A[16];\n\
+   \n\
+    PreFetchB[0] = B[0];\n\
+    PreFetchB[1] = B[8*ldb];\n\
+    PreFetchB[2] = B[16*ldb];\n\
+    \n\
+    int offA = idx;\n\
+    int offB = idy;\n\
+\n\
+\n\
+\n\
+    for( int k = 0 ; k < 8; k+=1)\n\
+    {\n\
+      rA[0][0] = lA[offA + 0];\n\
+      rA[0][1] = lA[offA + 8];\n\
+      rA[0][2] = lA[offA + 16];\n\
+     \n\
+      rB[0][0] = lB[offB + 0];\n\
+      rB[0][1] = lB[offB + 8];\n\
+      rB[0][2] = lB[offB + 16];\n\
+      \n\
+      offA += 24;\n\
+      offB += 24;\n\
+            \n\
+      rC[0][0]=mad(rA[0][0],rB[0][0],rC[0][0]);\n\
+      rC[1][0]=mad(rA[0][1],rB[0][0],rC[1][0]);\n\
+      rC[2][0]=mad(rA[0][2],rB[0][0],rC[2][0]);\n\
+  \n\
+      rC[0][1]=mad(rA[0][0],rB[0][1],rC[0][1]);\n\
+      rC[1][1]=mad(rA[0][1],rB[0][1],rC[1][1]);\n\
+"
+"\
+      rC[2][1]=mad(rA[0][2],rB[0][1],rC[2][1]);\n\
+  \n\
+      rC[0][2]=mad(rA[0][0],rB[0][2],rC[0][2]);\n\
+      rC[1][2]=mad(rA[0][1],rB[0][2],rC[1][2]);\n\
+      rC[2][2]=mad(rA[0][2],rB[0][2],rC[2][2]);\n\
+     \n\
+    }\n\
+\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+    plA[0]   = PreFetchA[0];\n\
+    plA[8]  = PreFetchA[1];\n\
+    plA[16] = PreFetchA[2];\n\
+    \n\
+    plB[0]   = PreFetchB[0];\n\
+    plB[8]  = PreFetchB[1];\n\
+    plB[16] = PreFetchB[2];\n\
+    \n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+    //  A += 8*lda;\n\
+    //  B += 8*ldb;\n\
+  }\n\
+  while (--block_k > 0);\n\
+\n\
+  C+= gidx*24;\n\
+  C+= idx;\n\
+  C+= gidy*24*ldc;\n\
+  C+= idy*ldc;\n\
+    \n\
+  C[0*ldc] = alpha*rC[0][0] + beta*C[0*ldc];\n\
+  C[8*ldc] = alpha*rC[0][1] + beta*C[8*ldc];\n\
+  C[16*ldc] = alpha*rC[0][2] + beta*C[16*ldc];\n\
+  \n\
+  C+=8;\n\
+  C[0*ldc] = alpha*rC[1][0] + beta*C[0*ldc];\n\
+  C[8*ldc] = alpha*rC[1][1] + beta*C[8*ldc];\n\
+  C[16*ldc] = alpha*rC[1][2] + beta*C[16*ldc];\n\
+  \n\
+  C+=8;\n\
+  C[0*ldc] = alpha*rC[2][0] + beta*C[0*ldc];\n\
+  C[8*ldc] = alpha*rC[2][1] + beta*C[8*ldc];\n\
+  C[16*ldc] = alpha*rC[2][2] + beta*C[16*ldc];\n\
+  \n\
+\n\
+}\n\
+\n\
+";
+
+
+
+
+static const char * dgemm_NN_16_16_8_8x8_2x2__ALPHABETA = "\
+__attribute__((reqd_work_group_size(8,8,1)))\n\
+  __kernel void dgemm_NN_16_16_8_8x8_2x2__ALPHABETA( __global double const * restrict A, \n\
+  __global double const * restrict B,\n\
+  __global double * C,  \n\
+  uint const M, \n\
+  uint const N, \n\
+  uint const K,\n\
+  double const alpha,  \n\
+  double const beta,   \n\
+  uint lda,\n\
+  uint ldb, \n\
+  uint ldc, \n\
+  uint const offsetA,\n\
+  uint const offsetB,\n\
+  uint const offsetC)\n\
+{\n\
+  double rC[2][2]  = {(double)0};\n\
+  double rA[1][2];\n\
+  double rB[1][2];\n\
+\n\
+  double PreFetchA[2];\n\
+  double PreFetchB[2];\n\
+\n\
+  A += offsetA;\n\
+  B += offsetB;\n\
+  C+=offsetC;\n\
+\n\
+  __local double lA[128];\n\
+  __local double lB[128];\n\
+\n\
+  int gidx = get_group_id(0);\n\
+  int gidy = get_group_id(1);\n\
+  int idx = get_local_id(0);\n\
+  int idy = get_local_id(1);\n\
+\n\
+  int idt = 8*idy + idx;\n\
+  int idxT = idt % 8;\n\
+  int idyT = idt / 8;\n\
+\n\
+  A +=  gidx*16+ idxT + idyT*lda;\n\
+  B +=  gidy*16*ldb+ idxT + idyT*ldb;\n\
+\n\
+  __local double* plA = lA + idyT*16+idxT;\n\
+  __local double* plB = lB + idxT*16+idyT;\n\
+\n\
+  plA[0] = A[0];\n\
+  plA[8] = A[8];\n\
+  \n\
+  plB[0] = B[0];\n\
+"
+"\
+  plB[8] = B[8*ldb];\n\
+  \n\
+ \n\
+    \n\
+  barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+\n\
+  //for( int block_k=0 ; block_k< K ; block_k+=8)\n\
+  uint block_k = K >> 3;\n\
+  do\n\
+  {\n\
+    //barrier(CLK_LOCAL_MEM_FENCE);\n\
+    A += 8*lda;\n\
+    B += 8;\n\
+\n\
+    PreFetchA[0] = A[0];\n\
+    PreFetchA[1] = A[8];\n\
+   \n\
+    PreFetchB[0] = B[0];\n\
+    PreFetchB[1] = B[8*ldb];\n\
+    \n\
+    int offA = idx;\n\
+    int offB = idy;\n\
+\n\
+\n\
+\n\
+    for( int k = 0 ; k < 8; k+=1)\n\
+    {\n\
+      rA[0][0] = lA[offA + 0];\n\
+      rA[0][1] = lA[offA + 8];\n\
+     \n\
+      rB[0][0] = lB[offB + 0];\n\
+      rB[0][1] = lB[offB + 8];\n\
+      \n\
+      offA += 16;\n\
+      offB += 16;\n\
+            \n\
+      rC[0][0]=mad(rA[0][0],rB[0][0],rC[0][0]);\n\
+      rC[1][0]=mad(rA[0][1],rB[0][0],rC[1][0]);\n\
+  \n\
+      rC[0][1]=mad(rA[0][0],rB[0][1],rC[0][1]);\n\
+      rC[1][1]=mad(rA[0][1],rB[0][1],rC[1][1]);\n\
+       \n\
+    }\n\
+\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+    plA[0]   = PreFetchA[0];\n\
+    plA[8]  = PreFetchA[1];\n\
+    \n\
+    plB[0]   = PreFetchB[0];\n\
+"
+"\
+    plB[8]  = PreFetchB[1];\n\
+    \n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+    //  A += 8*lda;\n\
+    //  B += 8*ldb;\n\
+  }\n\
+  while (--block_k > 0);\n\
+\n\
+  C+= gidx*16;\n\
+  C+= idx;\n\
+  C+= gidy*16*ldc;\n\
+  C+= idy*ldc;\n\
+    \n\
+  C[0*ldc] = alpha*rC[0][0] + beta*C[0*ldc];\n\
+  C[8*ldc] = alpha*rC[0][1] + beta*C[8*ldc];\n\
+  \n\
+  C+=8;\n\
+  C[0*ldc] = alpha*rC[1][0] + beta*C[0*ldc];\n\
+  C[8*ldc] = alpha*rC[1][1] + beta*C[8*ldc]; \n\
+\n\
+}\n\
+";
+
+
+
+
+
+static const char * dgemm_NN_24_24_8_8x8_3x3__ALPHA = "\
+\n\
+__attribute__((reqd_work_group_size(8,8,1)))\n\
+  __kernel void dgemm_NN_24_24_8_8x8_3x3__ALPHA( __global double const * restrict A, \n\
+  __global double const * restrict B,\n\
+  __global double * C,  \n\
+  uint const M, \n\
+  uint const N, \n\
+  uint const K,\n\
+  double const alpha, \n\
+  uint lda,\n\
+  uint ldb, \n\
+  uint ldc, \n\
+  uint const offsetA,\n\
+  uint const offsetB,\n\
+  uint const offsetC)\n\
+{\n\
+  double rC[3][3]  = {(double)0};\n\
+  double rA[1][3];\n\
+  double rB[1][3];\n\
+\n\
+  double PreFetchA[3];\n\
+  double PreFetchB[3];\n\
+\n\
+  A += offsetA;\n\
+  B += offsetB;\n\
+  C+=offsetC;\n\
+\n\
+  __local double lA[192];\n\
+  __local double lB[192];\n\
+\n\
+  int gidx = get_group_id(0);\n\
+  int gidy = get_group_id(1);\n\
+  int idx = get_local_id(0);\n\
+  int idy = get_local_id(1);\n\
+\n\
+  int idt = 8*idy + idx;\n\
+  int idxT = idt % 8;\n\
+  int idyT = idt / 8;\n\
+\n\
+  A +=  gidx*24+ idxT + idyT*lda;\n\
+  B +=  gidy*24*ldb+ idxT + idyT*ldb;\n\
+\n\
+  __local double* plA = lA + idyT*24+idxT;\n\
+  __local double* plB = lB + idxT*24+idyT;\n\
+\n\
+  plA[0] = A[0];\n\
+  plA[8] = A[8];\n\
+  plA[16] = A[16];\n\
+  \n\
+"
+"\
+  plB[0] = B[0];\n\
+  plB[8] = B[8*ldb];\n\
+  plB[16] = B[16*ldb];\n\
+  \n\
+ \n\
+    \n\
+  barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+\n\
+  //for( int block_k=0 ; block_k< K ; block_k+=8)\n\
+  uint block_k = K >> 3;\n\
+  do\n\
+  {\n\
+    //barrier(CLK_LOCAL_MEM_FENCE);\n\
+    A += 8*lda;\n\
+    B += 8;\n\
+\n\
+    PreFetchA[0] = A[0];\n\
+    PreFetchA[1] = A[8];\n\
+    PreFetchA[2] = A[16];\n\
+   \n\
+    PreFetchB[0] = B[0];\n\
+    PreFetchB[1] = B[8*ldb];\n\
+    PreFetchB[2] = B[16*ldb];\n\
+    \n\
+    int offA = idx;\n\
+    int offB = idy;\n\
+\n\
+\n\
+\n\
+    for( int k = 0 ; k < 8; k+=1)\n\
+    {\n\
+      rA[0][0] = lA[offA + 0];\n\
+      rA[0][1] = lA[offA + 8];\n\
+      rA[0][2] = lA[offA + 16];\n\
+     \n\
+      rB[0][0] = lB[offB + 0];\n\
+      rB[0][1] = lB[offB + 8];\n\
+      rB[0][2] = lB[offB + 16];\n\
+      \n\
+      offA += 24;\n\
+      offB += 24;\n\
+            \n\
+      rC[0][0]=mad(rA[0][0],rB[0][0],rC[0][0]);\n\
+      rC[1][0]=mad(rA[0][1],rB[0][0],rC[1][0]);\n\
+      rC[2][0]=mad(rA[0][2],rB[0][0],rC[2][0]);\n\
+  \n\
+      rC[0][1]=mad(rA[0][0],rB[0][1],rC[0][1]);\n\
+      rC[1][1]=mad(rA[0][1],rB[0][1],rC[1][1]);\n\
+      rC[2][1]=mad(rA[0][2],rB[0][1],rC[2][1]);\n\
+"
+"\
+  \n\
+      rC[0][2]=mad(rA[0][0],rB[0][2],rC[0][2]);\n\
+      rC[1][2]=mad(rA[0][1],rB[0][2],rC[1][2]);\n\
+      rC[2][2]=mad(rA[0][2],rB[0][2],rC[2][2]);\n\
+     \n\
+    }\n\
+\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+    plA[0]   = PreFetchA[0];\n\
+    plA[8]  = PreFetchA[1];\n\
+    plA[16] = PreFetchA[2];\n\
+    \n\
+    plB[0]   = PreFetchB[0];\n\
+    plB[8]  = PreFetchB[1];\n\
+    plB[16] = PreFetchB[2];\n\
+    \n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+    //  A += 8*lda;\n\
+    //  B += 8*ldb;\n\
+  }\n\
+  while (--block_k > 0);\n\
+\n\
+  C+= gidx*24;\n\
+  C+= idx;\n\
+  C+= gidy*24*ldc;\n\
+  C+= idy*ldc;\n\
+    \n\
+  C[0*ldc] = alpha*rC[0][0] ;\n\
+  C[8*ldc] = alpha*rC[0][1] ;\n\
+  C[16*ldc] = alpha*rC[0][2];\n\
+                              \n\
+  C+=8;                        \n\
+  C[0*ldc] = alpha*rC[1][0] ;\n\
+  C[8*ldc] = alpha*rC[1][1] ;\n\
+  C[16*ldc] = alpha*rC[1][2];\n\
+                              \n\
+  C+=8;                        \n\
+  C[0*ldc] = alpha*rC[2][0] ;\n\
+  C[8*ldc] = alpha*rC[2][1] ;\n\
+  C[16*ldc] = alpha*rC[2][2];\n\
+  \n\
+\n\
+}\n\
+\n\
+";
+
+
+
+static const char * dgemm_NN_16_16_8_8x8_2x2__ALPHA = "\
+\n\
+__attribute__((reqd_work_group_size(8,8,1)))\n\
+  __kernel void dgemm_NN_16_16_8_8x8_2x2__ALPHA( __global double const * restrict A, \n\
+  __global double const * restrict B,\n\
+  __global double * C,  \n\
+  uint const M, \n\
+  uint const N, \n\
+  uint const K,\n\
+  double const alpha, \n\
+  uint lda,\n\
+  uint ldb, \n\
+  uint ldc, \n\
+  uint const offsetA,\n\
+  uint const offsetB,\n\
+  uint const offsetC)\n\
+{\n\
+  double rC[2][2]  = {(double)0};\n\
+  double rA[1][2];\n\
+  double rB[1][2];\n\
+\n\
+  double PreFetchA[2];\n\
+  double PreFetchB[2];\n\
+\n\
+  A += offsetA;\n\
+  B += offsetB;\n\
+  C+=offsetC;\n\
+\n\
+  __local double lA[128];\n\
+  __local double lB[128];\n\
+\n\
+  int gidx = get_group_id(0);\n\
+  int gidy = get_group_id(1);\n\
+  int idx = get_local_id(0);\n\
+  int idy = get_local_id(1);\n\
+\n\
+  int idt = 8*idy + idx;\n\
+  int idxT = idt % 8;\n\
+  int idyT = idt / 8;\n\
+\n\
+  A +=  gidx*16+ idxT + idyT*lda;\n\
+  B +=  gidy*16*ldb+ idxT + idyT*ldb;\n\
+\n\
+  __local double* plA = lA + idyT*16+idxT;\n\
+  __local double* plB = lB + idxT*16+idyT;\n\
+\n\
+  plA[0] = A[0];\n\
+  plA[8] = A[8];\n\
+  \n\
+  plB[0] = B[0];\n\
+"
+"\
+  plB[8] = B[8*ldb];\n\
+  \n\
+ \n\
+    \n\
+  barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+\n\
+  //for( int block_k=0 ; block_k< K ; block_k+=8)\n\
+  uint block_k = K >> 3;\n\
+  do\n\
+  {\n\
+    //barrier(CLK_LOCAL_MEM_FENCE);\n\
+    A += 8*lda;\n\
+    B += 8;\n\
+\n\
+    PreFetchA[0] = A[0];\n\
+    PreFetchA[1] = A[8];\n\
+   \n\
+    PreFetchB[0] = B[0];\n\
+    PreFetchB[1] = B[8*ldb];\n\
+    \n\
+    int offA = idx;\n\
+    int offB = idy;\n\
+\n\
+\n\
+\n\
+    for( int k = 0 ; k < 8; k+=1)\n\
+    {\n\
+      rA[0][0] = lA[offA + 0];\n\
+      rA[0][1] = lA[offA + 8];\n\
+     \n\
+      rB[0][0] = lB[offB + 0];\n\
+      rB[0][1] = lB[offB + 8];\n\
+      \n\
+      offA += 16;\n\
+      offB += 16;\n\
+            \n\
+      rC[0][0]=mad(rA[0][0],rB[0][0],rC[0][0]);\n\
+      rC[1][0]=mad(rA[0][1],rB[0][0],rC[1][0]);\n\
+  \n\
+      rC[0][1]=mad(rA[0][0],rB[0][1],rC[0][1]);\n\
+      rC[1][1]=mad(rA[0][1],rB[0][1],rC[1][1]);\n\
+       \n\
+    }\n\
+\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+    plA[0]   = PreFetchA[0];\n\
+    plA[8]  = PreFetchA[1];\n\
+    \n\
+    plB[0]   = PreFetchB[0];\n\
+"
+"\
+    plB[8]  = PreFetchB[1];\n\
+    \n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+    //  A += 8*lda;\n\
+    //  B += 8*ldb;\n\
+  }\n\
+  while (--block_k > 0);\n\
+\n\
+  C+= gidx*16;\n\
+  C+= idx;\n\
+  C+= gidy*16*ldc;\n\
+  C+= idy*ldc;\n\
+    \n\
+  C[0*ldc] = alpha*rC[0][0];\n\
+  C[8*ldc] = alpha*rC[0][1];\n\
+  \n\
+  C+=8;\n\
+  C[0*ldc] = alpha*rC[1][0];\n\
+  C[8*ldc] = alpha*rC[1][1]; \n\
+\n\
+}\n\
+";
+
+
+
+

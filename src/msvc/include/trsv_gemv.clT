@@ -1,0 +1,1554 @@
+/* ************************************************************************
+ * Copyright 2013 Advanced Micro Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ************************************************************************/
+
+// Compute Rectangle + Traingle
+
+const char * trsv_CU_ComputeRectangle_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+#define TARGET_ROWS_BY_VEC ((%TARGET_ROWS)/(%V))\n\
+#ifdef PACKED\n\
+    #define A( row, col) (*( A + (((col)*((col)+1))/2 + (row))))\n\
+#else\n\
+    #define A( row, col) A[ (row) + (col) * lda]\n\
+#endif\n\
+\n\
+__kernel void %PREFIXtrsv_CU_ComputeRectangle_kernel( __global %TYPE const * restrict _A, __global %TYPE* _xnew, uint N, int incx, int isUnity, uint lda, int doConj, int startCol, int rowsLeft, uint offa, uint offx)\n\
+{\n\
+    __global %TYPE* xnew;\n\
+    __global %TYPE* A = _A + offa;\n\
+\n\
+    if ( incx < 0 ) // Goto end of vector\n\
+    {\n\
+        xnew     = _xnew + offx + ( N - 1) * abs(incx);\n\
+    }\n\
+    else\n\
+    {\n\
+        xnew     = _xnew + offx;\n\
+    }\n\
+\n\
+    size_t bIdx     = get_group_id(0);\n\
+    size_t threadIdx= get_local_id(0);\n\
+\n\
+    // Get total blocks launched\n\
+    size_t nBlocks  = ((rowsLeft - 1) / %TARGET_ROWS) + 1;\n\
+\n\
+    %TYPE sum     = %MAKEVEC( 0.0);\n\
+    %TYPE loadedA     = %MAKEVEC( 0.0);\n\
+\n\
+    // First Block does scalar stuff...\n\
+    // Only this gets executed if nBlocks == 1\n\
+    if ( bIdx == 0)\n\
+    {\n\
+        int targetCol     = startCol;\n\
+        int targetRow     = threadIdx;\n\
+        int lastRow    = rowsLeft - ( nBlocks - 1) * %TARGET_ROWS - 1;\n\
+\n\
+        if ( nBlocks > 1)\n\
+        {\n\
+            if ( targetRow <= lastRow)\n\
+            {\n\
+"
+"\
+                for( int i=0; i < %TARGET_ROWS; i++)\n\
+                {\n\
+                    // All threads look at same xnew\n\
+                    // Should use Shared Memory ..\n\
+                    %TYPE xVal =  xnew[ targetCol * incx];\n\
+                    loadedA = A((targetRow), (targetCol));\n\
+                    %CONJUGATE(doConj, loadedA);\n\
+                    %MAD(sum, loadedA, xVal);\n\
+                    targetCol--;\n\
+                }\n\
+\n\
+                %SUB(xnew[ targetRow * incx], xnew[targetRow * incx], sum);\n\
+            }\n\
+        }\n\
+        else // Solve the traingle -- no more kernel launches required\n\
+        {\n\
+            if ( targetRow <= lastRow)\n\
+            {\n\
+                for( int i=0; i < %TARGET_ROWS; i++)\n\
+                {\n\
+                    // All threads look at same xnew\n\
+                    // Should use Shared Memory ..\n\
+                    %TYPE xVal =  xnew[ targetCol * incx];\n\
+                    loadedA = A((targetRow), (targetCol));\n\
+                    %CONJUGATE(doConj, loadedA);\n\
+                    %MAD(sum, loadedA, xVal);\n\
+                    targetCol--;\n\
+                }\n\
+            }\n\
+\n\
+            // Change targetCol to point to Triangle last column for all threads\n\
+            // As the above condition ( targetRow <= lastRow) changes targetCol for only threads with condition true\n\
+            targetCol     = startCol - %TARGET_ROWS;\n\
+\n\
+            __local %TYPE  xShared; // To share solved x value with other threads..\n\
+\n\
+            for( int i=0; i < (lastRow + 1); i++)\n\
+            {\n\
+                if ( targetRow == targetCol)\n\
+                {\n\
+                    %TYPE xVal = xnew[ targetRow * incx];\n\
+                    %SUB(sum, xVal, sum);\n\
+                    xShared = sum;\n\
+                    xnew[ targetRow * incx ] = xShared;\n\
+                }\n\
+\n\
+                barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+                if (  targetRow < targetCol)\n\
+                {\n\
+"
+"\
+                    loadedA = A((targetRow), (targetCol));\n\
+                    %CONJUGATE(doConj, loadedA);\n\
+                    %MAD(sum, loadedA, xShared);\n\
+                }\n\
+\n\
+                // Avoid Race\n\
+                barrier(CLK_LOCAL_MEM_FENCE);\n\
+                targetCol--;\n\
+            }\n\
+        }\n\
+    }\n\
+    else\n\
+    {\n\
+        size_t rowShift = ((threadIdx % ( TARGET_ROWS_BY_VEC  )) * %V);\n\
+        size_t colShift = threadIdx / TARGET_ROWS_BY_VEC;\n\
+\n\
+        int rowStart     = rowsLeft  - ( %TARGET_ROWS * (nBlocks - bIdx) );\n\
+        int row        = rowStart + rowShift;\n\
+\n\
+        %TYPE   sumTemp = %MAKEVEC(0.0);\n\
+        %TYPE%V sum    = %VMAKEVEC(sumTemp);\n\
+\n\
+        __local %TYPE xData[ %TARGET_WIDTH];\n\
+\n\
+        //#pragma unroll\n\
+        for( int i=1; i <= %NLOOPS; i++)\n\
+        {\n\
+            // Put startCol to start of BLOCKSIZE Block\n\
+            int startColp    = startCol - (%TARGET_WIDTH * i) + 1;\n\
+\n\
+            if ( threadIdx < %TARGET_WIDTH)\n\
+            {\n\
+                xData[threadIdx] = xnew[ (startColp + threadIdx) * incx];\n\
+            }\n\
+\n\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+            int col     = startColp + colShift;\n\
+\n\
+            %TYPE xDataVal    = xData[ colShift ];\n\
+            %TYPE%V xDataVec= %VMAKEVEC( xDataVal);\n\
+\n\
+            %TYPE%V loadedA  = %VLOAD( 0, &A((row), (col)));\n\
+            %CONJUGATE(doConj, loadedA);\n\
+            %VMAD(sum, loadedA, xDataVec);\n\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+        }\n\
+\n\
+        __local %TYPE%V sDataTemp[TARGET_ROWS_BY_VEC * %TARGET_WIDTH];\n\
+        //__local %TYPE* sData = sDataTemp;\n\
+"
+"\
+        sDataTemp[(threadIdx % ( TARGET_ROWS_BY_VEC )) + (colShift * TARGET_ROWS_BY_VEC)] = sum;\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+        //int TARGET_ROWS        = %TARGET_ROWS;\n\
+\n\
+        // Last Block\n\
+        // Do Scalar reduction for last block\n\
+        // Followed by solving the triangle\n\
+        if ( bIdx == ( nBlocks - 1))\n\
+        {\n\
+            %TYPE sumTemp         = %MAKEVEC(0.0);\n\
+            %TYPE%V sumVec      = %VMAKEVEC(sumTemp);\n\
+                %TYPE%V loadedAVec  = %VMAKEVEC(sumTemp);\n\
+\n\
+            //int targetRow = rowStart + threadIdx;\n\
+            int targetCol = startCol- %TARGET_ROWS; // Col where triangle last col overlaps\n\
+\n\
+            // Do vector reduction\n\
+            if ( threadIdx <  TARGET_ROWS_BY_VEC )\n\
+            {\n\
+                //#pragma unroll\n\
+                for( int j=0; j < %TARGET_WIDTH; j++)\n\
+                {\n\
+                    %ADD(sumVec, sumVec, sDataTemp[ threadIdx + j * TARGET_ROWS_BY_VEC]);\n\
+                }\n\
+            }\n\
+\n\
+            __local %TYPE xShared[%V];\n\
+\n\
+            int targetRowTemp = rowStart + threadIdx * %V;\n\
+            int VECTOR_SIZE   = %V;\n\
+\n\
+            //#pragma unroll\n\
+            for( int i=0; i < (TARGET_ROWS_BY_VEC); i++)\n\
+            {\n\
+                if ( threadIdx == (TARGET_ROWS_BY_VEC - 1 - i))\n\
+                {\n\
+                    // Read X-vector\n\
+                    %TYPE xVal[%V];\n\
+                    //#pragma unroll\n\
+                    for( int j = 0; j < %V; j++)\n\
+                    {\n\
+                        xVal[j] = xnew[ (targetRowTemp + j)* incx];\n\
+                    }\n\
+\n\
+                    // Read A %Vx%V region into reg\n\
+                    %TYPE reg[%V][%V];\n\
+                    //#pragma unroll\n\
+                    for( int idx = 0; idx < ( %V * %V); idx++)\n\
+                    {\n\
+"
+"\
+                        int m = idx / ( %V ); // Row : Col-Major idx...\n\
+                        int n = idx % ( %V );    // Col\n\
+                        if ( n > m )\n\
+                        {\n\
+                            reg[m][n] = A( (targetRowTemp + m), (targetCol -( %V - 1 - n)));\n\
+                            %CONJUGATE(doConj, reg[m][n]);\n\
+                        }\n\
+                    }\n\
+\n\
+                    %TYPE sumVecReg[%V];\n\
+                    %VSTOREWITHINCX(sumVecReg, sumVec, 1);\n\
+\n\
+                    // Solve for first x - Do the rest in loop\n\
+                    %TYPE x[%V];\n\
+                    %SUB(x[VECTOR_SIZE - 1], xVal[VECTOR_SIZE - 1], sumVecReg[VECTOR_SIZE - 1]);\n\
+                    xShared[%V - 1] = x[%V - 1];\n\
+                    xnew[ (targetRowTemp + %V - 1)* incx ] = x[%V - 1];\n\
+\n\
+                    //#pragma unroll\n\
+                    for(int m= ( %V - 2); m >=0; m--)\n\
+                    {\n\
+                        %SUB(x[m], xVal[m], sumVecReg[m]);\n\
+                    }\n\
+\n\
+                    //#pragma unroll\n\
+                    for( int idx = (( ( %V * %V) - 1) - %V); idx > 0; idx--)\n\
+                    {\n\
+                        int m = idx / %V;       // Row : Row-Major idx, x[3] is solved before x[2]\n\
+                        int n = idx % ( %V );// Col\n\
+                        if ( n > m)\n\
+                        {\n\
+                            //x[m] = x[m] - reg[m][n] * x[n];\n\
+                            %MAD(x[m], reg[m][n], (-x[n]));\n\
+                        }\n\
+                    }\n\
+\n\
+                    // Store results\n\
+                    //#pragma unroll\n\
+                    for(int m = 0; m < %V; m++)\n\
+                    {\n\
+                        xShared[m] = x[m];\n\
+                        xnew[ (targetRowTemp + m)* incx ] = x[m];\n\
+                    }\n\
+                }\n\
+\n\
+\n\
+                // Sync so that xShared it available to all threads\n\
+                barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+                if ( threadIdx < (TARGET_ROWS_BY_VEC - 1 - i))\n\
+"
+"\
+                {\n\
+                        //#pragma unroll\n\
+                        for( int j=0; j < %V; j++)\n\
+                        {\n\
+                            //sumVec += vload4( 0, &A((targetRowTemp), (targetCol -j))) * xShared[%V - 1 -j];\n\
+                            %TYPE%V loadedAVec  = %VLOAD( 0, &A((targetRowTemp), (targetCol -j)));\n\
+                            %CONJUGATE(doConj, loadedAVec);\n\
+                            %VMAD(sumVec, loadedAVec, xShared[VECTOR_SIZE - 1 -j]);\n\
+                        }\n\
+                }\n\
+\n\
+                targetCol = targetCol - %V;\n\
+                    // Avoid Race...\n\
+                barrier(CLK_LOCAL_MEM_FENCE);\n\
+            }\n\
+        }\n\
+        else\n\
+        {\n\
+            // Do Vector Reduction on each block except the last Block\n\
+            if ( threadIdx < TARGET_ROWS_BY_VEC)\n\
+            {\n\
+                %TYPE   accTemp = %MAKEVEC(0.0);\n\
+                %TYPE%V acc     = %VMAKEVEC(accTemp);\n\
+\n\
+                //#pragma unroll\n\
+                for( int j=0; j < %TARGET_WIDTH; j++)\n\
+                {\n\
+                    %ADD(acc, acc, sDataTemp[ threadIdx + j * TARGET_ROWS_BY_VEC]);\n\
+                }\n\
+\n\
+                // Store the result\n\
+                int targetRow = rowStart + threadIdx * %V;\n\
+\n\
+                __global %TYPE* xNewPtr =  xnew + targetRow * incx;\n\
+                //float4 value = (float4)( xNewPtr[0], xNewPtr[incx], xNewPtr[incx * 2], xNewPtr[incx *3]);\n\
+                %TYPE%V value;\n\
+                %VLOADWITHINCX(value, xNewPtr, incx);\n\
+\n\
+                // Compute result\n\
+                %SUB(value, value, acc);\n\
+\n\
+                // Store results\n\
+                //VSTOREWITHINCX( xNewPtr, value, incx);\n\
+                %VSTOREWITHINCX(xNewPtr, value, incx);\n\
+            }\n\
+        }\n\
+    }\n\
+}\n\
+";
+
+
+
+const char *trsv_CU_ComputeRectangle_NonUnity_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+#define TARGET_ROWS_BY_VEC ((%TARGET_ROWS)/(%V))\n\
+#ifdef PACKED\n\
+    #define A( row, col) (*( A + (((col)*((col)+1))/2 + (row))))\n\
+#else\n\
+    #define A( row, col) A[ (row) + (col) * lda]\n\
+#endif\n\
+// Compute Rectangle + Traingle\n\
+__kernel void %PREFIXtrsv_CU_ComputeRectangle_NonUnity_kernel( __global %TYPE const * restrict _A, __global %TYPE* _xnew, uint N, int incx, int isUnity, uint lda, int doConj, int startCol, int rowsLeft, uint offa, uint offx)\n\
+{\n\
+    __global %TYPE* xnew;\n\
+    __global %TYPE* A = _A + offa;\n\
+\n\
+    if ( incx < 0 ) // Goto end of vector\n\
+    {\n\
+        xnew     = _xnew + offx + ( N - 1) * abs(incx);\n\
+    }\n\
+    else\n\
+    {\n\
+        xnew     = _xnew + offx;\n\
+    }\n\
+\n\
+    size_t bIdx     = get_group_id(0);\n\
+    size_t threadIdx= get_local_id(0);\n\
+\n\
+    // Get total blocks launched\n\
+    size_t nBlocks  = (rowsLeft - 1) / %TARGET_ROWS + 1;\n\
+\n\
+    %TYPE sum     = %MAKEVEC( 0.0);\n\
+    %TYPE loadedA     = %MAKEVEC( 0.0);\n\
+\n\
+    // First Block does scalar stuff...\n\
+    // Only this gets executed if nBlocks == 1\n\
+    if ( bIdx == 0)\n\
+    {\n\
+        int targetCol     = startCol;\n\
+        int targetRow     = threadIdx;\n\
+        int lastRow    = rowsLeft - ( nBlocks - 1) * %TARGET_ROWS - 1;\n\
+\n\
+        if ( nBlocks > 1)\n\
+        {\n\
+            if ( targetRow <= lastRow)\n\
+            {\n\
+"
+"\
+                for( int i=0; i < %TARGET_ROWS; i++)\n\
+                {\n\
+                    // All threads look at same xnew\n\
+                    // Should use Shared Memory ..\n\
+                    %TYPE xVal =  xnew[ targetCol * incx];\n\
+                    loadedA = A((targetRow), (targetCol));\n\
+                    %CONJUGATE(doConj, loadedA);\n\
+                    %MAD(sum, loadedA, xVal);\n\
+                    targetCol--;\n\
+                }\n\
+\n\
+                %SUB(xnew[ targetRow * incx], xnew[targetRow * incx], sum);\n\
+            }\n\
+        }\n\
+        else // Solve the traingle -- no more kernel launches required\n\
+        {\n\
+            if ( targetRow <= lastRow)\n\
+            {\n\
+                for( int i=0; i < %TARGET_ROWS; i++)\n\
+                {\n\
+                    // All threads look at same xnew\n\
+                    // Should use Shared Memory ..\n\
+                    %TYPE xVal =  xnew[ targetCol * incx];\n\
+                    loadedA = A((targetRow), (targetCol));\n\
+                    %CONJUGATE(doConj, loadedA);\n\
+                    %MAD(sum, loadedA, xVal);\n\
+                    targetCol--;\n\
+                }\n\
+            }\n\
+\n\
+            // Change targetCol to point to Triangle last column for all threads\n\
+            // As the above condition ( targetRow <= lastRow) changes targetCol for only threads with condition true\n\
+            targetCol     = startCol - %TARGET_ROWS;\n\
+\n\
+            __local %TYPE  xShared; // To share solved x value with other threads..\n\
+\n\
+            for( int i=0; i < (lastRow + 1); i++)\n\
+            {\n\
+                if ( targetRow == targetCol)\n\
+                {\n\
+                    %TYPE xVal = xnew[ targetRow * incx];\n\
+                    sum  =  xVal -  sum;\n\
+\n\
+                    // Handle diagonal element\n\
+                    loadedA = A((targetRow), (targetCol));\n\
+                    %CONJUGATE(doConj, loadedA);\n\
+                    %DIV(xShared, sum, loadedA);\n\
+\n\
+                    xnew[ targetRow * incx ] = xShared;\n\
+                }\n\
+"
+"\
+\n\
+                barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+                if (  targetRow < targetCol)\n\
+                {\n\
+                    loadedA = A((targetRow), (targetCol));\n\
+                    %CONJUGATE(doConj, loadedA);\n\
+                    %MAD(sum, loadedA, xShared);\n\
+                }\n\
+\n\
+                // Avoid Race\n\
+                barrier(CLK_LOCAL_MEM_FENCE);\n\
+                targetCol--;\n\
+            }\n\
+        }\n\
+    }\n\
+    else\n\
+    {\n\
+        size_t rowShift = ((threadIdx % ( TARGET_ROWS_BY_VEC )) * %V);\n\
+        size_t colShift = threadIdx / TARGET_ROWS_BY_VEC;\n\
+\n\
+        int rowStart     = rowsLeft  - ( %TARGET_ROWS * (nBlocks - bIdx) );\n\
+        int row        = rowStart + rowShift;\n\
+\n\
+        %TYPE   sumTemp = %MAKEVEC(0.0);\n\
+        %TYPE%V sum    = %VMAKEVEC(sumTemp);\n\
+\n\
+        __local %TYPE xData[ %TARGET_WIDTH];\n\
+\n\
+        //#pragma unroll\n\
+        for( int i=1; i <= %NLOOPS; i++)\n\
+        {\n\
+            // Put startCol to start of BLOCKSIZE Block\n\
+            int startColp    = startCol - (%TARGET_WIDTH * i) + 1;\n\
+\n\
+            if ( threadIdx < %TARGET_WIDTH)\n\
+            {\n\
+                xData[threadIdx] = xnew[ (startColp + threadIdx) * incx];\n\
+            }\n\
+\n\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+            int col     = startColp + colShift;\n\
+\n\
+            %TYPE xDataVal    = xData[ colShift ];\n\
+            %TYPE%V xDataVec= %VMAKEVEC( xDataVal);\n\
+\n\
+            %TYPE%V loadedA  = %VLOAD( 0, &A((row), (col)));\n\
+            %CONJUGATE(doConj, loadedA);\n\
+            %VMAD(sum, loadedA, xDataVec);\n\
+"
+"\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+        }\n\
+\n\
+        __local %TYPE%V sDataTemp[TARGET_ROWS_BY_VEC * %TARGET_WIDTH];\n\
+        //__local %TYPE* sData = sDataTemp;\n\
+        sDataTemp[(threadIdx % ( TARGET_ROWS_BY_VEC )) + (colShift * TARGET_ROWS_BY_VEC)] = sum;\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+        //int TARGET_ROWS        = %TARGET_ROWS;\n\
+\n\
+        // Last Block\n\
+        // Do Scalar reduction for last block\n\
+        // Followed by solving the triangle\n\
+        if ( bIdx == ( nBlocks - 1))\n\
+        {\n\
+            %TYPE sumTemp         = %MAKEVEC(0.0);\n\
+            %TYPE%V sumVec      = %VMAKEVEC(sumTemp);\n\
+                %TYPE%V loadedAVec  = %VMAKEVEC(sumTemp);\n\
+\n\
+            //int targetRow = rowStart + threadIdx;\n\
+            int targetCol = startCol- %TARGET_ROWS; // Col where triangle last col overlaps\n\
+\n\
+            // Do vector reduction\n\
+            if ( threadIdx <  TARGET_ROWS_BY_VEC )\n\
+            {\n\
+                //#pragma unroll\n\
+                for( int j=0; j < %TARGET_WIDTH; j++)\n\
+                {\n\
+                    %ADD(sumVec, sumVec, sDataTemp[ threadIdx + j * TARGET_ROWS_BY_VEC]);\n\
+                }\n\
+            }\n\
+\n\
+            __local %TYPE xShared[%V];\n\
+\n\
+            int targetRowTemp = rowStart + threadIdx * %V;\n\
+            int VECTOR_SIZE   = %V;\n\
+\n\
+            //#pragma unroll\n\
+            for( int i=0; i < (TARGET_ROWS_BY_VEC); i++)\n\
+            {\n\
+                if ( threadIdx == (TARGET_ROWS_BY_VEC - 1 - i))\n\
+                    {\n\
+                    // Read X-vector\n\
+                    %TYPE xVal[%V];\n\
+                    //#pragma unroll\n\
+                    for( int j = 0; j < %V; j++)\n\
+                    {\n\
+                        xVal[j] = xnew[ (targetRowTemp + j)* incx];\n\
+                    }\n\
+\n\
+"
+"\
+                    // Read A %Vx%V region into reg\n\
+                    %TYPE reg[%V][%V];\n\
+                    //#pragma unroll\n\
+                    for( int idx = 0; idx < ( %V * %V); idx++)\n\
+                    {\n\
+                        int m = idx % ( %V ); // Row : Col-Major idx...\n\
+                        int n = idx / ( %V );    // Col\n\
+                        if ( n >= m )\n\
+                        {\n\
+                            reg[m][n] = A((targetRowTemp + m), (targetCol -( %V - 1 - n)));\n\
+                            %CONJUGATE(doConj, reg[m][n]);\n\
+                        }\n\
+                    }\n\
+\n\
+                    %TYPE sumVecReg[%V];\n\
+                    %VSTOREWITHINCX(sumVecReg, sumVec, 1);\n\
+\n\
+                    // Solve for first x - Do the rest in loop\n\
+                    %TYPE x[%V];\n\
+                    %SUB(x[VECTOR_SIZE - 1], xVal[VECTOR_SIZE - 1], sumVecReg[VECTOR_SIZE - 1]);\n\
+                    %DIV(sumVecReg[VECTOR_SIZE - 1], x[VECTOR_SIZE -1], reg[VECTOR_SIZE - 1][VECTOR_SIZE - 1]);\n\
+                    x[VECTOR_SIZE -1] = sumVecReg[VECTOR_SIZE - 1];\n\
+                    xShared[%V - 1] = x[%V - 1];\n\
+                    xnew[ (targetRowTemp + %V - 1)* incx ] = x[%V - 1];\n\
+\n\
+                    //#pragma unroll\n\
+                    for(int m = ( %V - 2); m >=0; m--)\n\
+                    {\n\
+                        %SUB(x[m], xVal[m], sumVecReg[m]);\n\
+                    }\n\
+\n\
+                    //#pragma unroll\n\
+                    for( int idx = (( ( %V * %V) - 1) - %V); idx >= 0; idx--)\n\
+                    {\n\
+                        int m = idx / %V;       // Row : Row-Major idx, x[3] is solved before x[2]\n\
+                        int n = idx % ( %V );// Col\n\
+                        if ( n > m)\n\
+                        {\n\
+                            //x[m] = x[m] - reg[m][n] * x[n];\n\
+                            %MAD(x[m], reg[m][n], (-x[n]));\n\
+                        }\n\
+                        else if ( m == n)\n\
+                        {\n\
+                            %DIV(sumVecReg[m], x[m], reg[m][m]);\n\
+                            x[m] = sumVecReg[m];\n\
+                        }\n\
+                    }\n\
+\n\
+                    // Store results\n\
+                    //#pragma unroll\n\
+"
+"\
+                    for(int m = 0; m < %V; m++)\n\
+                    {\n\
+                        xShared[m] = x[m];\n\
+                        xnew[ (targetRowTemp + m)* incx ] = x[m];\n\
+                    }\n\
+                    }\n\
+\n\
+\n\
+                    // Sync so that xShared it available to all threads\n\
+                    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+                      if ( threadIdx < (TARGET_ROWS_BY_VEC - 1 - i))\n\
+                {\n\
+                        //#pragma unroll\n\
+                        for( int j=0; j < %V; j++)\n\
+                        {\n\
+                            //sumVec += vload4( 0, &A((targetRowTemp), (targetCol -j))) * xShared[%V - 1 -j];\n\
+                            %TYPE%V loadedAVec  = %VLOAD( 0, &A((targetRowTemp), (targetCol -j)));\n\
+                            %CONJUGATE(doConj, loadedAVec);\n\
+                            %VMAD(sumVec, loadedAVec, xShared[VECTOR_SIZE - 1 -j]);\n\
+                        }\n\
+                }\n\
+\n\
+                targetCol = targetCol - %V;\n\
+                    // Avoid Race...\n\
+                    barrier(CLK_LOCAL_MEM_FENCE);\n\
+            }\n\
+        }\n\
+        else\n\
+        {\n\
+            // Do Vector Reduction on each block except the last Block\n\
+            if ( threadIdx < TARGET_ROWS_BY_VEC)\n\
+            {\n\
+                %TYPE   accTemp = %MAKEVEC(0.0);\n\
+                %TYPE%V acc     = %VMAKEVEC(accTemp);\n\
+\n\
+                //#pragma unroll\n\
+                for( int j=0; j < %TARGET_WIDTH; j++)\n\
+                {\n\
+                    %ADD(acc, acc, sDataTemp[ threadIdx + j * TARGET_ROWS_BY_VEC]);\n\
+                }\n\
+\n\
+                // Store the result\n\
+                int targetRow = rowStart + threadIdx * %V;\n\
+\n\
+                __global %TYPE* xNewPtr =  xnew + targetRow * incx;\n\
+                //float4 value = (float4)( xNewPtr[0], xNewPtr[incx], xNewPtr[incx * 2], xNewPtr[incx *3]);\n\
+                %TYPE%V value;\n\
+                %VLOADWITHINCX(value, xNewPtr, incx);\n\
+\n\
+"
+"\
+                // Compute result\n\
+                %SUB(value, value, acc);\n\
+\n\
+                // Store results\n\
+                //VSTOREWITHINCX( xNewPtr, value, incx);\n\
+                %VSTOREWITHINCX(xNewPtr, value, incx);\n\
+            }\n\
+        }\n\
+    }\n\
+\n\
+}\n\
+";
+
+
+
+
+const char *trsv_CL_ComputeRectangle_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+#define TARGET_ROWS_BY_VEC ((%TARGET_ROWS)/(%V))\n\
+#ifdef PACKED\n\
+    #define A(row, col) (*( A + ((( (col) *((2*N) + 1 - (col))) / 2) + ((row) - (col)))))\n\
+#else\n\
+    #define A(row, col) A[ (row) + (col) * lda]\n\
+#endif\n\
+// Compute Rectangle + Traingle\n\
+__kernel void %PREFIXtrsv_CL_ComputeRectangle_kernel( __global const %TYPE* _A, __global %TYPE* _xnew, uint N, int incx, int isUnity, uint lda, int doConj, int startCol, int rowsLeft, uint offa, uint offx)\n\
+{\n\
+    __global %TYPE* xnew;\n\
+    __global %TYPE* A = _A + offa;\n\
+\n\
+    if ( incx < 0 ) // Goto end of vector\n\
+    {\n\
+        xnew     = _xnew + offx + ( N - 1) * abs(incx);\n\
+    }\n\
+    else\n\
+    {\n\
+        xnew     = _xnew + offx;\n\
+    }\n\
+\n\
+    size_t bIdx     = get_group_id(0);\n\
+    size_t threadIdx= get_local_id(0);\n\
+\n\
+    // Get total blocks launched\n\
+    size_t nBlocks  = (rowsLeft - 1) / %TARGET_ROWS + 1;\n\
+\n\
+    %TYPE sum     = %MAKEVEC( 0.0);\n\
+    %TYPE loadedA     = %MAKEVEC( 0.0);\n\
+\n\
+    // Last Block does scalar stuff...\n\
+    // Only this gets executed if nBlocks == 1\n\
+    if ( bIdx == (nBlocks - 1))\n\
+    {\n\
+        int targetCol     = startCol;\n\
+        int startRow     = (N - rowsLeft) + ( bIdx) * %TARGET_ROWS;\n\
+        int targetRow     = startRow  +  threadIdx;\n\
+        int lastRow    = startRow + rowsLeft - ( nBlocks - 1) * %TARGET_ROWS - 1;\n\
+\n\
+        if ( nBlocks > 1)\n\
+        {\n\
+            if ( targetRow <= lastRow)\n\
+"
+"\
+            {\n\
+                for( int i=0; i < %TARGET_ROWS; i++)\n\
+                {\n\
+                    // All threads look at same xnew\n\
+                    // Should use Shared Memory ..\n\
+                    %TYPE xVal =  xnew[ targetCol * incx];\n\
+                    loadedA = A((targetRow), (targetCol));\n\
+                    %CONJUGATE(doConj, loadedA);\n\
+                    %MAD(sum, loadedA, xVal);\n\
+                    targetCol++;\n\
+                }\n\
+\n\
+                %SUB(xnew[ targetRow * incx], xnew[targetRow * incx], sum);\n\
+            }\n\
+        }\n\
+        else // Solve the traingle -- no more kernel launches required\n\
+        {\n\
+            if ( targetRow <= lastRow)\n\
+            {\n\
+                for( int i=0; i < %TARGET_ROWS; i++)\n\
+                {\n\
+                    // All threads look at same xnew\n\
+                    // Should use Shared Memory ..\n\
+                    %TYPE xVal =  xnew[ targetCol * incx];\n\
+                    loadedA = A((targetRow), (targetCol));\n\
+                    %CONJUGATE(doConj, loadedA);\n\
+                    %MAD(sum, loadedA, xVal);\n\
+                    targetCol++;\n\
+                }\n\
+            }\n\
+\n\
+            // Change targetCol to point to Triangle last column for all threads\n\
+            // As the above condition ( targetRow <= lastRow) changes targetCol for only threads with condition true\n\
+            targetCol     = startCol + %TARGET_ROWS;\n\
+\n\
+            __local %TYPE  xShared; // To share solved x value with other threads..\n\
+\n\
+            for( int i=0; i < ((lastRow -startRow) + 1); i++)\n\
+            {\n\
+                if ( targetRow == targetCol)\n\
+                {\n\
+                    %TYPE xVal = xnew[ targetRow * incx];\n\
+                    sum  =  xVal -  sum;\n\
+\n\
+                    if( isUnity)\n\
+                    {\n\
+                        xShared = sum;\n\
+                    }\n\
+                    else // Handle diagonal element\n\
+                    {\n\
+"
+"\
+                        loadedA = A((targetRow), (targetCol));\n\
+                        %CONJUGATE(doConj, loadedA);\n\
+                        %DIV(xShared, sum, loadedA);\n\
+                    }\n\
+\n\
+                    xnew[ targetRow * incx ] = xShared;\n\
+                }\n\
+\n\
+                barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+                if (  targetRow <= lastRow)\n\
+                {\n\
+                    loadedA = A((targetRow), (targetCol));\n\
+                    %CONJUGATE(doConj, loadedA);\n\
+                    %MAD(sum, loadedA, xShared);\n\
+                }\n\
+\n\
+                // Avoid Race\n\
+                barrier(CLK_LOCAL_MEM_FENCE);\n\
+                targetCol++;\n\
+            }\n\
+        }\n\
+    }\n\
+    else\n\
+    {\n\
+        size_t rowShift = ((threadIdx % ( TARGET_ROWS_BY_VEC )) * %V);\n\
+        size_t colShift = threadIdx / TARGET_ROWS_BY_VEC;\n\
+\n\
+        int rowStart     = (N - rowsLeft) + ( bIdx) * %TARGET_ROWS;\n\
+        int row        = rowStart + rowShift;\n\
+\n\
+        %TYPE   sumTemp = %MAKEVEC(0.0);\n\
+        %TYPE%V sum    = %VMAKEVEC(sumTemp);\n\
+\n\
+        __local %TYPE xData[ %TARGET_WIDTH];\n\
+\n\
+        //#pragma unroll\n\
+        for( int i=1; i <= %NLOOPS; i++)\n\
+        {\n\
+            // Put startCol to start of BLOCKSIZE Block\n\
+            int startColp    = startCol + (%TARGET_WIDTH * (i - 1));\n\
+\n\
+            if ( threadIdx < %TARGET_WIDTH)\n\
+            {\n\
+                xData[threadIdx] = xnew[ (startColp + threadIdx) * incx];\n\
+            }\n\
+\n\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+            int col     = startColp + colShift;\n\
+"
+"\
+\n\
+            %TYPE xDataVal    = xData[ colShift ];\n\
+            %TYPE%V xDataVec= %VMAKEVEC( xDataVal);\n\
+\n\
+            %TYPE%V loadedA  = %VLOAD( 0, &A((row), (col)));\n\
+            %CONJUGATE(doConj, loadedA);\n\
+            %VMAD(sum, loadedA, xDataVec);\n\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+        }\n\
+\n\
+        __local %TYPE%V sDataTemp[TARGET_ROWS_BY_VEC * %TARGET_WIDTH];\n\
+        //__local %TYPE* sData = sDataTemp;\n\
+        sDataTemp[(threadIdx % ( TARGET_ROWS_BY_VEC )) + (colShift * TARGET_ROWS_BY_VEC)] = sum;\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+        //int TARGET_ROWS        = %TARGET_ROWS;\n\
+\n\
+        // Last Block\n\
+        // Do Scalar reduction for last block\n\
+        // Followed by solving the triangle\n\
+        if ( bIdx == 0 )\n\
+        {\n\
+            %TYPE sumTemp         = %MAKEVEC(0.0);\n\
+            %TYPE%V sumVec      = %VMAKEVEC(sumTemp);\n\
+                %TYPE%V loadedAVec  = %VMAKEVEC(sumTemp);\n\
+\n\
+            //int targetRow = rowStart + threadIdx;\n\
+            int targetCol = startCol + %TARGET_ROWS; // Col where triangle last col overlaps\n\
+\n\
+            // Do vector reduction\n\
+            if ( threadIdx <  TARGET_ROWS_BY_VEC )\n\
+            {\n\
+                //#pragma unroll\n\
+                for( int j=0; j < %TARGET_WIDTH; j++)\n\
+                {\n\
+                    %ADD(sumVec, sumVec, sDataTemp[ threadIdx + j * TARGET_ROWS_BY_VEC]);\n\
+                }\n\
+            }\n\
+\n\
+            __local %TYPE xShared[%V];\n\
+\n\
+            int targetRowTemp = rowStart + threadIdx * %V;\n\
+            int VECTOR_SIZE   = %V;\n\
+\n\
+            //#pragma unroll\n\
+            for( int i=0; i < (TARGET_ROWS_BY_VEC); i++)\n\
+            {\n\
+                if ( threadIdx == i )\n\
+                    {\n\
+                    // Read X-vector\n\
+"
+"\
+                    %TYPE xVal[%V];\n\
+                    //#pragma unroll\n\
+                    for( int j = 0; j < %V; j++)\n\
+                    {\n\
+                        xVal[j] = xnew[ (targetRowTemp + j)* incx];\n\
+                    }\n\
+\n\
+                    // Read A %Vx%V region into reg\n\
+                    %TYPE reg[%V][%V];\n\
+                    //#pragma unroll\n\
+                    for( int idx = 0; idx < ( %V * %V); idx++)\n\
+                    {\n\
+                        int m = idx % ( %V ); // Row : Col-Major idx...\n\
+                        int n = idx / ( %V );    // Col\n\
+                        if ( m > n )\n\
+                        {\n\
+                            reg[m][n] = A((targetRowTemp + m), (targetCol + n));\n\
+                            %CONJUGATE(doConj, reg[m][n]);\n\
+                        }\n\
+                    }\n\
+\n\
+                    %TYPE sumVecReg[%V];\n\
+                    %VSTOREWITHINCX(sumVecReg, sumVec, 1);\n\
+\n\
+                    // Solve for first x - Do the rest in loop\n\
+                    %TYPE x[%V];\n\
+                    %SUB(x[0], xVal[0], sumVecReg[0]);\n\
+                    xShared[0] = x[0];\n\
+                    xnew[ (targetRowTemp)* incx ] = x[0];\n\
+\n\
+                    //#pragma unroll\n\
+                    for(int m = 1; m < %V; m++)\n\
+                    {\n\
+                        %SUB(x[m], xVal[m], sumVecReg[m]);\n\
+                    }\n\
+\n\
+                    //#pragma unroll\n\
+                    for( int idx =  %V; idx < (( %V * %V) - 1); idx++)\n\
+                    {\n\
+                        int m = idx / %V;       // Row : Row-Major idx, x[1] is solved before x[2]\n\
+                        int n = idx % ( %V );// Col\n\
+                        if ( m > n)\n\
+                        {\n\
+                            //x[m] = x[m] - reg[m][n] * x[n];\n\
+                            %MAD(x[m], reg[m][n], (-x[n]));\n\
+                        }\n\
+                    }\n\
+\n\
+                    // Store results\n\
+                    //#pragma unroll\n\
+"
+"\
+                    for(int m = 0; m < %V; m++)\n\
+                    {\n\
+                        xShared[m] = x[m];\n\
+                        xnew[ (targetRowTemp + m)* incx ] = x[m];\n\
+                    }\n\
+                    }\n\
+\n\
+\n\
+                    // Sync so that xShared it available to all threads\n\
+                    barrier(CLK_LOCAL_MEM_FENCE);\n\
+                      if ( (threadIdx > i) && ( threadIdx < (TARGET_ROWS_BY_VEC)) )\n\
+                {\n\
+                        //#pragma unroll\n\
+                        for( int j=0; j < %V; j++)\n\
+                        {\n\
+                            %TYPE%V loadedAVec  = %VLOAD( 0, &A((targetRowTemp), (targetCol +j)));\n\
+                            %CONJUGATE(doConj, loadedAVec);\n\
+                            %VMAD(sumVec, loadedAVec, xShared[j]);\n\
+                        }\n\
+                }\n\
+\n\
+                targetCol = targetCol + %V;\n\
+                    // Avoid Race...\n\
+                    barrier(CLK_LOCAL_MEM_FENCE);\n\
+            }\n\
+        }\n\
+        else\n\
+        {\n\
+            // Do Vector Reduction on each block except the last Block\n\
+            if ( threadIdx < TARGET_ROWS_BY_VEC)\n\
+            {\n\
+                %TYPE   accTemp = %MAKEVEC(0.0);\n\
+                %TYPE%V acc     = %VMAKEVEC(accTemp);\n\
+\n\
+                //#pragma unroll\n\
+                for( int j=0; j < %TARGET_WIDTH; j++)\n\
+                {\n\
+                    %ADD(acc, acc, sDataTemp[ threadIdx + j * TARGET_ROWS_BY_VEC]);\n\
+                }\n\
+\n\
+                // Store the result\n\
+                int targetRow = rowStart + threadIdx * %V;\n\
+\n\
+                __global %TYPE* xNewPtr =  xnew + targetRow * incx;\n\
+                //float4 value = (float4)( xNewPtr[0], xNewPtr[incx], xNewPtr[incx * 2], xNewPtr[incx *3]);\n\
+                %TYPE%V value;\n\
+                %VLOADWITHINCX(value, xNewPtr, incx);\n\
+\n\
+                // Compute result\n\
+                %SUB(value, value, acc);\n\
+"
+"\
+\n\
+                // Store results\n\
+                %VSTOREWITHINCX(xNewPtr, value, incx);\n\
+            }\n\
+        }\n\
+    }\n\
+}\n\
+";
+
+
+
+const char *trsv_CL_ComputeRectangle_NonUnity_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+#define TARGET_ROWS_BY_VEC ((%TARGET_ROWS)/(%V))\n\
+#ifdef PACKED\n\
+    #define A(row, col) (*( A + ((( (col) *((2*N) + 1 - (col))) / 2) + ((row) - (col)))))\n\
+#else\n\
+    #define A(row, col) A[ (row) + (col) * lda]\n\
+#endif\n\
+// Compute Rectangle + Traingle\n\
+__kernel void %PREFIXtrsv_CL_ComputeRectangle_NonUnity_kernel( __global const %TYPE* _A, __global %TYPE* _xnew, uint N, int incx, int isUnity, uint lda, int doConj, int startCol, int rowsLeft, uint offa, uint offx)\n\
+{\n\
+    __global %TYPE* xnew;\n\
+    __global %TYPE* A = _A + offa;\n\
+\n\
+    if ( incx < 0 ) // Goto end of vector\n\
+    {\n\
+        xnew     = _xnew + offx + ( N - 1) * abs(incx);\n\
+    }\n\
+    else\n\
+    {\n\
+        xnew     = _xnew + offx;\n\
+    }\n\
+\n\
+    size_t bIdx     = get_group_id(0);\n\
+    size_t threadIdx= get_local_id(0);\n\
+\n\
+    // Get total blocks launched\n\
+    size_t nBlocks  = (rowsLeft - 1) / %TARGET_ROWS + 1;\n\
+\n\
+    %TYPE sum     = %MAKEVEC( 0.0);\n\
+    %TYPE loadedA     = %MAKEVEC( 0.0);\n\
+\n\
+    // Last Block does scalar stuff...\n\
+    // Only this gets executed if nBlocks == 1\n\
+    if ( bIdx == (nBlocks - 1))\n\
+    {\n\
+        int targetCol     = startCol;\n\
+        int startRow     = (N - rowsLeft) + ( bIdx) * %TARGET_ROWS;\n\
+        int targetRow     = startRow  +  threadIdx;\n\
+        int lastRow    = startRow + rowsLeft - ( nBlocks - 1) * %TARGET_ROWS - 1;\n\
+\n\
+        if ( nBlocks > 1)\n\
+        {\n\
+            if ( targetRow <= lastRow)\n\
+"
+"\
+            {\n\
+                for( int i=0; i < %TARGET_ROWS; i++)\n\
+                {\n\
+                    // All threads look at same xnew\n\
+                    // Should use Shared Memory ..\n\
+                    %TYPE xVal =  xnew[ targetCol * incx];\n\
+                    loadedA = A((targetRow), (targetCol));\n\
+                    %CONJUGATE(doConj, loadedA);\n\
+                    %MAD(sum, loadedA, xVal);\n\
+                    targetCol++;\n\
+                }\n\
+\n\
+                %SUB(xnew[ targetRow * incx], xnew[targetRow * incx], sum);\n\
+            }\n\
+        }\n\
+        else // Solve the traingle -- no more kernel launches required\n\
+        {\n\
+            if ( targetRow <= lastRow)\n\
+            {\n\
+                for( int i=0; i < %TARGET_ROWS; i++)\n\
+                {\n\
+                    // All threads look at same xnew\n\
+                    // Should use Shared Memory ..\n\
+                    %TYPE xVal =  xnew[ targetCol * incx];\n\
+                    loadedA = A((targetRow), (targetCol));\n\
+                    %CONJUGATE(doConj, loadedA);\n\
+                    %MAD(sum, loadedA, xVal);\n\
+                    targetCol++;\n\
+                }\n\
+            }\n\
+\n\
+            // Change targetCol to point to Triangle last column for all threads\n\
+            // As the above condition ( targetRow <= lastRow) changes targetCol for only threads with condition true\n\
+            targetCol     = startCol + %TARGET_ROWS;\n\
+\n\
+            __local %TYPE  xShared; // To share solved x value with other threads..\n\
+\n\
+            for( int i=0; i < ((lastRow -startRow) + 1); i++)\n\
+            {\n\
+                if ( targetRow == targetCol)\n\
+                {\n\
+                    %TYPE xVal = xnew[ targetRow * incx];\n\
+                    sum  =  xVal -  sum;\n\
+\n\
+                    // Handle diagonal element\n\
+                    loadedA = A((targetRow), (targetCol));\n\
+                    %CONJUGATE(doConj, loadedA);\n\
+                    %DIV(xShared, sum, loadedA);\n\
+                    xnew[ targetRow * incx ] = xShared;\n\
+                }\n\
+"
+"\
+\n\
+                barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+                if (  targetRow <= lastRow)\n\
+                {\n\
+                    loadedA = A((targetRow), (targetCol));\n\
+                    %CONJUGATE(doConj, loadedA);\n\
+                    %MAD(sum, loadedA, xShared);\n\
+                }\n\
+\n\
+                // Avoid Race\n\
+                barrier(CLK_LOCAL_MEM_FENCE);\n\
+                targetCol++;\n\
+            }\n\
+        }\n\
+    }\n\
+    else\n\
+    {\n\
+        size_t rowShift = ((threadIdx % ( TARGET_ROWS_BY_VEC )) * %V);\n\
+        size_t colShift = threadIdx / TARGET_ROWS_BY_VEC;\n\
+\n\
+        int rowStart     = (N - rowsLeft) + ( bIdx) * %TARGET_ROWS;\n\
+        int row        = rowStart + rowShift;\n\
+\n\
+        %TYPE   sumTemp = %MAKEVEC(0.0);\n\
+        %TYPE%V sum    = %VMAKEVEC(sumTemp);\n\
+\n\
+        __local %TYPE xData[ %TARGET_WIDTH];\n\
+\n\
+        //#pragma unroll\n\
+        for( int i=1; i <= %NLOOPS; i++)\n\
+        {\n\
+            // Put startCol to start of BLOCKSIZE Block\n\
+            int startColp    = startCol + (%TARGET_WIDTH * (i - 1));\n\
+\n\
+            if ( threadIdx < %TARGET_WIDTH)\n\
+            {\n\
+                xData[threadIdx] = xnew[ (startColp + threadIdx) * incx];\n\
+            }\n\
+\n\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+            int col     = startColp + colShift;\n\
+\n\
+            %TYPE xDataVal    = xData[ colShift ];\n\
+            %TYPE%V xDataVec= %VMAKEVEC( xDataVal);\n\
+\n\
+            %TYPE%V loadedA  = %VLOAD( 0, &A((row), (col)));\n\
+            %CONJUGATE(doConj, loadedA);\n\
+            %VMAD(sum, loadedA, xDataVec);\n\
+"
+"\
+            barrier(CLK_LOCAL_MEM_FENCE);\n\
+        }\n\
+\n\
+        __local %TYPE%V sDataTemp[TARGET_ROWS_BY_VEC * %TARGET_WIDTH];\n\
+        //__local %TYPE* sData = sDataTemp;\n\
+        sDataTemp[(threadIdx % ( TARGET_ROWS_BY_VEC )) + (colShift * TARGET_ROWS_BY_VEC)] = sum;\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+        //int TARGET_ROWS        = %TARGET_ROWS;\n\
+\n\
+        // Last Block\n\
+        // Do Scalar reduction for last block\n\
+        // Followed by solving the triangle\n\
+        if ( bIdx == 0 )\n\
+        {\n\
+            %TYPE sumTemp         = %MAKEVEC(0.0);\n\
+            %TYPE%V sumVec      = %VMAKEVEC(sumTemp);\n\
+                %TYPE%V loadedAVec  = %VMAKEVEC(sumTemp);\n\
+\n\
+            //int targetRow = rowStart + threadIdx;\n\
+            int targetCol = startCol + %TARGET_ROWS; // Col where triangle last col overlaps\n\
+\n\
+            // Do vector reduction\n\
+            if ( threadIdx <  TARGET_ROWS_BY_VEC )\n\
+            {\n\
+                //#pragma unroll\n\
+                for( int j=0; j < %TARGET_WIDTH; j++)\n\
+                {\n\
+                    %ADD(sumVec, sumVec, sDataTemp[ threadIdx + j * TARGET_ROWS_BY_VEC]);\n\
+                }\n\
+            }\n\
+\n\
+            __local %TYPE xShared[%V];\n\
+\n\
+            int targetRowTemp = rowStart + threadIdx * %V;\n\
+            int VECTOR_SIZE   = %V;\n\
+\n\
+            //#pragma unroll\n\
+            for( int i=0; i < (TARGET_ROWS_BY_VEC); i++)\n\
+            {\n\
+                if ( threadIdx == i )\n\
+                    {\n\
+                    // Read X-vector\n\
+                    %TYPE xVal[%V];\n\
+                    //#pragma unroll\n\
+                    for( int j = 0; j < %V; j++)\n\
+                    {\n\
+                        xVal[j] = xnew[ (targetRowTemp + j)* incx];\n\
+                    }\n\
+\n\
+"
+"\
+                    // Read A %Vx%V region into reg\n\
+                    %TYPE reg[%V][%V];\n\
+                    //#pragma unroll\n\
+                    for( int idx = 0; idx < ( %V * %V); idx++)\n\
+                    {\n\
+                        int m = idx % ( %V ); // Row : Col-Major idx...\n\
+                        int n = idx / ( %V );    // Col\n\
+                        if ( m >= n )\n\
+                        {\n\
+                            reg[m][n] = A((targetRowTemp + m), (targetCol + n));\n\
+                            %CONJUGATE(doConj, reg[m][n]);\n\
+                        }\n\
+                    }\n\
+\n\
+                    %TYPE sumVecReg[%V];\n\
+                    %VSTOREWITHINCX(sumVecReg, sumVec, 1);\n\
+\n\
+                    // Solve for first x - Do the rest in loop\n\
+                    %TYPE x[%V];\n\
+                    %SUB(x[0], xVal[0], sumVecReg[0]);\n\
+                    %DIV(sumVecReg[0], x[0], reg[0][0]);\n\
+                    x[0] = sumVecReg[0];\n\
+                    xShared[0] = sumVecReg[0];\n\
+                    xnew[ (targetRowTemp)* incx ] = sumVecReg[0];\n\
+\n\
+                    //#pragma unroll\n\
+                    for(int m = 1; m < %V; m++)\n\
+                    {\n\
+                        %SUB(x[m], xVal[m], sumVecReg[m]);\n\
+                    }\n\
+\n\
+                    //#pragma unroll\n\
+                    for( int idx =  %V; idx < (%V * %V); idx++)\n\
+                    {\n\
+                        int m = idx / %V;       // Row : Row-Major idx, x[1] is solved before x[2]\n\
+                        int n = idx % ( %V );// Col\n\
+                        if ( m > n)\n\
+                        {\n\
+                            //x[m] = x[m] - reg[m][n] * x[n];\n\
+                            %MAD(x[m], reg[m][n], (-x[n]));\n\
+                        }\n\
+                        else if ( m == n)\n\
+                        {\n\
+                            %DIV(sumVecReg[m], x[m], reg[m][m]);\n\
+                            x[m] = sumVecReg[m];\n\
+                        }\n\
+                    }\n\
+\n\
+                    // Store results\n\
+                    //#pragma unroll\n\
+"
+"\
+                    for(int m = 1; m < %V; m++)\n\
+                    {\n\
+                        xShared[m] = x[m];\n\
+                        xnew[ (targetRowTemp + m)* incx ] = x[m];\n\
+                    }\n\
+                    }\n\
+\n\
+\n\
+                    // Sync so that xShared it available to all threads\n\
+                    barrier(CLK_LOCAL_MEM_FENCE);\n\
+                      if ( (threadIdx > i) && ( threadIdx < (TARGET_ROWS_BY_VEC)) )\n\
+                {\n\
+                        //#pragma unroll\n\
+                        for( int j=0; j < %V; j++)\n\
+                        {\n\
+                            %TYPE%V loadedAVec  = %VLOAD( 0, &A((targetRowTemp), (targetCol +j)));\n\
+                            %CONJUGATE(doConj, loadedAVec);\n\
+                            %VMAD(sumVec, loadedAVec, xShared[j]);\n\
+                        }\n\
+                }\n\
+\n\
+                targetCol = targetCol + %V;\n\
+                    // Avoid Race...\n\
+                    barrier(CLK_LOCAL_MEM_FENCE);\n\
+            }\n\
+        }\n\
+        else\n\
+        {\n\
+            // Do Vector Reduction on each block except the last Block\n\
+            if ( threadIdx < TARGET_ROWS_BY_VEC)\n\
+            {\n\
+                %TYPE   accTemp = %MAKEVEC(0.0);\n\
+                %TYPE%V acc     = %VMAKEVEC(accTemp);\n\
+\n\
+                //#pragma unroll\n\
+                for( int j=0; j < %TARGET_WIDTH; j++)\n\
+                {\n\
+                    %ADD(acc, acc, sDataTemp[ threadIdx + j * TARGET_ROWS_BY_VEC]);\n\
+                }\n\
+\n\
+                // Store the result\n\
+                int targetRow = rowStart + threadIdx * %V;\n\
+\n\
+                __global %TYPE* xNewPtr =  xnew + targetRow * incx;\n\
+                //float4 value = (float4)( xNewPtr[0], xNewPtr[incx], xNewPtr[incx * 2], xNewPtr[incx *3]);\n\
+                %TYPE%V value;\n\
+                %VLOADWITHINCX(value, xNewPtr, incx);\n\
+\n\
+                // Compute result\n\
+                %SUB(value, value, acc);\n\
+"
+"\
+\n\
+                // Store results\n\
+                %VSTOREWITHINCX(xNewPtr, value, incx);\n\
+            }\n\
+        }\n\
+    }\n\
+}\n\
+";
+
+
+
+
+const char *trsv_CUT_ComputeRectangle_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+#ifdef PACKED\n\
+    #define A( row, col) (*( A + (((col)*((col)+1))/2 + (row))))\n\
+#else\n\
+    #define A( row, col) A[ (row) + (col) * lda]\n\
+#endif\n\
+__kernel void %PREFIXtrsv_CUT_ComputeRectangle_kernel(__global const %TYPE* _A,            __global %TYPE* _xnew,\n\
+                                                uint N,\n\
+                                                int incx,\n\
+                                                int isUnity,\n\
+                                                uint lda,\n\
+                                                int doConj,\n\
+                                                int startRow, int endRow, uint offa, uint offx)\n\
+{\n\
+    __global %TYPE* xnew;\n\
+    __global %TYPE* A = _A + offa;\n\
+    if ( incx < 0 ) // Goto end of vector\n\
+    {\n\
+        xnew     = _xnew  + offx + ( N - 1) * abs(incx);\n\
+    }\n\
+    else\n\
+    {\n\
+        xnew     = _xnew + offx;\n\
+    }\n\
+\n\
+    int threadID = get_local_id(0);\n\
+    int threadID_Y, threadID_X;\n\
+    int blockSize = %BLOCKSIZE, blockSize_x, blockSize_y;\n\
+    int blkid = get_group_id(0);\n\
+    int V= %V;\n\
+\n\
+    __local %TYPE solved[%TRIANGLE_HEIGHT];\n\
+    __local %TYPE reduce[%TARGET_HEIGHT][ %BLOCKSIZE / %TARGET_HEIGHT];\n\
+    __local %TYPE%V *solved_vec;\n\
+    int blockStartRow;\n\
+    int triangleHeight;\n\
+    %TYPE%V acc;\n\
+    %TYPE%V loadedAVec;\n\
+    %TYPE sacc;\n\
+    %TYPE accTemp;\n\
+\n\
+    triangleHeight = endRow - startRow;\n\
+/*\n\
+"
+"\
+    if ((triangleHeight != %TRIANGLE_HEIGHT) || ((triangleHeight % V) != 0))\n\
+    {\n\
+        // throw -1;\n\
+\n\
+        //\n\
+        // It is the caller's responsibility to solve triangle whose width\n\
+        // is a multiple of VECTOR SIZE before calling this routine.\n\
+        // This makes the width of the rectangle to be multiple of VECTOR SIZE.\n\
+        // Thus threads can iterate without looking out for vector-unfriendly\n\
+        // dimensions.\n\
+        // This condition can be maintained for any dimension of the input matrix\n\
+        // So, generality is not broken here.\n\
+        //\n\
+        *(__global int*)0 = 0;\n\
+    }\n\
+\n\
+    if (( %BLOCKSIZE % %TARGET_HEIGHT) != 0)\n\
+    {\n\
+        // throw -1;\n\
+\n\
+        //\n\
+        // Awkward Block Size. Impossible to write neat code.\n\
+        // The set of threads belonging to the last threadID_X will not have\n\
+        // blockSize_Y number of threads.\n\
+        //\n\
+        *(__global int*)0 = 0;\n\
+    }\n\
+*/\n\
+    blockSize_y = %TARGET_HEIGHT;\n\
+    blockSize_x = %BLOCKSIZE / %TARGET_HEIGHT;\n\
+\n\
+    threadID_Y = threadID % %TARGET_HEIGHT;\n\
+    threadID_X = threadID / %TARGET_HEIGHT;\n\
+\n\
+    blockStartRow = endRow + (blkid * blockSize_x);\n\
+    blockStartRow += threadID_X;\n\
+\n\
+    for(int i=threadID; i< %TRIANGLE_HEIGHT; i+=blockSize)\n\
+    {\n\
+        solved[i] = xnew[(startRow + i)*incx];\n\
+    }\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+    solved_vec = solved;\n\
+    accTemp = %INIT(0.0);\n\
+    acc = %VMAKEVEC( accTemp);\n\
+\n\
+    if (blockStartRow < N)\n\
+    {\n\
+        for(int i=threadID_Y; i<(triangleHeight/V); i+=blockSize_y)\n\
+"
+"\
+        {\n\
+            loadedAVec = %VLOAD(0, &A((startRow + i*V), (blockStartRow)));\n\
+            %CONJUGATE(doConj, loadedAVec);\n\
+            %VMAD(acc, solved_vec[i], loadedAVec); //startRow == startCol as well.\n\
+        }\n\
+        sacc = %REDUCE_SUM(acc);\n\
+\n\
+        // Put stuff in shared memory for final reduction\n\
+        reduce[threadID_Y][threadID_X] = sacc;\n\
+    }\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+    if ( threadID < blockSize_x)\n\
+    {\n\
+        sacc = %INIT(0.0);\n\
+        //#pragma unroll\n\
+        for( int i=0; i < %TARGET_HEIGHT; i++)\n\
+        {\n\
+            %ADD(sacc, sacc, reduce[i][threadID]);\n\
+        }\n\
+\n\
+        blockStartRow = endRow + (blkid * blockSize_x);\n\
+        blockStartRow += threadID;\n\
+        if ( blockStartRow < N)\n\
+        {\n\
+            %SUB(xnew[(blockStartRow)*incx], xnew[(blockStartRow)*incx], sacc);\n\
+        }\n\
+    }\n\
+}\n\
+";
+
+
+
+const char *trsv_CLT_ComputeRectangle_kernel="\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+#ifdef PACKED\n\
+    #define A(row, col) (*( A + ((( (col) *((2*N) + 1 - (col))) / 2) + ((row) - (col)))))\n\
+#else\n\
+    #define A(row, col) A[ (row) + (col) * lda]\n\
+#endif\n\
+__kernel void %PREFIXtrsv_CLT_ComputeRectangle_kernel(     __global const %TYPE* _A,\n\
+                                                __global %TYPE* _xnew,\n\
+                                                uint N,\n\
+                                                int incx,\n\
+                                                int isUnity,\n\
+                                                uint lda,\n\
+                                                int doConj,\n\
+                                                int startRow, int endRow, uint offa, uint offx)\n\
+{\n\
+\n\
+    __global %TYPE* xnew;\n\
+    __global %TYPE* A = _A + offa;\n\
+    if ( incx < 0 ) // Goto end of vector\n\
+    {\n\
+        xnew     = _xnew  + offx + ( N - 1) * abs(incx);\n\
+    }\n\
+    else\n\
+    {\n\
+        xnew     = _xnew + offx;\n\
+    }\n\
+\n\
+    int threadID = get_local_id(0);\n\
+    int threadID_Y, threadID_X;\n\
+    int blockSize = %BLOCKSIZE, blockSize_x, blockSize_y;\n\
+    int blkid = get_group_id(0);\n\
+    int V= %V;\n\
+\n\
+    __local %TYPE solved[%TRIANGLE_HEIGHT];\n\
+    __local %TYPE reduce[%TARGET_HEIGHT][ %BLOCKSIZE / %TARGET_HEIGHT];\n\
+    __local %TYPE%V *solved_vec;\n\
+    int blockStartRow;\n\
+    int triangleHeight;\n\
+    %TYPE%V acc;\n\
+    %TYPE%V loadedAVec;\n\
+    %TYPE sacc;\n\
+    %TYPE accTemp;\n\
+\n\
+"
+"\
+    triangleHeight = endRow - startRow;\n\
+\n\
+    blockSize_y = %TARGET_HEIGHT;\n\
+    blockSize_x = %BLOCKSIZE / %TARGET_HEIGHT;\n\
+\n\
+    threadID_Y = threadID % %TARGET_HEIGHT;\n\
+    threadID_X = threadID / %TARGET_HEIGHT;\n\
+\n\
+    blockStartRow = startRow - 1 - (blkid * blockSize_x);\n\
+    blockStartRow -= threadID_X;\n\
+\n\
+    for(int i=threadID; i< %TRIANGLE_HEIGHT; i+=blockSize)\n\
+    {\n\
+        solved[i] = xnew[(startRow + i)*incx];\n\
+    }\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+    solved_vec = solved;\n\
+    accTemp = %INIT(0.0);\n\
+    acc = %VMAKEVEC( accTemp);\n\
+\n\
+    if (blockStartRow >= 0)\n\
+    {\n\
+        for(int i=threadID_Y; i<(triangleHeight/V); i+=blockSize_y)\n\
+        {\n\
+            loadedAVec = %VLOAD(0, &A((startRow+ i*V) , (blockStartRow)));\n\
+            %CONJUGATE(doConj, loadedAVec);\n\
+            %VMAD(acc, solved_vec[i], loadedAVec); //startRow == startCol as well.\n\
+        }\n\
+        sacc = %REDUCE_SUM(acc);\n\
+\n\
+        // Put stuff in shared memory for final reduction\n\
+        reduce[threadID_Y][threadID_X] = sacc;\n\
+    }\n\
+    barrier(CLK_LOCAL_MEM_FENCE);\n\
+\n\
+    if ( threadID < blockSize_x)\n\
+    {\n\
+        sacc = %INIT(0.0);\n\
+        //#pragma unroll\n\
+        for( int i=0; i < %TARGET_HEIGHT; i++)\n\
+        {\n\
+            %ADD(sacc, sacc, reduce[i][threadID]);\n\
+        }\n\
+\n\
+        blockStartRow = startRow - 1 - (blkid * blockSize_x);\n\
+        blockStartRow -= threadID;\n\
+        if ( blockStartRow < N)\n\
+        {\n\
+            %SUB(xnew[(blockStartRow)*incx], xnew[(blockStartRow)*incx], sacc);\n\
+"
+"\
+        }\n\
+    }\n\
+}\n\
+";
+
+
+
+

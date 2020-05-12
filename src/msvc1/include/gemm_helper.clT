@@ -1,0 +1,92 @@
+/* ************************************************************************
+ * Copyright 2013 Advanced Micro Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ************************************************************************/
+
+static const char *GEMM_HELPER = "\
+void getBlockNumber(uint nBlocks, uint blockID, uint *bidY, uint *bidX, uint flag)\n\
+{\n\
+    #ifndef HERK\n\
+    {\n\
+        if(flag) //Column Major ordering for NT kernels\n\
+        {\n\
+            *bidY = ( blockID % ( nBlocks));\n\
+            *bidX = ( blockID / ( nBlocks));\n\
+        }\n\
+        else //Row Major ordering for TN kernels\n\
+        {\n\
+            *bidX = ( blockID % ( nBlocks));\n\
+            *bidY = ( blockID / ( nBlocks));\n\
+        }\n\
+    }\n\
+    #else\n\
+    {\n\
+        volatile uint _i = 0, _j = 0;\n\
+        for ( _j = (blockID / nBlocks); _j < nBlocks; _j++)\n\
+        {\n\
+            _i = blockID - ((_j*((2* nBlocks) + 1 - _j))/2) + _j;\n\
+            if ( _i < nBlocks && ( _i >= 0) )\n\
+            {\n\
+                break;\n\
+            }\n\
+        }\n\
+        #ifdef HERK_LOWER_TRIANGLE\n\
+            *bidY = _i;\n\
+            *bidX = _j;\n\
+        #else\n\
+            *bidY = _j;\n\
+            *bidX = _i;\n\
+        #endif\n\
+    }\n\
+    #endif\n\
+}\n\
+\n\
+//\n\
+// mapWorkGroupToTileNumber() - Maps a workgroup number to a Tile position in output matrix\n\
+// Groups the full tiles together and half-tiles together and maps the workgroup number\n\
+// such that full tiles are processed wholly by consecutive workgroups and half-tiles are\n\
+// processed by consecutive workgroups\n\
+//\n\
+// ASSUMPTION:\n\
+//  Assumes column major numbering of workgroup\n\
+//\n\
+// Observation:\n\
+//  This new grouping yielded worse results than normal column-major order.\n\
+//  Tested with GEMM NN kernel. So, we will not be using this function.\n\
+"
+"\
+//  This is here just for completeness sake\n\
+//\n\
+void mapWorkGroupToTileNumber(uint M, uint N, uint *bidY, uint *bidX)\n\
+{\n\
+    uint fullTilesOnY, numTilesOnX;\n\
+    uint relativeGroupId;\n\
+\n\
+    numTilesOnX = ((N-1) / ((get_local_size(0) / %WIDTH) * %ITEMX)) + 1;\n\
+    fullTilesOnY = (M / (%WIDTH * %ITEMY));\n\
+    if (get_group_id(0) < (numTilesOnX * fullTilesOnY) )\n\
+    {\n\
+        *bidY = ( get_group_id(0) % ( fullTilesOnY));\n\
+        *bidX = ( get_group_id(0) / ( fullTilesOnY));\n\
+    } else {\n\
+        relativeGroupId = get_group_id(0) - (numTilesOnX * fullTilesOnY);\n\
+        *bidY = fullTilesOnY;\n\
+        *bidX = relativeGroupId;\n\
+    }\n\
+}\n\
+";
+
+
+
+

@@ -1,0 +1,240 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\functional\func-error.cpp">
+      <Filter>functional</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\functional\func-event.cpp">
+      <Filter>functional</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\functional\func-thread.cpp">
+      <Filter>functional</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\functional\func-queue.cpp">
+      <Filter>functional</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\functional\test-functional.cpp">
+      <Filter>functional</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\functional\BlasBase-func.cpp">
+      <Filter>functional</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\cmdline.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\common.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\clBLAS-wrapper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\BlasBase.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\timer.c">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\functional\func.h">
+      <Filter>functional</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\clBLAS.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\clBLAS-complex.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\cltypes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\include\defbool.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\blas-internal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\blas-cblas.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\blas-wrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\clBLAS-wrapper.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\cmdline.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\BlasBase.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\common.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\gemm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\trmm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\tpmv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\trsm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\gemv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\symv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\spmv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\syr2k.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\syrk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\trmv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\trsv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\symm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\ger.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\gerc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\syr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\spr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\her.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\her2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\syr2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\hemv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\hpmv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\hemm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\herk.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\tpsv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\hpr.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\hpr2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\spr2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\gbmv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\hbmv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\tbmv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\tbsv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\copy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\sbmv.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\dot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\dotc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\her2k.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\scal.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\swap.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\axpy.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\rotg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\rotm.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\rot.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\asum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\rotmg.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\nrm2.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\iamax.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\blas-math.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\blas-random.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\matrix.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\include\timer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Development\op3d_active\clBLAS-1.10\src\tests\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{DB2DF0D3-0FAB-35DF-9FBC-6C8340AB8960}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{E8C67862-4258-3E8B-BBCC-6C972492BF3E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="functional">
+      <UniqueIdentifier>{5C0692CC-759F-3A95-A601-1A2BDABB50DB}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

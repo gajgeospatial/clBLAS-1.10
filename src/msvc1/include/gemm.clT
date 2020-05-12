@@ -1,0 +1,1719 @@
+/* ************************************************************************
+ * Copyright 2013 Advanced Micro Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ************************************************************************/
+
+//
+// Few Observations:
+// 1. Vector Length of 4 increases the performance of DGEMM to 250GFLOPS.
+//    Coupled with 8x8 block without "barrier", max performance seen is around 267GFLOPS on Cayman.
+//    Otherwise, it is at 225GFLOPS max (16x8 block, with barrier, vector size of 2)
+//    However, a change of tile-size with vector length of just 2 yields 330GFLOPS consistently.
+//    So, 330 is our sweetspot for DGEMM now.
+// 2. When MxN is not completely divisible by [subdimy x subdimx] then a workgroup size of
+//    8x8 yields the best performance.
+//    Even in this case, if extra threads exit - the performance should be better.
+//    Thread exit should be done only if a barrier is NOT used. Otherwise, it will result in a hang.
+// 3. When processing non-tail run, workgroups processing full tiles can be grouped together and run
+//    However, this did not yield any significant performance on tail processing
+//    Sometimes, performance degradation was also seen. So, this idea will not be pursued.
+//
+// Pending Enhancements for GEMM:
+// -4. TN Kernel Performance can be improved. The prototype code shows better performance than the templated
+//     code. The templated code slightly differs from the prototype code. This can be fixed to get more
+//     performance.
+// -2. PENDING BUG FIX on the Unroll Factor for NN kernel - Configurable PANEL Implementation Introduced it.
+//     Currently panel of %V only supported
+//  0. When workgroup size == WAVEFRONT Size,  GEMM_NEEDS_BARRIER need not be defined.
+//     This saves a few milliseconds depending on the problem size.
+//  1. Support for VLOADA, VLOADB and VLOADC in KPRINTF required. Currently, if any one of the matrices
+//     are vector unfriendly, the kernel translates to a completely scalar kernel.
+//     This is pretty easy to implement in KPRINTF.
+//  2. Panel Width == %V in the current implementation. It should be a separate config define
+//     that can has to be a multiple of %V.
+//     Currently only NxN kernel has %PANEL support implemented. TN and NT needs to be enhanced.
+//     This will be required for tuning and also for high performance for D,C and ZGEMMs
+//  3. "actualRow" based improvement can be used in KTail Processing as well for NN Kernel
+//  4. A.B^T can be optimzed for cases where ITEMY > 4. Successive threads are now ITEMX apart
+//     Instead, we can make them float4 apart to get highest L1 cache bandwidth
+//  5. A.B^T - actualCol, actualRow optimization
+//
+static const char *GEMM_NN_KERNEL = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+\n\
+__kernel void GEMM_NN__KERNEL ( __global %TYPE const * restrict _A, __global %TYPE const * restrict _B, __global %TYPE *_C,\n\
+                                     uint M, uint N, uint _K, uint _lda, uint _ldb, uint ldc, uint offa, uint offb, uint offc,\n\
+                                %TYPE alpha, %TYPE beta\n\
+                                #ifdef TAIL_RUN\n\
+                                , uint tailStartM, uint tailStartN\n\
+                                #endif\n\
+                                )\n\
+{\n\
+    const int V = %V;\n\
+    __global %TYPE const *restrict A;\n\
+    __global %TYPE const *restrict B;\n\
+    __global %TYPE *C = _C + offc;\n\
+    uint K = _K;\n\
+    uint lda, ldb;\n\
+    uint rowA, colA, rowB, colB, rowC, colC;\n\
+    uint numGroupsOnY;\n\
+    uint row, col;\n\
+    uint tid = get_local_id(0);\n\
+    int panel;\n\
+    int ACOLSTART, ACOLEND;\n\
+    uint MV;\n\
+\n\
+    //\n\
+    // %WIDTH - Preferably 16\n\
+    // %ITEMY, %ITEMX - 1 Thread is responsible for %ITEMY * %ITEMX sub-matrix in C\n\
+    //                    %ITEMY must be divisible by %V for NN kernel\n\
+    // The entire workgroup loops-together to complete ITEMY-ITEMX sub-matrix\n\
+    //\n\
+    uint threadsY = %WIDTH;\n\
+    uint threadsX = get_local_size(0)/threadsY;\n\
+\n\
+    //\n\
+    // Column-Major ordering of Workgroups\n\
+    //\n\
+    // %ITEMY - Number of elements , a workitem processes in Y direction.\n\
+    // %ITEMX - Number of elements , a workitem processes in X direction.\n\
+    //\n\
+    // %V     - Vectoring Width\n\
+    // %PANEL(*) - Panel Width to access Rows of A and Columns of B\n\
+    //               Right now, %V is assumed to be the panel width.\n\
+    //               We don't use %PANEL in the current implementation.\n\
+"
+"\
+    //\n\
+    MV = M;\n\
+    #ifndef TAIL_RUN\n\
+    {\n\
+        uint bidX, bidY;\n\
+        uint blockDimY;\n\
+\n\
+        #ifdef M_TAIL_PRESENT\n\
+        MV = M - (M % (%V));\n\
+        #endif\n\
+        if (MV == 0)\n\
+        {\n\
+            return;\n\
+        }\n\
+        blockDimY = ((M-1) / (threadsY * %ITEMY)) + 1;\n\
+        bidY = ( get_group_id(0) % ( blockDimY));\n\
+        bidX = ( get_group_id(0) / ( blockDimY));\n\
+        //\n\
+        // Note:\n\
+        // Using the new Map function does not yield any performnce gain.\n\
+        // In fact, it degraded the performance\n\
+        // Keep this commented.\n\
+        //\n\
+        //mapWorkGroupToTileNumber(M, N, &bidY, &bidX);\n\
+\n\
+        //\n\
+        // <row,col> is the left-top of the TILE region\n\
+        // in the output C matrix that will be determined\n\
+        // by this workgroup\n\
+        //\n\
+        row =  (bidY * (threadsY * %ITEMY));\n\
+        col =  (bidX * (threadsX * %ITEMX));\n\
+    }\n\
+    #else\n\
+    {\n\
+        uint nWorkGroupsAY, nWorkGroupsAX, nWorkGroupsA;\n\
+        uint bidY, bidX;\n\
+\n\
+        if (M == tailStartM)\n\
+        {\n\
+            nWorkGroupsA = 0;\n\
+        } else {\n\
+            nWorkGroupsAY = ((M - tailStartM - 1)/threadsY + 1);\n\
+            nWorkGroupsAX = ((tailStartN - 1)/threadsX + 1);\n\
+            nWorkGroupsA = nWorkGroupsAY * nWorkGroupsAX;\n\
+        }\n\
+        if (get_group_id(0) < nWorkGroupsA)\n\
+        {\n\
+            bidY = get_group_id(0) % (nWorkGroupsAY);\n\
+            bidX = get_group_id(0) / nWorkGroupsAY;\n\
+"
+"\
+            row = tailStartM + (bidY * threadsY * %ITEMY);\n\
+            col = (bidX * threadsX * %ITEMX);\n\
+        } else {\n\
+            uint nWorkGroupsBY, nWorkGroupsBX;\n\
+\n\
+            nWorkGroupsBY = ((M-1)/threadsY) + 1;\n\
+            nWorkGroupsBX = ((N-tailStartN-1)/threadsX) + 1;\n\
+            bidY = (get_group_id(0) - nWorkGroupsA) % (nWorkGroupsBY);\n\
+            bidX = (get_group_id(0) - nWorkGroupsA) / nWorkGroupsBY;\n\
+            row = (bidY * threadsY * %ITEMY);\n\
+            col = tailStartN + (bidX * threadsX * %ITEMX);\n\
+        }\n\
+\n\
+    }\n\
+    #endif\n\
+\n\
+    //\n\
+    // ACOLSTART, ACOLEND\n\
+    // SYMM Matrix  multiplication proceeds by multiplying panels on A's block-row\n\
+    // with panels on B's block-column.\n\
+    // However due to symmetric nature of A/B matrix compounded by the fact that\n\
+    // only upper OR lower triangle of the symm matrix is available, vector-loads\n\
+    // are not possible while traversing certain regions of the matrix.\n\
+    // ACOLStart and ACOLEnd - signify what portion of SYMM can be achieved through\n\
+    // this NN kernel. The SYMM handler has to compose the SYMM in-terms of GEMM kernels\n\
+    //\n\
+#ifdef __SYMM_LEFT__\n\
+    // MxM * MxN\n\
+    A = _A + offa;\n\
+    lda = _lda;\n\
+    B = _B + offb;\n\
+    ldb = _ldb;\n\
+    K = M;\n\
+    #ifndef __SYMM_DIAGONAL__\n\
+    #ifdef __SYMM_LOWER__\n\
+    ACOLSTART = 0;\n\
+    ACOLEND = row;\n\
+    #elif defined(__SYMM_UPPER__)\n\
+    ACOLSTART = row + (threadsY*(%ITEMY));\n\
+    ACOLEND = K;\n\
+    #else\n\
+    #error GEMM_NN_KERNEL\n\
+    #endif\n\
+    #else\n\
+        ACOLSTART = row;\n\
+        ACOLEND = row + (threadsY*(%ITEMY));\n\
+    #endif\n\
+    if (ACOLEND > K)\n\
+    {\n\
+        ACOLEND = K;\n\
+"
+"\
+    }\n\
+    /*\n\
+    if (get_local_id(0) == 0)\n\
+    {\n\
+        printf(\" GEMM_NN_KERNEL : SYMM_LEFT: Setting ACOLSTART to %d and ACOLEND to %d \\n \" , ACOLSTART, ACOLEND);\n\
+    }\n\
+    */\n\
+#elif defined(__SYMM_RIGHT__)\n\
+    // MxN * NxN\n\
+    A = _B + offb;\n\
+    lda = _ldb;\n\
+    B = _A + offa;\n\
+    ldb = _lda;\n\
+    K = N;\n\
+    #ifndef __SYMM_DIAGONAL__\n\
+    #ifdef __SYMM_UPPER__\n\
+    ACOLSTART = 0;\n\
+    ACOLEND = col;\n\
+    #elif defined(__SYMM_LOWER__)\n\
+    ACOLSTART =  col + (threadsX*(%ITEMX));\n\
+    ACOLEND = K;\n\
+    #else\n\
+    #error GEMM_NN_KERNEl\n\
+    #endif\n\
+#else\n\
+        ACOLSTART = col;\n\
+        ACOLEND =  col + (threadsX*(%ITEMX));\n\
+    #endif\n\
+    if (ACOLEND > K)\n\
+    {\n\
+        ACOLEND = K;\n\
+    }\n\
+#else\n\
+    A = _A + offa;\n\
+    B = _B + offb;\n\
+    K = _K;\n\
+    lda = _lda;\n\
+    ldb = _ldb;\n\
+    ACOLSTART = 0;\n\
+    ACOLEND = K;\n\
+#endif\n\
+\n\
+    uint offsetY = (tid % threadsY) * %V;\n\
+    uint offsetX = (tid / threadsY) * %ITEMX;\n\
+    rowA     =     row + offsetY;\n\
+       colB     =     (col+offsetX);\n\
+    #ifndef TAIL_RUN\n\
+    bool tailBlock = ((row  >= M) || (col >= N));\n\
+    #else\n\
+    bool tailBlock = (row >= tailStartM);\n\
+"
+"\
+    #endif\n\
+\n\
+\n\
+    /*\n\
+    #ifdef TAIL_RUN\n\
+    if ((rowA >= M) || (colB >= N))\n\
+    {\n\
+        return;\n\
+    }\n\
+    #endif\n\
+    */\n\
+\n\
+    #ifndef TAIL_RUN\n\
+    // Non-tail RUN\n\
+    if (tailBlock == true)\n\
+    {\n\
+        return;\n\
+    }\n\
+    #elif defined(TAIL_RUN)\n\
+    // TAIL RUN\n\
+    if (tailBlock == false)\n\
+    {\n\
+        return;\n\
+    }\n\
+    #else\n\
+    #error GEMM_NN_KERNEL\n\
+    #endif\n\
+\n\
+    %TYPE%V AVAL[%V][(%ITEMY_BY_V)]; // 8\n\
+    #ifdef COMPLEX\n\
+        %TYPE%HV AVALEVEN[%V][(%ITEMY_BY_V)]; // 8\n\
+        %TYPE%HV AVALODD[%V][(%ITEMY_BY_V)]; // 8\n\
+    #endif\n\
+\n\
+    %TYPE%V   BVAL[%ITEMX];\n\
+    #ifdef COMPLEX\n\
+        %TYPE%HV   BVALEVEN[%ITEMX];\n\
+        %TYPE%HV   BVALODD[%ITEMX];\n\
+    #endif\n\
+\n\
+    %TYPE%V CVAL[(%ITEMY_BY_V)][%ITEMX];\n\
+    #ifdef COMPLEX\n\
+        %TYPE%HV CVALEVEN[(%ITEMY_BY_V)][%ITEMX];\n\
+        %TYPE%HV CVALODD[(%ITEMY_BY_V)][%ITEMX];\n\
+    #endif\n\
+\n\
+    %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+    for(uint i=0; i< (%ITEMY_BY_V); i++)\n\
+    {\n\
+        %IF(%ITEMX) #pragma unroll %ITEMX\n\
+"
+"\
+        for(uint j=0; j<(%ITEMX); j++)\n\
+        {\n\
+            CVAL[i][j] = (%TYPE%V) 0;\n\
+            #ifdef COMPLEX\n\
+                CVALEVEN[i][j] = (%TYPE%HV) 0;\n\
+                CVALODD[i][j] = (%TYPE%HV) 0;\n\
+            #endif\n\
+        }\n\
+    }\n\
+\n\
+    uint ACOL;\n\
+    for(ACOL=ACOLSTART; ((ACOL+ %V -1) < ACOLEND); ACOL += %V)\n\
+    {\n\
+        {\n\
+            //\n\
+            // Load B values\n\
+            //\n\
+            %IF(%ITEMX) #pragma unroll %ITEMX\n\
+            for(uint bcol = 0; bcol < %ITEMX; bcol++)\n\
+            {\n\
+                #ifdef N_TAIL_PRESENT\n\
+                uint actualCol;\n\
+                actualCol = ((colB + bcol) >= N) ? (N-1) : (colB + bcol);\n\
+                #endif\n\
+\n\
+                #if !defined(__SYMM_DIAGONAL__) || defined(__SYMM_LEFT__)\n\
+                    #ifndef N_TAIL_PRESENT\n\
+                        BVAL[bcol] = %VLOAD(0, (&B[ACOL + (colB + bcol)*ldb]));\n\
+                    #else\n\
+                        BVAL[bcol] = %VLOAD(0, (&B[ACOL + (actualCol)*ldb]));\n\
+                    #endif\n\
+                #else\n\
+                    // defined(__SYMM_DIAGONAL__) && defined(__SYMM_RIGHT__)\n\
+                    #ifndef N_TAIL_PRESENT\n\
+                        BVAL[bcol] = SYMM_VECTOR_LOAD_USING_SCALAR(B, N, ldb, ACOL, (colB + bcol));\n\
+                    #else\n\
+                        BVAL[bcol] = SYMM_VECTOR_LOAD_USING_SCALAR(B, N, ldb, ACOL, actualCol);\n\
+                    #endif\n\
+                #endif\n\
+                //\n\
+                // If Complex data, load the real and imaginary parts into separate register banks\n\
+                //\n\
+                #ifdef COMPLEX\n\
+                    BVALEVEN[bcol] = BVAL[bcol].even;\n\
+                    BVALODD[bcol] =  BVAL[bcol].odd;\n\
+                #endif\n\
+            }\n\
+        }\n\
+\n\
+        {\n\
+"
+"\
+            //\n\
+            // Load A values\n\
+            //\n\
+            //\n\
+            // PENDNG BUG FIX: Unroll Factor should be according to PANEL Size\n\
+            //                 Previoously PANEL was size of V. So ITEMY worked\n\
+            // Current Workaround - Panel same as %V - See gemm_cached.cpp\n\
+            //\n\
+            %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+            for(uint j=0; j< (%ITEMY_BY_V); j++)\n\
+            {\n\
+                #pragma unroll %V\n\
+                for(uint i = 0; i < %V; i++)\n\
+                {\n\
+                    uint actualRow;\n\
+\n\
+                    #if !defined(__SYMM_DIAGONAL__) || defined(__SYMM_RIGHT__)\n\
+                        #ifndef M_TAIL_PRESENT\n\
+                            AVAL[i][j] = %VLOAD(0, (&A[(rowA + j*threadsY*(V)) + (ACOL + i)*lda]) );\n\
+                        #else\n\
+                            actualRow = ((rowA + j*threadsY*(V)) >= MV) ? (MV-%V) : (rowA + j*threadsY*(V));\n\
+                            AVAL[i][j] = %VLOAD(0, (&A[actualRow + (ACOL + i)*lda]) );\n\
+                        #endif\n\
+                    #else\n\
+                        // CASE: SYMM_DIAGONAL && SYMM_LEFT\n\
+                        #ifndef M_TAIL_PRESENT\n\
+                            //AVAL[c][r] = %VLOAD(0, (&A[(rowA + r*threadsY*(V)) + (ACOL + c)*lda]) );\n\
+                            AVAL[i][j] = SYMM_VECTOR_LOAD_USING_SCALAR(A, M, lda, (rowA + j*threadsY*(V)) ,  (ACOL + i));\n\
+                        #else\n\
+                            actualRow = ((rowA + j*threadsY*(V)) >= MV) ? (MV-%V) : (rowA + j*threadsY*(V));\n\
+                            AVAL[i][j] = SYMM_VECTOR_LOAD_USING_SCALAR(A, M, lda, actualRow, (ACOL + i));\n\
+                        #endif\n\
+                    #endif\n\
+                    //\n\
+                    // If Complex data, load the real and imaginary parts into separate register banks\n\
+                    //\n\
+                    #ifdef COMPLEX\n\
+                        AVALEVEN[i][j] = AVAL[i][j].even;\n\
+                        AVALODD[i][j] = AVAL[i][j].odd;\n\
+                    #endif\n\
+                }\n\
+            }\n\
+        }\n\
+\n\
+        {\n\
+            %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+            for(uint i=0; i<(%ITEMY_BY_V); i++)\n\
+            {\n\
+                %IF(%ITEMX) #pragma unroll %ITEMX\n\
+                for(uint j=0; j<(%ITEMX); j++)\n\
+"
+"\
+                {\n\
+                    #ifndef COMPLEX\n\
+                        %VFOR_REAL\n\
+                        {\n\
+                            CVAL[i][j] = mad(AVAL[%VFORINDEX][i], BVAL[j]%VFORSUFFIX, CVAL[i][j]);\n\
+                        }\n\
+                    #else\n\
+                        //\n\
+                        // Pending - Replace by %COMPLEX_VMAD()\n\
+                        //\n\
+                        %VFOR_REAL\n\
+                        {\n\
+                            //\n\
+                            // PENDING Needs a FIX\n\
+                            //\n\
+                            CVALEVEN[i][j]  = mad(AVALEVEN[%VFORINDEX][i],  BVALEVEN[j]%VFORSUFFIX, CVALEVEN[i][j]);\n\
+                            CVALODD[i][j]   = mad(AVALEVEN[%VFORINDEX][i],  BVALODD[j]%VFORSUFFIX,  CVALODD[i][j]);\n\
+                            CVALEVEN[i][j]  = mad(AVALODD[%VFORINDEX][i],   -BVALODD[j]%VFORSUFFIX,  CVALEVEN[i][j]);\n\
+                            CVALODD[i][j]   = mad(AVALODD[%VFORINDEX][i],   BVALEVEN[j]%VFORSUFFIX,  CVALODD[i][j]);\n\
+                        }\n\
+                    #endif\n\
+                }\n\
+            }\n\
+        }\n\
+\n\
+        #ifdef GEMM_NEEDS_BARRIER\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+        #endif\n\
+    }\n\
+\n\
+    #ifdef COMPLEX\n\
+    %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+    for(uint i=0; i< (%ITEMY_BY_V); i++)\n\
+    {\n\
+        %IF(%ITEMX) #pragma unroll %ITEMX\n\
+        for(uint j=0; j<(%ITEMX); j++)\n\
+        {\n\
+            %COMPLEX_JOIN(CVAL[i][j], CVALEVEN[i][j], CVALODD[i][j]);\n\
+        }\n\
+    }\n\
+    #endif\n\
+\n\
+    //\n\
+    // Tail blocks never execute this FOR loop as they execute with Vector Width of 1\n\
+    //\n\
+\n\
+\n\
+    for(; ACOL < ACOLEND; ACOL ++)\n\
+    {\n\
+        //\n\
+"
+"\
+        // Load B values\n\
+        //\n\
+        %IF(%ITEMX) #pragma unroll %ITEMX\n\
+        for(uint bcol = 0; bcol < %ITEMX; bcol++)\n\
+        {\n\
+            //\n\
+            // PENDING: PANEL iteration to Load the Panel Depth iterating by %V\n\
+            //\n\
+            #if !defined(__SYMM_DIAGONAL__) || defined(__SYMM_LEFT__)\n\
+            {\n\
+                %TYPE SCAL;\n\
+                #ifndef N_TAIL_PRESENT\n\
+                    SCAL = B[ACOL + (colB + bcol)*ldb];\n\
+                    BVAL[bcol] = %VMAKEVEC(SCAL);\n\
+                #else\n\
+                    SCAL = B[ACOL + ((colB + bcol)%(N))*ldb];\n\
+                    BVAL[bcol] = %VMAKEVEC(SCAL);\n\
+                #endif\n\
+            }\n\
+           #else\n\
+                // SYMM_DIAGONAL && SYMM_RIGHT\n\
+            {\n\
+                %TYPE SCAL;\n\
+\n\
+                #ifndef N_TAIL_PRESENT\n\
+                    SCAL = SYMM_SCALAR_LOAD(B, N, ldb, ACOL,  (colB + bcol));\n\
+                    BVAL[bcol] = %VMAKEVEC(SCAL);\n\
+                #else\n\
+                    SCAL = SYMM_SCALAR_LOAD(B, N, ldb, ACOL, ((colB + bcol)%(N)));\n\
+                    BVAL[bcol] = %VMAKEVEC(SCAL);\n\
+                #endif\n\
+            }\n\
+           #endif\n\
+        }\n\
+\n\
+        //\n\
+        // Load A values\n\
+        //\n\
+        %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+        for(uint i = 0; i < (%ITEMY_BY_V); i++) // 1 * ITEMY/V\n\
+        {\n\
+            #if !defined(__SYMM_DIAGONAL__) || defined(__SYMM_RIGHT__)\n\
+            #ifndef M_TAIL_PRESENT\n\
+            AVAL[0][i] = %VLOAD(0, (&A[(rowA + i*threadsY*(V)) + (ACOL)*lda]) );\n\
+            #else\n\
+            AVAL[0][i] = %VLOAD(0, (&A[(((rowA + i*threadsY*(V))) % (MV)) + (ACOL)*lda]) );\n\
+            #endif\n\
+            #else\n\
+                // defined(DIAGONAL) && (LEFT)\n\
+                #ifndef M_TAIL_PRESENT\n\
+"
+"\
+                AVAL[0][i] = SYMM_VECTOR_LOAD_USING_SCALAR(A, M, lda, (rowA + i*threadsY*(V)) , (ACOL));\n\
+                #else\n\
+                AVAL[0][i] = SYMM_VECTOR_LOAD_USING_SCALAR(A, M, lda, ((rowA + i*threadsY*(V)) % (MV)), (ACOL));\n\
+                #endif\n\
+            #endif\n\
+        }\n\
+\n\
+        {\n\
+            %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+            for(uint i=0; i<(%ITEMY_BY_V); i++)\n\
+            {\n\
+                %IF(%ITEMX) #pragma unroll %ITEMX\n\
+                for(uint j=0; j<(%ITEMX); j++)\n\
+                {\n\
+                    %VMAD(CVAL[i][j] ,  AVAL[0][i] , BVAL[j]);\n\
+                }\n\
+            }\n\
+        }\n\
+    }\n\
+\n\
+\n\
+    /*\n\
+    if ((get_group_id(0) == 0) && (get_local_id(0) == 0))\n\
+    {\n\
+        printf(\"Updating C Matrix: Alpha = %f, Beta = %f\\n\", alpha, beta);\n\
+    }\n\
+    */\n\
+    //\n\
+    // STORE Result in C\n\
+    //\n\
+    %TYPE%V reg , betareg, alphareg;\n\
+    %TYPE%V alphav, betav;\n\
+    alphav = %VMAKEVEC(alpha);\n\
+    betav = %VMAKEVEC(beta);\n\
+\n\
+    %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+    for(uint i=0; i< (%ITEMY_BY_V); i++)\n\
+    {\n\
+        %IF(%ITEMX) #pragma unroll %ITEMX\n\
+        for(uint j=0; j<(%ITEMX); j++)\n\
+        {\n\
+            #if !defined(M_TAIL_PRESENT) && !defined(N_TAIL_PRESENT)\n\
+            reg = %VLOAD(0, (&C[rowA + i*threadsY*V +     (colB+j)*ldc]));\n\
+            %VMUL(betareg, betav, reg);\n\
+            %VMUL(alphareg, alphav, CVAL[i][j]);\n\
+            %ADD( reg, betareg, alphareg);\n\
+            %VSTORE(reg, 0, (&C[(rowA + i*threadsY*V) + (colB+j)*ldc]));\n\
+            #else\n\
+                if (((rowA + i*threadsY*V) < MV) && ((colB + j) < N))\n\
+                {\n\
+"
+"\
+                    reg = %VLOAD(0, (&C[rowA + i*threadsY*V +     (colB+j)*ldc]));\n\
+                    %VMUL(betareg, betav, reg);\n\
+                    %VMUL(alphareg, alphav, CVAL[i][j]);\n\
+                    %ADD( reg, betareg, alphareg);\n\
+                    %VSTORE(reg, 0, (&C[(rowA + i*threadsY*V) + (colB+j)*ldc]));\n\
+        }\n\
+            #endif\n\
+    }\n\
+    }\n\
+    return;\n\
+}\n\
+";
+
+
+
+static const char *GEMM_NT_KERNEL = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+\n\
+//#undef COMPLEX\n\
+//#pragma OPENCL EXTENSION cl_amd_printf : enable\n\
+__kernel void GEMM_NT__KERNEL ( __global %TYPE const * restrict _A, __global %TYPE const * restrict _B, __global %TYPE *_C,\n\
+                                uint M, uint N, uint _K, uint _lda, uint _ldb, uint ldc, uint offa, uint offb, uint offc,\n\
+                                %TYPE alpha, %TYPE beta\n\
+                                #ifdef TAIL_RUN\n\
+                                , uint tailStartM, uint tailStartN\n\
+                                #endif\n\
+                                )\n\
+{\n\
+    const int V = %V;\n\
+    __global %TYPE const *restrict A;\n\
+    __global %TYPE const *restrict B;\n\
+    __global %TYPE *C = _C + offc;\n\
+    uint K = _K;\n\
+    uint lda, ldb;\n\
+    uint rowA, colA, rowB, colB, rowC, colC;\n\
+    uint numGroupsOnY;\n\
+    uint row, col;\n\
+    uint tid = get_local_id(0);\n\
+    int panel;\n\
+    int ACOLSTART, ACOLEND;\n\
+    uint MV, NV;\n\
+\n\
+    //\n\
+    // %WIDTH - Preferably 16\n\
+    // %ITEMY, %ITEMX - 1 Thread is responsible for %ITEMY * %ITEMX sub-matrix in C\n\
+    //                    %ITEMY and %ITEMX must be divisible by %V for NT kernel\n\
+    // The entire workgroup loops-together to complete ITEMY-ITEMX sub-matrix\n\
+    //\n\
+    uint threadsY = %WIDTH;\n\
+    uint threadsX = get_local_size(0)/threadsY;\n\
+\n\
+    //\n\
+    // Column-Major ordering of Workgroups\n\
+    //\n\
+    // %ITEMY - Number of elements , a workitem processes in Y direction.\n\
+    // %ITEMX - Number of elements , a workitem processes in X direction.\n\
+    //\n\
+    // %V     - Vectoring Width\n\
+    // %PANEL(*) - Panel Width to access Rows of A and Columns of B\n\
+"
+"\
+    //               Right now, %V is assumed to be the panel width.\n\
+    //               We don't use %PANEL in the current implementation.\n\
+    //\n\
+    MV = M;\n\
+    NV = N;\n\
+    #ifndef TAIL_RUN\n\
+    {\n\
+        uint bidX, bidY;\n\
+        uint blockDimY;\n\
+\n\
+        #ifdef M_TAIL_PRESENT\n\
+        MV = M - (M % (%V));\n\
+        if (MV == 0)\n\
+        {\n\
+            return;\n\
+        }\n\
+        #endif\n\
+        #ifdef N_TAIL_PRESENT\n\
+        NV = N - (N% (%V));\n\
+        if (NV == 0)\n\
+        {\n\
+            return;\n\
+        }\n\
+        #endif\n\
+        blockDimY = ((M-1) / (threadsY * %ITEMY)) + 1;\n\
+        uint blockID = get_group_id(0);\n\
+        getBlockNumber(blockDimY, blockID, &bidY, &bidX, 1);\n\
+\n\
+        //\n\
+        // <row,col> is the left-top of the TILE region\n\
+        // in the output C matrix that will be determined\n\
+        // by this workgroup\n\
+        //\n\
+        row =  (bidY * (threadsY * %ITEMY));\n\
+        col =  (bidX * (threadsX * %ITEMX));\n\
+    }\n\
+    #else\n\
+    {\n\
+        uint nWorkGroupsAY, nWorkGroupsAX, nWorkGroupsA;\n\
+        uint bidY, bidX;\n\
+\n\
+        MV = M;\n\
+        if (M == tailStartM)\n\
+        {\n\
+            nWorkGroupsA = 0;\n\
+        } else {\n\
+            nWorkGroupsAY = ((M - tailStartM - 1)/threadsY + 1);\n\
+            nWorkGroupsAX = ((tailStartN - 1)/threadsX + 1);\n\
+            nWorkGroupsA = nWorkGroupsAY * nWorkGroupsAX;\n\
+        }\n\
+"
+"\
+        if (get_group_id(0) < nWorkGroupsA)\n\
+        {\n\
+            bidY = get_group_id(0) % (nWorkGroupsAY);\n\
+            bidX = get_group_id(0) / nWorkGroupsAY;\n\
+            row = tailStartM + (bidY * threadsY * %ITEMY);\n\
+            col = (bidX * threadsX * %ITEMX);\n\
+            NV = tailStartN;\n\
+        } else {\n\
+            uint nWorkGroupsBY, nWorkGroupsBX;\n\
+\n\
+            nWorkGroupsBY = ((M-1)/threadsY) + 1;\n\
+            nWorkGroupsBX = ((N-tailStartN-1)/threadsX) + 1;\n\
+            bidY = (get_group_id(0) - nWorkGroupsA) % (nWorkGroupsBY);\n\
+            bidX = (get_group_id(0) - nWorkGroupsA) / nWorkGroupsBY;\n\
+            row = (bidY * threadsY * %ITEMY);\n\
+            col = tailStartN + (bidX * threadsX * %ITEMX);\n\
+            NV = N;\n\
+        }\n\
+\n\
+    }\n\
+    #endif\n\
+\n\
+    //\n\
+    // ACOLSTART, ACOLEND\n\
+    // SYMM Matrix  multiplication proceeds by multiplying panels on A's block-row\n\
+    // with panels on B's block-column.\n\
+    // However due to symmetric nature of A matrix compounded by the fact that\n\
+    // only upper OR lower triangle of the symm matrix is available, vector-loads\n\
+    // are not possible while traversing certain regions of the matrix.\n\
+    // ACOLStart and ACOLEnd - signify what portion of SYMM can be achieved through\n\
+    // this NT kernel. The SYMM handler has to compose the SYMM in-terms of GEMM kernels\n\
+    //\n\
+#ifdef __SYMM_LEFT__\n\
+    #error GEMM_NT_KERNEL Should not be called in __SYMM_LEFT__ case!\n\
+#elif defined(__SYMM_RIGHT__)\n\
+    // MxN * NxN\n\
+    A = _B + offb;\n\
+    lda = _ldb;\n\
+    B = _A + offa;\n\
+    ldb = _lda;\n\
+    K = N;\n\
+    #ifndef __SYMM_DIAGONAL__\n\
+    #ifdef __SYMM_UPPER__\n\
+    ACOLSTART =  col + (threadsX*(%ITEMX));\n\
+    ACOLEND = K;\n\
+    #elif defined(__SYMM_LOWER__)\n\
+    ACOLSTART = 0;\n\
+    ACOLEND = col;\n\
+    #else\n\
+    #error GEMM_NT_KERNEL : Neither SYMM_UPPER nor SYMM_LOWER is defined!\n\
+"
+"\
+    #endif\n\
+    #else\n\
+        ACOLSTART = col;\n\
+        ACOLEND =  col + (threadsX*(%ITEMX));\n\
+    #endif\n\
+    if (ACOLEND > K)\n\
+    {\n\
+        ACOLEND = K;\n\
+    }\n\
+#else // GEMM\n\
+    A = _A + offa;\n\
+    B = _B + offb;\n\
+    K = _K;\n\
+    lda = _lda;\n\
+    ldb = _ldb;\n\
+    ACOLSTART = 0;\n\
+    ACOLEND = K;\n\
+#endif\n\
+\n\
+    uint offsetY = (tid % threadsY) * %V;\n\
+    uint offsetX = (tid / threadsY) * %ITEMX;\n\
+    rowA     =     row + offsetY;\n\
+       colB     =     col + offsetX;\n\
+    #ifndef TAIL_RUN\n\
+    bool tailBlock = ((row >= M) || (col >= N));\n\
+    #else\n\
+    bool tailBlock = ((row >= tailStartM) || (col >= tailStartN));\n\
+    #endif\n\
+\n\
+    /* Should be handled with TAIL_PRESENT Macros.\n\
+    if ((rowA >= M) || (colB >= N))\n\
+    {\n\
+        return;\n\
+    }\n\
+    */\n\
+\n\
+    #ifndef TAIL_RUN\n\
+    // Non-tail RUN\n\
+    if (tailBlock == true)\n\
+    {\n\
+        return;\n\
+    }\n\
+    #else\n\
+    // TAIL RUN - This case never happens.\n\
+    if (tailBlock == false)\n\
+    {\n\
+        return;\n\
+    }\n\
+    #endif\n\
+\n\
+"
+"\
+    %TYPE%V CVAL[(%ITEMY_BY_V)][%ITEMX];\n\
+    #ifdef COMPLEX\n\
+    %TYPE%HV    CVALEVEN[(%ITEMY_BY_V)][%ITEMX];\n\
+    %TYPE%HV    CVALODD[(%ITEMY_BY_V)][%ITEMX];\n\
+    #endif\n\
+\n\
+    %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+    for(uint i=0; i< (%ITEMY_BY_V); i++)\n\
+    {\n\
+        %IF(%ITEMX) #pragma unroll %ITEMX\n\
+        for(uint j=0; j<(%ITEMX); j++)\n\
+        {\n\
+            CVAL[i][j] = (%TYPE%V) 0;\n\
+            #ifdef COMPLEX\n\
+            CVALEVEN[i][j] = (%TYPE%HV) 0;\n\
+            CVALODD[i][j] = (%TYPE%HV) 0;\n\
+            #endif\n\
+        }\n\
+    }\n\
+\n\
+    uint ACOL;\n\
+    for(ACOL=ACOLSTART; ((ACOL+%V-1) < ACOLEND); ACOL += %V /* %PANEL */)\n\
+    {\n\
+        %TYPE%V AVAL[%V][(%ITEMY_BY_V)];     // [%PANEL][%ITEMY_BY_V]\n\
+        %TYPE%V BVAL[%ITEMX_BY_V][%V];        // [%PANEL][%ITEMX]\n\
+        #ifdef COMPLEX\n\
+        %TYPE%HV    AVALEVEN[%V][(%ITEMY_BY_V)];     // [%PANEL][%ITEMY_BY_V]\n\
+        %TYPE%HV    AVALODD[%V][(%ITEMY_BY_V)];     // [%PANEL][%ITEMY_BY_V]\n\
+        %TYPE%HV    BVALEVEN[%ITEMX_BY_V][%V];        // [%PANEL][%ITEMX]\n\
+        %TYPE%HV    BVALODD[%ITEMX_BY_V][%V];        // [%PANEL][%ITEMX]\n\
+        #endif\n\
+\n\
+        {\n\
+            //\n\
+            // Load B values\n\
+            //\n\
+            %IF(%V) #pragma unroll %V\n\
+            for(uint panel=0; panel < %V; panel++)\n\
+            {\n\
+                %IF(%ITEMX_BY_V) #pragma unroll %ITEMX_BY_V\n\
+                for(uint bcol = 0; bcol < %ITEMX_BY_V; bcol++)\n\
+                {\n\
+                    //\n\
+                    // PENDING: PANEL iteration to Load the Panel Depth iterating by %V\n\
+                    //\n\
+                    #ifndef __SYMM_DIAGONAL__\n\
+                        #ifndef N_TAIL_PRESENT\n\
+                        BVAL[bcol][panel] = %VLOAD(0, (&B[(ACOL + panel)*ldb + (colB + bcol*(V))]));\n\
+                        #else\n\
+                        BVAL[bcol][panel] = %VLOAD(0, (&B[(ACOL + panel)*ldb + ((colB + bcol*V) % NV)]));\n\
+"
+"\
+                        #endif\n\
+                    #else\n\
+                        #ifndef N_TAIL_PRESENT\n\
+                        BVAL[bcol][panel] = SYMM_VECTOR_LOAD_USING_SCALAR(B, N, ldb, (colB + bcol*(V)), (ACOL + panel));\n\
+                        #else\n\
+                        BVAL[bcol][panel] =\n\
+                            SYMM_VECTOR_LOAD_USING_SCALAR(B, N, ldb, ((colB + bcol*V) % NV), (ACOL + panel));\n\
+                        #endif\n\
+                    #endif\n\
+\n\
+                    #ifdef CONJUGATE_B\n\
+                        %TYPE%V conjTemp = BVAL[bcol][panel];\n\
+                        %CONJUGATE(1, conjTemp);\n\
+                        BVAL[bcol][panel] = conjTemp;\n\
+                    #endif\n\
+                    #ifdef COMPLEX\n\
+                    {\n\
+                        BVALEVEN[bcol][panel] = BVAL[bcol][panel].even;\n\
+                        BVALODD[bcol][panel]  = BVAL[bcol][panel].odd;\n\
+                    }\n\
+                    #endif\n\
+                }\n\
+            }\n\
+\n\
+            //\n\
+            // Load A values\n\
+            //\n\
+            %IF(%ITEMY) #pragma unroll %ITEMY\n\
+            for(uint i = 0; i < (%V * (%ITEMY_BY_V)) /* PANEL * ITEMY/V */; i++)\n\
+            {\n\
+                const uint yiterations = %ITEMY_BY_V;\n\
+                uint c = (i / yiterations);\n\
+                uint r = (i % yiterations);\n\
+\n\
+                #ifndef M_TAIL_PRESENT\n\
+                AVAL[c][r] = %VLOAD(0, (&A[(rowA + r*threadsY*(V)) + (ACOL + c)*lda]) );\n\
+                #else\n\
+                AVAL[c][r] = %VLOAD(0, (&A[((rowA + r*threadsY*(V)) % MV) + (ACOL + c)*lda]) );\n\
+                #endif\n\
+\n\
+                #ifdef COMPLEX\n\
+                AVALEVEN[c][r] = AVAL[c][r].even;\n\
+                AVALODD[c][r] = AVAL[c][r].odd;\n\
+                #endif\n\
+            }\n\
+        }\n\
+\n\
+        %IF(%V) #pragma unroll %V\n\
+        for(uint panel=0; panel<(%V); panel++)\n\
+        {\n\
+"
+"\
+            %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+            for(uint i=0; i<(%ITEMY_BY_V); i++)\n\
+            {\n\
+                %IF(%ITEMX_BY_V) #pragma unroll %ITEMX_BY_V\n\
+                for(uint j=0; j<(%ITEMX_BY_V); j++)\n\
+                {\n\
+                    const int CX = j * (%V);\n\
+\n\
+                    #ifndef COMPLEX\n\
+                    %VFOR_REAL\n\
+                    {\n\
+                        CVAL[i][CX + %VFORINDEX] = mad(AVAL[panel][i], BVAL[j][panel]%VFORSUFFIX,\n\
+                                                        CVAL[i][CX + %VFORINDEX]);\n\
+                    }\n\
+                    #else\n\
+                        //\n\
+                        // PENDING: Replace with %COMPLEX_MAD op\n\
+                        //\n\
+                        %VFOR_REAL\n\
+                        {\n\
+                            CVALEVEN[i][CX + %VFORINDEX] =\n\
+                                mad(AVALEVEN[panel][i], BVALEVEN[j][panel]%VFORSUFFIX, CVALEVEN[i][CX + %VFORINDEX]);\n\
+                            CVALODD[i][CX + %VFORINDEX]  =\n\
+                                mad(AVALEVEN[panel][i], BVALODD[j][panel]%VFORSUFFIX,  CVALODD[i][CX + %VFORINDEX]);\n\
+                            CVALEVEN[i][CX + %VFORINDEX] =\n\
+                                mad(AVALODD[panel][i], -BVALODD[j][panel]%VFORSUFFIX,  CVALEVEN[i][CX + %VFORINDEX]);\n\
+                            CVALODD[i][CX + %VFORINDEX] =\n\
+                                mad(AVALODD[panel][i], BVALEVEN[j][panel]%VFORSUFFIX,  CVALODD[i][CX + %VFORINDEX]);\n\
+                        }\n\
+                    #endif\n\
+                }\n\
+            }\n\
+        }\n\
+\n\
+        #ifdef GEMM_NEEDS_BARRIER\n\
+        barrier(CLK_LOCAL_MEM_FENCE);\n\
+        #endif\n\
+    }\n\
+\n\
+    #ifdef COMPLEX\n\
+    %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+    for(uint i=0; i< (%ITEMY_BY_V); i++)\n\
+    {\n\
+        %IF(%ITEMX) #pragma unroll %ITEMX\n\
+        for(uint j=0; j<(%ITEMX); j++)\n\
+        {\n\
+            %COMPLEX_JOIN(CVAL[i][j], CVALEVEN[i][j], CVALODD[i][j]);\n\
+        }\n\
+    }\n\
+    #endif\n\
+"
+"\
+\n\
+    //\n\
+    // Tail blocks never execute this FOR loop as they execute with Vector Width of 1\n\
+    //\n\
+\n\
+    for(; ACOL < ACOLEND; ACOL ++)\n\
+    {\n\
+        %TYPE%V AVAL[(%ITEMY_BY_V)];    // [%PANEL][%ITEMY_BY_V]\n\
+        %TYPE   BVAL[%ITEMX];               // [%PANEL][%ITEMX]\n\
+\n\
+        //\n\
+        // Load B values\n\
+        //\n\
+        %IF(%ITEMX) #pragma unroll %ITEMX\n\
+        for(uint bcol = 0; bcol < %ITEMX; bcol++)\n\
+        {\n\
+            %TYPE SCALAR;\n\
+            //\n\
+            // PENDING: PANEL iteration to Load the Panel Depth iterating by %V\n\
+            //\n\
+            {\n\
+                #ifndef __SYMM_DIAGONAL__\n\
+                    #ifndef N_TAIL_PRESENT\n\
+                        SCALAR = B[ACOL*ldb + (colB + bcol)];\n\
+                    #else\n\
+                        SCALAR = B[ACOL*ldb + ((colB + bcol) % NV)];\n\
+                    #endif\n\
+                #else\n\
+                    #ifndef N_TAIL_PRESENT\n\
+                        SCALAR = SYMM_SCALAR_LOAD(B, N, ldb, (colB + bcol), ACOL );\n\
+                    #else\n\
+                        SCALAR = SYMM_SCALAR_LOAD(B, N, ldb, ((colB + bcol) % NV), ACOL);\n\
+                    #endif\n\
+                #endif\n\
+\n\
+                #ifdef CONJUGATE_B\n\
+                    %CONJUGATE(1, SCALAR);\n\
+                #endif\n\
+                BVAL[bcol] = (SCALAR);\n\
+            }\n\
+        }\n\
+\n\
+        //\n\
+        // Load A values\n\
+        //\n\
+        %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+        for(uint i = 0; i < (%ITEMY_BY_V); i++) // 1 * ITEMY/V\n\
+        {\n\
+            #ifndef M_TAIL_PRESENT\n\
+            AVAL[i] = %VLOAD(0, (&A[(rowA + i*threadsY*(V)) + (ACOL)*lda]) );\n\
+"
+"\
+            #else\n\
+            AVAL[i] = %VLOAD(0, (&A[((rowA + i*threadsY*(V)) % MV) + (ACOL)*lda]) );\n\
+            #endif\n\
+        }\n\
+\n\
+        {\n\
+            %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+            for(uint i=0; i<(%ITEMY_BY_V); i++)\n\
+            {\n\
+                %IF(%ITEMX) #pragma unroll %ITEMX\n\
+                for(uint j=0; j<(%ITEMX); j++)\n\
+                {\n\
+                    %VMAD(CVAL[i][j] ,  AVAL[i] , BVAL[j]);\n\
+                }\n\
+            }\n\
+        }\n\
+    }\n\
+\n\
+    //\n\
+    // STORE Result in C\n\
+    //\n\
+    %TYPE%V reg , betareg, alphareg;\n\
+    %TYPE%V alphav, betav;\n\
+    alphav = %VMAKEVEC(alpha);\n\
+    betav = %VMAKEVEC(beta);\n\
+\n\
+    #ifndef HERK\n\
+    %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+    for(uint i=0; i< (%ITEMY_BY_V); i++)\n\
+    {\n\
+        %IF(%ITEMX) #pragma unroll %ITEMX\n\
+        for(uint j=0; j<(%ITEMX); j++)\n\
+        {\n\
+            #if !defined(M_TAIL_PRESENT) && !defined(N_TAIL_PRESENT)\n\
+            reg = %VLOAD(0, (&C[rowA + i*threadsY*V +     (colB+j)*ldc]));\n\
+            %VMUL(betareg, betav, reg);\n\
+            %VMUL(alphareg, alphav, CVAL[i][j]);\n\
+            %ADD( reg, betareg, alphareg);\n\
+            %VSTORE(reg, 0, (&C[(rowA + i*threadsY*V) + (colB+j)*ldc]));\n\
+            #else\n\
+                if (((rowA + i*threadsY*V) < MV) && ((colB+j) < NV))\n\
+                {\n\
+                    reg = %VLOAD(0, (&C[rowA + i*threadsY*V +     (colB+j)*ldc]));\n\
+                    %VMUL(betareg, betav, reg);\n\
+                    %VMUL(alphareg, alphav, CVAL[i][j]);\n\
+                    %ADD( reg, betareg, alphareg);\n\
+                    %VSTORE(reg, 0, (&C[(rowA + i*threadsY*V) + (colB+j)*ldc]));\n\
+        }\n\
+            #endif\n\
+    }\n\
+"
+"\
+    }\n\
+    #else\n\
+    %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+    for(uint i=0; i<(%ITEMY_BY_V); i++)\n\
+    {\n\
+        %IF(%ITEMX) #pragma unroll %ITEMX\n\
+        for(uint j=0; j<(%ITEMX); j++)\n\
+        {\n\
+            int actualRow = rowA + i*threadsY*V;\n\
+            int actualCol = colB + j;\n\
+            #if !defined(M_TAIL_PRESENT) && !defined(N_TAIL_PRESENT)\n\
+                {\n\
+                    %VMUL(alphareg, alphav, CVAL[i][j]);\n\
+                    //%TYPE temp[%V];\n\
+                    //*(__private %TYPE%V *)(&temp) = alphareg;\n\
+                    //#pragma unroll %V\n\
+                    //for(uint r = 0; r < %V; r++)\n\
+                    %VFOR\n\
+                    {\n\
+                        #ifdef HERK_LOWER_TRIANGLE\n\
+                        if((actualRow + %VFORINDEX) >= (actualCol))\n\
+                        #else\n\
+                        if((actualRow + %VFORINDEX) <= (actualCol))\n\
+                        #endif\n\
+                        {\n\
+                            %TYPE C_s =  C[%VFORINDEX + actualRow + actualCol * ldc];\n\
+                            %TYPE beta_s;\n\
+                            %MUL(beta_s, beta, C_s);\n\
+                            C_s = alphareg%VFORSUFFIX + beta_s;\n\
+                            if((%VFORINDEX + actualRow) == actualCol)\n\
+                            {\n\
+                                 C_s.odd = 0.0f;\n\
+                            }\n\
+                            C[%VFORINDEX + actualRow + actualCol * ldc] = C_s;\n\
+                        }\n\
+                    }\n\
+                }\n\
+            #else\n\
+                {\n\
+                    if (((rowA + i*threadsY*V) < MV) && ((colB+j) < NV))\n\
+                    {\n\
+                        %VMUL(alphareg, alphav, CVAL[i][j]);\n\
+                        //%TYPE temp[%V];\n\
+                        //*(__private %TYPE%V *)(&temp) = alphareg;\n\
+                        //#pragma unroll %V\n\
+                        //for(uint r = 0; r < %V; r++)\n\
+                        %VFOR\n\
+                        {\n\
+                            #ifdef HERK_LOWER_TRIANGLE\n\
+                            if((%VFORINDEX + actualRow) >= (actualCol))\n\
+"
+"\
+                            #else\n\
+                            if((%VFORINDEX + actualRow) <= (actualCol))\n\
+                            #endif\n\
+                            {\n\
+                                %TYPE C_s =  C[%VFORINDEX + actualRow + actualCol * ldc];\n\
+                                %TYPE beta_s;\n\
+                                %MUL(beta_s, beta, C_s);\n\
+                                C_s = alphareg%VFORSUFFIX + beta_s;\n\
+                                if((%VFORINDEX + actualRow) == actualCol)\n\
+                                {\n\
+                                    C_s.odd = 0.0f;\n\
+                                }\n\
+                                C[%VFORINDEX + actualRow + actualCol * ldc] = C_s;\n\
+                            }\n\
+                        }\n\
+                    }\n\
+                }\n\
+            #endif\n\
+        }\n\
+    }\n\
+    #endif\n\
+    return;\n\
+}\n\
+";
+
+
+
+
+static const char *GEMM_TN_KERNEL = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+\n\
+//#pragma OPENCL EXTENSION cl_amd_printf : enable\n\
+__kernel void GEMM_TN__KERNEL ( __global %TYPE const * restrict _A, __global %TYPE const * restrict _B, __global %TYPE *_C,\n\
+                                     uint M, uint N, uint _K, uint _lda, uint _ldb, uint ldc, uint offa, uint offb, uint offc,\n\
+                                %TYPE alpha, %TYPE beta\n\
+                                #ifdef TAIL_RUN\n\
+                                , uint tailStartM, uint tailStartN\n\
+                                #endif\n\
+                                )\n\
+{\n\
+    const int V = %V;\n\
+    const int ITEMY = %ITEMY;\n\
+    __global %TYPE const *restrict A;\n\
+    __global %TYPE const *restrict B;\n\
+    __global %TYPE *C = _C + offc;\n\
+    uint K = _K;\n\
+    uint lda, ldb;\n\
+    uint rowA, colA, rowB, colB, rowC, colC;\n\
+    uint numGroupsOnY;\n\
+    uint row, col;\n\
+    uint tid = get_local_id(0);\n\
+    int panel;\n\
+    int ACOLSTART, ACOLEND;\n\
+    uint MV, bidX;\n\
+    uint bidY;\n\
+    uint blockDimX;\n\
+\n\
+    //\n\
+    // %WIDTH - Preferably 16\n\
+    // %ITEMY, %ITEMX - 1 Thread is responsible for %ITEMY * %ITEMX sub-matrix in C\n\
+    //                    %ITEMY must be divisible by %V for NN kernel\n\
+    // The entire workgroup loops-together to complete ITEMY-ITEMX sub-matrix\n\
+    //\n\
+    uint threadsY = %WIDTH;\n\
+    uint threadsX = get_local_size(0)/threadsY;\n\
+\n\
+    //\n\
+    // Row-Major ordering of Workgroups\n\
+    //\n\
+    // %ITEMY - Number of elements , a workitem processes in Y direction.\n\
+    // %ITEMX - Number of elements , a workitem processes in X direction.\n\
+    //\n\
+"
+"\
+    // %V     - Vectoring Width\n\
+    // %PANEL(*) - Panel Width to access Rows of A and Columns of B\n\
+    //               Right now, %V is assumed to be the panel width.\n\
+    //               We don't use %PANEL in the current implementation.\n\
+    //\n\
+    MV = M;\n\
+    #ifndef TAIL_RUN\n\
+    {\n\
+\n\
+        blockDimX = ((N-1) / (threadsX * %ITEMX)) + 1;\n\
+        uint blockID = get_group_id(0);\n\
+        getBlockNumber(blockDimX, blockID, &bidY, &bidX, 0);\n\
+\n\
+        //\n\
+        // <row,col> is the left-top of the TILE region\n\
+        // in the output C matrix that will be determined\n\
+        // by this workgroup\n\
+        //\n\
+        row =  (bidY * (threadsY * %ITEMY));\n\
+        col =  (bidX * (threadsX * %ITEMX));\n\
+    }\n\
+    #else\n\
+    #error GEMM_TN_KERNEL: TAIL_RUN is NOT needed for TN Kernel!\n\
+    #endif\n\
+\n\
+    //\n\
+    // ACOLSTART, ACOLEND\n\
+    // SYMM Matrix  multiplication proceeds by multiplying panels on A's block-row\n\
+    // with panels on B's block-column.\n\
+    // However due to symmetric nature of A/B matrix compounded by the fact that\n\
+    // only upper OR lower triangle of the symm matrix is available, vector-loads\n\
+    // are not possible while traversing certain regions of the matrix.\n\
+    // ACOLStart and ACOLEnd - signify what portion of SYMM can be achieved through\n\
+    // this TN kernel. The SYMM handler has to compose the SYMM in-terms of GEMM kernels\n\
+    // SYMMETRIC LOAD routines are used when traversing the diaognal region wherease normal rules\n\
+    // hold good otherwise.\n\
+    //\n\
+#ifdef __SYMM_LEFT__\n\
+    // MxM * MxN\n\
+    A = _A + offa;\n\
+    lda = _lda;\n\
+    B = _B + offb;\n\
+    ldb = _ldb;\n\
+    K = M;\n\
+    #ifndef __SYMM_DIAGONAL__\n\
+    #ifdef __SYMM_LOWER__\n\
+    ACOLSTART = row + (threadsY * %ITEMY);\n\
+    ACOLEND = K;\n\
+        /*\n\
+        if (get_local_id(0) == 0)\n\
+"
+"\
+        {\n\
+            printf(\"GEMM_TN_KERNEL: SYMM_LOWER: Setting ACOLSTART to %d, ACOLEND = %d\\n\", ACOLSTART, ACOLEND);\n\
+        }\n\
+        */\n\
+    #elif defined(__SYMM_UPPER__)\n\
+    ACOLSTART = 0;\n\
+    ACOLEND = row;\n\
+    #else\n\
+    #error GEMM_TN_KERNEL\n\
+    #endif\n\
+    #else\n\
+        ACOLSTART = row;\n\
+        ACOLEND = row + (threadsY * %ITEMY);\n\
+    #endif\n\
+    if (ACOLEND > K)\n\
+    {\n\
+        ACOLEND = K;\n\
+    }\n\
+#elif defined(__SYMM_RIGHT__)\n\
+    // MxN * NxN\n\
+    #error GEMM_TN_KERNEL: Internal Error: Should not be called in SYMM_RIGHT case! Right is Wrong!\n\
+#else\n\
+    // GEMM Case\n\
+    A = _A + offa;\n\
+    B = _B + offb;\n\
+    K = _K;\n\
+    lda = _lda;\n\
+    ldb = _ldb;\n\
+    ACOLSTART = 0;\n\
+    ACOLEND = K;\n\
+#endif\n\
+\n\
+    uint offsetX = (tid % threadsX) * %ITEMX;\n\
+    uint offsetY = (tid / threadsX) * %ITEMY;\n\
+    rowA     =     (row + offsetY);\n\
+    colB     =     (col + offsetX);\n\
+    #ifndef TAIL_RUN\n\
+    bool tailBlock = ((row  >= M) || (col >= N));\n\
+    #else\n\
+    #error GEMM_TN_KERNEL: No TAIL_RUN for TN case\n\
+    #endif\n\
+\n\
+    %TYPE%V AVAL[%ITEMY]; // %ITEMY * %PANEL\n\
+    #ifdef COMPLEX\n\
+    %TYPE%HV AVALEVEN[%ITEMY]; // %ITEMY * %PANEL\n\
+    %TYPE%HV AVALODD[%ITEMY]; // %ITEMY * %PANEL\n\
+    #endif\n\
+\n\
+    %TYPE%V BVAL[%ITEMX];\n\
+    #ifdef COMPLEX\n\
+"
+"\
+    %TYPE%HV BVALEVEN[%ITEMX]; // %ITEMY * %PANEL\n\
+    %TYPE%HV BVALODD[%ITEMX]; // %ITEMY * %PANEL\n\
+    #endif\n\
+\n\
+    %TYPE   CVAL[%ITEMY][%ITEMX];\n\
+    #ifdef COMPLEX\n\
+    %TYPE%HV CVALEVEN[%ITEMY][%ITEMX]; // %ITEMY * %PANEL\n\
+    %TYPE%HV CVALODD[%ITEMY][%ITEMX]; // %ITEMY * %PANEL\n\
+    #endif\n\
+\n\
+    %IF(%ITEMY) #pragma unroll %ITEMY\n\
+    for(uint i=0; i< (%ITEMY); i++)\n\
+    {\n\
+        %IF(%ITEMX) #pragma unroll %ITEMX\n\
+        for(uint j=0; j<(%ITEMX); j++)\n\
+        {\n\
+            #ifdef COMPLEX\n\
+            CVAL[i][j] = (%TYPE) 0;\n\
+            CVALEVEN[i][j] = (%TYPE%HV) 0;\n\
+            CVALODD[i][j] = (%TYPE%HV) 0;\n\
+            #else\n\
+            CVAL[i][j] = (%TYPE) 0;\n\
+            #endif\n\
+        }\n\
+    }\n\
+\n\
+    int ACOL;\n\
+    uint actualCol;\n\
+    uint actualRow;\n\
+    int ACOLENDV;\n\
+    int numIterations = (ACOLEND - ACOLSTART) / (%V) ;\n\
+\n\
+    if (numIterations >= 0)\n\
+    {\n\
+        ACOLENDV = ACOLSTART + (numIterations * (%V));\n\
+    } else {\n\
+        ACOLENDV = ACOLEND;\n\
+    }\n\
+\n\
+\n\
+    if (ldb % (512) == 0) // PENDING: 512 needs to be a configurable\n\
+    {\n\
+        //\n\
+        // ASSUMPTION(SYMM Variants): \"ACOLSTART\" is perfectly divisble by \"%V\"\n\
+        // ACOLSTART depends on the tile size on Y direction\n\
+        // Since Vector-sizes are hardly 1, 2,4, 8 or 16, we can assume that\n\
+        // this is indeed the case\n\
+        //\n\
+\n\
+        //\n\
+"
+"\
+        // Assumption is that 32/16/8 is divisble by any value in %V\n\
+        //\n\
+        int num32Iterations = (ACOLENDV - ACOLSTART) / (32/(sizeof(%TYPE)/sizeof(float)));\n\
+        if (num32Iterations <= 0)\n\
+        {\n\
+            ACOL = ACOLSTART;\n\
+        } else {\n\
+            int startIteration = bidX % num32Iterations;\n\
+            ACOL = ACOLSTART + ( startIteration * (32/(sizeof(%TYPE)/sizeof(float))));\n\
+        }\n\
+    } else {\n\
+        ACOL = ACOLSTART;\n\
+    }\n\
+\n\
+    for(int itr=0; itr<numIterations; itr++)\n\
+    {\n\
+        {\n\
+            //\n\
+            // Load A values\n\
+            //\n\
+            %IF(%ITEMY) #pragma unroll %ITEMY\n\
+            for(int i = 0; i < %ITEMY; i++)\n\
+            {\n\
+                #ifndef __SYMM_DIAGONAL__\n\
+                #ifndef M_TAIL_PRESENT\n\
+                    AVAL[i] = %VLOAD(0, (&A[(rowA + i)*lda + ACOL]) );\n\
+                #else\n\
+                    actualRow = ((rowA + i) >= MV) ? (MV-1) : (rowA + i);\n\
+                    AVAL[i] = %VLOAD(0, (&A[actualRow*lda + ACOL]) );\n\
+                #endif\n\
+                #else\n\
+                    #ifndef M_TAIL_PRESENT\n\
+                        AVAL[i] = SYMM_VECTOR_LOAD_USING_SCALAR(A, M, lda, ACOL, (rowA+i));\n\
+                    #else\n\
+                        actualRow = ((rowA + i) >= MV) ? (MV-1) : (rowA + i);\n\
+                        AVAL[i] = SYMM_VECTOR_LOAD_USING_SCALAR(A, M, lda, ACOL, actualRow);\n\
+                    #endif\n\
+                #endif\n\
+\n\
+                #ifdef CONJUGATE_A\n\
+                    %TYPE%V conjTemp = AVAL[i];\n\
+                    %CONJUGATE(1, conjTemp);\n\
+                    AVAL[i] = conjTemp;\n\
+                #endif\n\
+\n\
+                #ifdef COMPLEX\n\
+                AVALEVEN[i] = AVAL[i].even;\n\
+                AVALODD[i] = AVAL[i].odd;\n\
+                #endif\n\
+            }\n\
+"
+"\
+\n\
+            //\n\
+            // Load B values\n\
+            //\n\
+            %IF(%ITEMX) #pragma unroll %ITEMX\n\
+            for(int j=0; j<(%ITEMX); j++)\n\
+            {\n\
+                #ifndef N_TAIL_PRESENT\n\
+                        BVAL[j] = %VLOAD(0, (&B[ACOL + (colB + j)*ldb]));\n\
+                #else\n\
+                        actualCol = ((colB + j) >= N) ? (N-1) : (colB + j);\n\
+                        BVAL[j] = %VLOAD(0, (&B[ACOL + (actualCol)*ldb]));\n\
+                #endif\n\
+\n\
+                #ifdef COMPLEX\n\
+                BVALEVEN[j] = BVAL[j].even;\n\
+                BVALODD[j] = BVAL[j].odd;\n\
+                #endif\n\
+            }\n\
+        } // LOAD A and B Over\n\
+\n\
+\n\
+        // MATH Begin\n\
+        %IF(%ITEMX) #pragma unroll %ITEMX\n\
+        for(int j=0; j<(%ITEMX); j++)\n\
+        {\n\
+            %IF(%ITEMY) #pragma unroll %ITEMY\n\
+            for(int i=0; i<(%ITEMY); i++)\n\
+            {\n\
+                #ifndef COMPLEX\n\
+                %VMAD_AND_REDUCE(CVAL[i][j] ,  AVAL[i], BVAL[j]);\n\
+                #else\n\
+                CVALEVEN[i][j] = mad(AVALEVEN[i], BVALEVEN[j], CVALEVEN[i][j]);\n\
+                CVALEVEN[i][j] = mad(AVALODD[i], -BVALODD[j], CVALEVEN[i][j]);\n\
+                CVALODD[i][j]  = mad(AVALEVEN[i], BVALODD[j], CVALODD[i][j]);\n\
+                CVALODD[i][j]  = mad(AVALODD[i],  BVALEVEN[j], CVALODD[i][j]);\n\
+                /*\n\
+                EVENSUM = AVALEVEN[i] * BVALEVEN[j];\n\
+                EVENSUM = mad(AVALODD[i], -BVALODD[j], EVENSUM);\n\
+                ODDSUM  = AVALEVEN[i]*BVALODD[j];\n\
+                ODDSUM  = mad(AVALODD[i],  BVALEVEN[j], ODDSUM);\n\
+                CVAL[i][j].S0 += EVENSUM.S0 + EVENSUM.S1;\n\
+                CVAL[i][j].S1 += ODDSUM.S0 + ODDSUM.S1;\n\
+                */\n\
+                #endif\n\
+            }\n\
+        }\n\
+\n\
+        ACOL = ((ACOL + %V) == ACOLENDV) ? ACOLSTART : (ACOL + %V); //%PANEL\n\
+    }\n\
+"
+"\
+\n\
+    #ifdef COMPLEX\n\
+    {\n\
+        %IF(%ITEMY) #pragma unroll %ITEMY\n\
+        for(uint i=0; i< (%ITEMY); i++)\n\
+        {\n\
+            %IF(%ITEMX) #pragma unroll %ITEMX\n\
+            for(uint j=0; j<(%ITEMX); j++)\n\
+            {\n\
+                CVAL[i][j].even =   %REDUCE_SUM_REAL_HV(CVALEVEN[i][j]);\n\
+                CVAL[i][j].odd =    %REDUCE_SUM_REAL_HV(CVALODD[i][j]);\n\
+            }\n\
+        }\n\
+    }\n\
+    #endif\n\
+\n\
+    ACOL = ACOLENDV;\n\
+\n\
+    for(; ACOL < ACOLEND; ACOL ++)\n\
+    {\n\
+        //\n\
+        // Load B values\n\
+        //\n\
+        %IF(%ITEMX) #pragma unroll %ITEMX\n\
+        for(uint bcol = 0; bcol < %ITEMX; bcol++)\n\
+        {\n\
+            //\n\
+            // PENDING: PANEL iteration to Load the Panel Depth iterating by %V\n\
+            //\n\
+            #ifndef N_TAIL_PRESENT\n\
+            BVAL[bcol] = %VMAKEVEC(B[ACOL + (colB + bcol)*ldb]);\n\
+            #else\n\
+            BVAL[bcol] = %VMAKEVEC(B[ACOL + ((colB + bcol)%(N))*ldb]);\n\
+            #endif\n\
+        }\n\
+\n\
+        //\n\
+        // Load A values\n\
+        //\n\
+        %IF(%ITEMY) #pragma unroll %ITEMY\n\
+        for(uint i = 0; i < (%ITEMY); i++) // 1 * ITEMY/V\n\
+        {\n\
+            #ifndef __SYMM_DIAGONAL__\n\
+            {\n\
+                #ifndef M_TAIL_PRESENT\n\
+                AVAL[i] = %VMAKEVEC(A[(rowA + i)*lda + ACOL]);\n\
+                #else\n\
+                AVAL[i] = %VMAKEVEC(A[((rowA + i) % MV)*lda + ACOL]);\n\
+                #endif\n\
+            }\n\
+"
+"\
+            #else\n\
+            {\n\
+                %TYPE t;\n\
+                #ifndef M_TAIL_PRESENT\n\
+                t = SYMM_SCALAR_LOAD(A, M, lda, ACOL, (rowA+i) );\n\
+                #else\n\
+                t = SYMM_SCALAR_LOAD(A, M, lda, ACOL, ((rowA + i) % MV));\n\
+                #endif\n\
+                AVAL[i] = %VMAKEVEC(t);\n\
+            }\n\
+            #endif\n\
+            #ifdef CONJUGATE_A\n\
+                %CONJUGATE(1, AVAL[i]);\n\
+            #endif\n\
+        }\n\
+\n\
+        {\n\
+            %IF(%ITEMY) #pragma unroll %ITEMY\n\
+            for(uint i=0; i<(%ITEMY); i++)\n\
+            {\n\
+                %IF(%ITEMX) #pragma unroll %ITEMX\n\
+                for(uint j=0; j<(%ITEMX); j++)\n\
+                {\n\
+                    %MAD_AND_REDUCE(CVAL[i][j] ,  AVAL[i] , BVAL[j]);\n\
+                }\n\
+            }\n\
+        }\n\
+    }\n\
+\n\
+\n\
+    //\n\
+    // STORE Result in C\n\
+    //\n\
+    %TYPE%V reg , betareg, alphareg;\n\
+    %TYPE reg_s , betareg_s, alphareg_s;\n\
+    %TYPE%V alphav, betav;\n\
+    alphav = %VMAKEVEC(alpha);\n\
+    betav = %VMAKEVEC(beta);\n\
+    //%TYPE CVALV_TEMP[%V];\n\
+    %TYPE%V CVALV;\n\
+\n\
+    #ifndef HERK\n\
+    %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+    for(uint i=0; i< (%ITEMY_BY_V); i++)\n\
+    {\n\
+        %IF(%ITEMX) #pragma unroll %ITEMX\n\
+        for(uint j=0; j<(%ITEMX); j++)\n\
+        {\n\
+                //#pragma unroll %V\n\
+                //for(uint k=0; k< (%V); k++)\n\
+"
+"\
+                %VFOR\n\
+                {\n\
+                    CVALV%VFORSUFFIX = CVAL[i*V + %VFORINDEX][j];\n\
+                }\n\
+                //CVALV = *(__private %TYPE%V *)CVALV_TEMP;\n\
+\n\
+            #if !defined(M_TAIL_PRESENT) && !defined(N_TAIL_PRESENT)\n\
+                reg = %VLOAD(0, (&C[(rowA + i*V) +     (colB+j)*ldc]));\n\
+                %VMUL(betareg, betav, reg);\n\
+                %VMUL(alphareg, alphav, CVALV);\n\
+                %ADD( reg, betareg, alphareg);\n\
+                %VSTORE(reg, 0, (&C[(rowA + i*V) + (colB+j)*ldc]));\n\
+            #else\n\
+                if (((rowA + i*V + V - 1) < M) && ((colB + j) < N))\n\
+                {\n\
+                    reg = %VLOAD(0, (&C[rowA + i*V +     (colB+j)*ldc]));\n\
+                    %VMUL(betareg, betav, reg);\n\
+                    %VMUL(alphareg, alphav, CVALV);\n\
+                    %ADD( reg, betareg, alphareg);\n\
+                    %VSTORE(reg, 0, (&C[(rowA + i*V) + (colB+j)*ldc]));\n\
+                } else {\n\
+                    if ((colB + j) < N)\n\
+                    {\n\
+                        //%TYPE TEMP[%V];\n\
+                        //*(__private %TYPE%V *) TEMP = CVALV;\n\
+                        //#pragma unroll %V\n\
+                        //for(uint v=0; ((v< %V) && ((rowA + (i * %V) + v) < M) ); v++)\n\
+                        %VFOR\n\
+                        {\n\
+                            if (((rowA + (i * %V) + %VFORINDEX) < M) )\n\
+                            {\n\
+                                %TYPE c;\n\
+\n\
+                                c = C[rowA + i*V + %VFORINDEX + (colB+j)*ldc];\n\
+                                %MUL(betareg_s, c, beta);\n\
+                                c = CVALV%VFORSUFFIX;\n\
+                                %MUL(alphareg_s, c, alpha);\n\
+                                %ADD(c, betareg_s, alphareg_s);\n\
+                                C[rowA + i*V + %VFORINDEX + (colB+j)*ldc] = c;\n\
+                           }\n\
+                        }\n\
+                    }\n\
+                }\n\
+            #endif\n\
+        }\n\
+    }\n\
+    #else\n\
+    %IF(%ITEMY_BY_V) #pragma unroll %ITEMY_BY_V\n\
+    for(uint i=0; i< (%ITEMY_BY_V); i++)\n\
+    {\n\
+"
+"\
+        %IF(%ITEMX) #pragma unroll %ITEMX\n\
+        for(uint j=0; j<(%ITEMX); j++)\n\
+        {\n\
+            int actualRow = rowA + i*V;\n\
+            int actualCol = colB + j;\n\
+\n\
+            //#pragma unroll %V\n\
+            //for(uint k=0; k< (%V); k++)\n\
+            %VFOR\n\
+            {\n\
+                CVALV%VFORSUFFIX = CVAL[i*V + %VFORINDEX][j];\n\
+            }\n\
+            //CVALV = *(__private %TYPE%V *)CVALV_TEMP;\n\
+\n\
+            #if !defined(M_TAIL_PRESENT) && !defined(N_TAIL_PRESENT)\n\
+                %VMUL(alphareg, alphav, CVALV);\n\
+                //%TYPE temp[%V];\n\
+                //*(__private %TYPE%V *)(&temp) = alphareg;\n\
+                //#pragma unroll %V\n\
+                //for(uint r = 0; r < %V; r++)\n\
+                %VFOR\n\
+                {\n\
+                    #ifdef HERK_LOWER_TRIANGLE\n\
+                    if((%VFORINDEX + actualRow) >= (actualCol))\n\
+                    #else\n\
+                    if((%VFORINDEX + actualRow) <= (actualCol))\n\
+                    #endif\n\
+                    {\n\
+                        %TYPE C_s =  C[%VFORINDEX + actualRow + actualCol * ldc];\n\
+                        %TYPE beta_s;\n\
+                        %MUL(beta_s, beta, C_s);\n\
+                        C_s = alphareg%VFORSUFFIX + beta_s;\n\
+                        if((%VFORINDEX + actualRow) == actualCol)\n\
+                        {\n\
+                            C_s.odd = 0.0f;\n\
+                        }\n\
+                        C[%VFORINDEX + actualRow + actualCol * ldc] = C_s;\n\
+                    }\n\
+                }\n\
+            #else\n\
+                if (((rowA + i*V + V - 1) < M) && ((colB + j) < N))\n\
+                {\n\
+                    %VMUL(alphareg, alphav, CVALV);\n\
+                    //%TYPE temp[%V];\n\
+                    //*(__private %TYPE%V *)(&temp) = alphareg;\n\
+                    //#pragma unroll %V\n\
+                    //for(uint r = 0; r < %V; r++)\n\
+                    %VFOR\n\
+                    {\n\
+                        #ifdef HERK_LOWER_TRIANGLE\n\
+"
+"\
+                        if((%VFORINDEX + actualRow) >= (actualCol))\n\
+                        #else\n\
+                        if((%VFORINDEX + actualRow) <= (actualCol))\n\
+                        #endif\n\
+                        {\n\
+                            %TYPE C_s =  C[%VFORINDEX + actualRow + actualCol * ldc];\n\
+                            %TYPE beta_s;\n\
+                            %MUL(beta_s, beta, C_s);\n\
+                            C_s = alphareg%VFORSUFFIX + beta_s;\n\
+                            if((%VFORINDEX + actualRow) == actualCol)\n\
+                            {\n\
+                                C_s.odd = 0.0f;\n\
+                            }\n\
+                            C[%VFORINDEX + actualRow + actualCol * ldc] = C_s;\n\
+                        }\n\
+                    }\n\
+                }\n\
+                else\n\
+                {\n\
+                    if ((colB + j) < N)\n\
+                    {\n\
+                        //%TYPE TEMP[%V];\n\
+\n\
+                        //*(__private %TYPE%V *)(&TEMP) = CVALV;\n\
+                        //#pragma unroll %V\n\
+                        //for(uint r=0; ((r< %V) && ((rowA + (i * %V) + r) < M) ); r++)\n\
+                        %VFOR\n\
+                        {\n\
+                            if (((rowA + (i * %V) + %VFORINDEX) < M))\n\
+                            {\n\
+                                #ifdef HERK_LOWER_TRIANGLE\n\
+                                if((%VFORINDEX + actualRow) >= (actualCol))\n\
+                                #else\n\
+                                if((%VFORINDEX + actualRow) <= (actualCol))\n\
+                                #endif\n\
+                                {\n\
+                                    %TYPE c;\n\
+                                    c = C[%VFORINDEX + actualRow + (actualCol)*ldc];\n\
+                                    %MUL(betareg_s, c, beta);\n\
+                                    c = CVALV%VFORSUFFIX;\n\
+                                    %MUL(alphareg_s, c, alpha);\n\
+                                    %ADD(c, betareg_s, alphareg_s);\n\
+                                    if((%VFORINDEX + actualRow) == (actualCol))\n\
+                                    {\n\
+                                        c.odd = 0.0f;\n\
+                                    }\n\
+                                    C[%VFORINDEX + actualRow  + actualCol * ldc] = c;\n\
+                                }\n\
+                            }\n\
+                        }\n\
+"
+"\
+                    }\n\
+                }\n\
+            #endif\n\
+        }\n\
+    }\n\
+    #endif\n\
+    return;\n\
+}\n\
+";
+
+
+
+

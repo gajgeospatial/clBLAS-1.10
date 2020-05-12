@@ -1,0 +1,217 @@
+/* ************************************************************************
+ * Copyright 2013 Advanced Micro Devices, Inc.
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ * ************************************************************************/
+
+
+
+static const char *rotmg_kernel = "\
+#ifdef DOUBLE_PRECISION\n\
+    #ifdef cl_khr_fp64\n\
+    #pragma OPENCL EXTENSION cl_khr_fp64 : enable\n\
+    #else\n\
+    #pragma OPENCL EXTENSION cl_amd_fp64 : enable\n\
+    #endif\n\
+#endif\n\
+\n\
+// Rotmg exists only for S/D\n\
+#define ZERO    (%TYPE)0.0\n\
+#define ONE     (%TYPE)1.0\n\
+#define TWO     (%TYPE)2.0\n\
+\n\
+#define GAM     (%TYPE)4096.0\n\
+#define GAMSQ   (%TYPE)( GAM * GAM )\n\
+#define RGAMSQ  (%TYPE)( 1.0 / GAMSQ )\n\
+\n\
+__kernel void %PREFIXrotmg_kernel( __global %TYPE *_D1, __global %TYPE *_D2, __global %TYPE *_X1,\n\
+                                __global %TYPE *_Y1, __global %TYPE *_param,\n\
+                                uint offD1, uint offD2, uint offX1, uint offY1, uint offParam )\n\
+{\n\
+    %TYPE D1, D2, X1, Y1;\n\
+    %TYPE flag, H11, H12, H21, H22;                 // elements of PARAM\n\
+    __global %TYPE *param = _param + offParam;\n\
+\n\
+    if(get_global_id(0) == 0)       // Only 1 thread will work\n\
+    {\n\
+        %TYPE P1, P2, Q1, Q2, temp, U;\n\
+\n\
+        D1 = _D1[offD1];\n\
+        D2 = _D2[offD2];\n\
+        X1 = _X1[offX1];\n\
+        Y1 = _Y1[offY1];\n\
+\n\
+        if(isless(D1, ZERO))\n\
+        {\n\
+            flag = -ONE;\n\
+            H11 = ZERO;\n\
+            H12 = ZERO;\n\
+            H21 = ZERO;\n\
+            H22 = ZERO;\n\
+            D1 = ZERO;\n\
+            D2 = ZERO;\n\
+            X1 = ZERO;\n\
+        }\n\
+        else                                // CASE D1 NONNEGATIVE\n\
+        {\n\
+            P2 = D2 * Y1;\n\
+            if(isequal(P2, ZERO))\n\
+"
+"\
+            {\n\
+                flag = -TWO;\n\
+                param[0] = flag;\n\
+                return;\n\
+            }\n\
+            // Regular case\n\
+            P1 = D1 * X1;\n\
+            Q2 = P2 * Y1;\n\
+            Q1 = P1 * X1;\n\
+\n\
+            if(isgreater( fabs(Q1), fabs(Q2) ))\n\
+            {\n\
+                H21 = -Y1 / X1;\n\
+                H12 = P2 / P1;\n\
+                U = ONE - (H12 * H21);\n\
+\n\
+                if(isgreater( U, ZERO ))\n\
+                {\n\
+                    flag = ZERO;\n\
+                    D1 = D1 / U;\n\
+                    D2 = D2 / U;\n\
+                    X1 = X1 * U;\n\
+                }\n\
+            }\n\
+            else\n\
+            {\n\
+                if(isless(Q2, ZERO))\n\
+                {\n\
+                    flag = -ONE;\n\
+                    H11 = ZERO;\n\
+                    H12 = ZERO;\n\
+                    H21 = ZERO;\n\
+                    H22 = ZERO;\n\
+                    D1 = ZERO;\n\
+                    D2 = ZERO;\n\
+                    X1 = ZERO;\n\
+                }\n\
+                else\n\
+                {\n\
+                    flag = ONE;\n\
+                    H11 = P1 / P2;\n\
+                    H22 = X1 / Y1;\n\
+                    U = ONE + (H11 * H22);\n\
+                    temp = D2 / U;\n\
+                    D2 = D1 / U;\n\
+                    D1 = temp;\n\
+                    X1 = Y1 * U;\n\
+                }\n\
+            }\n\
+            if(isnotequal(D1, ZERO))\n\
+"
+"\
+            {\n\
+                while(isless(D1, RGAMSQ) || isgreater(D1, GAMSQ))\n\
+                {\n\
+                    if(isequal(flag, ZERO))\n\
+                    {\n\
+                        H11 = ONE;\n\
+                        H22 = ONE;\n\
+                        flag = -ONE;\n\
+                    }\n\
+                    else\n\
+                    {\n\
+                        H21 = -ONE;\n\
+                        H12 = ONE;\n\
+                        flag = -ONE;\n\
+                    }\n\
+                    if(isless(D1, RGAMSQ))\n\
+                    {\n\
+                        D1 = D1 * GAMSQ;\n\
+                        X1 = X1 / GAM;\n\
+                        H11 = H11 / GAM;\n\
+                        H12 = H12 / GAM;\n\
+                    }\n\
+                    else\n\
+                    {\n\
+                        D1 = D1 / GAMSQ;\n\
+                        X1 = X1 * GAM;\n\
+                        H11 = H11 * GAM;\n\
+                        H12 = H12 * GAM;\n\
+                    }\n\
+                }   // End of while\n\
+            }\n\
+\n\
+            if(isnotequal(D2, ZERO))\n\
+            {\n\
+                while(isless( fabs(D2), RGAMSQ ) || isgreater( fabs(D2), GAMSQ ))\n\
+                {\n\
+                    if(isequal(flag, ZERO))\n\
+                    {\n\
+                        H11 = ONE;\n\
+                        H22 = ONE;\n\
+                        flag = -ONE;\n\
+                    }\n\
+                    else\n\
+                    {\n\
+                        H21 = -ONE;\n\
+                        H12 = ONE;\n\
+                        flag = -ONE;\n\
+                    }\n\
+                    if(isless( fabs(D2), RGAMSQ ))\n\
+                    {\n\
+"
+"\
+                        D2 = D2 * GAMSQ;\n\
+                        H21 = H21 / GAM;\n\
+                        H22 = H22 / GAM;\n\
+                    }\n\
+                    else\n\
+                    {\n\
+                        D2 = D2 / GAMSQ;\n\
+                        H21 = H21 * GAM;\n\
+                        H22 = H22 * GAM;\n\
+                    }\n\
+                }   // End of while\n\
+            }\n\
+        }\n\
+\n\
+        if(isless(flag, ZERO))\n\
+        {\n\
+            param[1] = H11;\n\
+            param[2] = H21;\n\
+            param[3] = H12;\n\
+            param[4] = H22;\n\
+        }\n\
+        else if(isequal(flag, ZERO))\n\
+        {\n\
+            param[2] = H21;\n\
+            param[3] = H12;\n\
+        }\n\
+        else\n\
+        {\n\
+            param[1] = H11;\n\
+            param[4] = H22;\n\
+        }\n\
+\n\
+        param[0] = flag;\n\
+        _D1[offD1] = D1;\n\
+        _D2[offD2] = D2;\n\
+        _X1[offX1] = X1;\n\
+    }   // global_id(0) == 0\n\
+}\n\
+\n";
+
+
+
+
