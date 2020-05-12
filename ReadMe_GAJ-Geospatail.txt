@@ -1,0 +1,1 @@
+This project should be installed as CLBLAS_DIR with ProjectTool.
